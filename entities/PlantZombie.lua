@@ -25,8 +25,6 @@ local plant_zombie_atlas = love.graphics.newImage("assets/gfx/grfxkid/dungeon_se
 
 
 
-
-
 function PZ:new(atlas)
     
     if atlas then
@@ -68,26 +66,10 @@ function PZ:on_start()
     self.sprite = self.entity.Sprite -- seems to be standard as well?
     self.entity.tag = self -- don't think this works
     self.entity.Machine = self.machine -- hmm
-
-
-
-
-
-
-
 end
 
 
 function PZ:spawn(x, y)
-
-    -- if type(num) == "table" then
-    --     -- takes a table of tables of x and y coordinates
-    --     -- eg {{100, 234},{-68, 2045}}
- 
-    -- end
-
-                   
-            
         local zombie_length = 9
         local zombie_width = 9
         local zombie = Entity(
@@ -109,7 +91,7 @@ function PZ:spawn(x, y)
         if not self.equipped_gun then
             self:equip_gun(Gun:spawn(1).Gun);
         end
-        
+
     self.sprite:animate("idle_anim")
 end
 
