@@ -1,7 +1,6 @@
 local Class = require("lib.Class")
 local Anim = require("lib.Animation")
-local Vector2 = require("lib.Vector2")
-local Vector3 = require("lib.Vector3")
+
 
 local Sprite = require("lib.components.Sprite")
 local Transform = require("lib.components.Transform")
