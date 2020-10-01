@@ -102,9 +102,14 @@ function PZ:spawn(x, y)
             
         _G.events:invoke("add to em", zombie)
 
-end
+    end
+    
+    function PZ:idle_enter(dt)
 
-function PZ:idle_enter(dt)
+        if not self.equipped_gun then
+            self:equip_gun(Gun:spawn(1).Gun);
+        end
+        
     self.sprite:animate("idle_anim")
 end
 
@@ -122,9 +127,6 @@ end
 
 function PZ:wander_enter(dt)
 
-    if not self.equipped_gun then
-        self:equip_gun(Gun:spawn(1).Gun);
-    end
 
 
     self.sprite:animate("walk_anim")
