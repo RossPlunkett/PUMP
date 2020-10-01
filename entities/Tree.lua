@@ -41,7 +41,7 @@ function Tree:spawn(x, y)
         local tree_length = 16
         local tree_width = 40
         local tree_y_offset = -4
-        local tree = Entity(Transform(x, y, 2, 2, 0), Tree(),
+        local tree = Entity(Transform(x or 0, y or 0, 2, 2, 0), Tree(),
          Tree.create_sprite(),
         CC(100,100),
         PC({Vector2(-tree_length,-tree_width + tree_y_offset), Vector2(tree_length,-tree_width + tree_y_offset), Vector2(tree_length,tree_width + tree_y_offset), Vector2(-tree_length, tree_width + tree_y_offset)}))
