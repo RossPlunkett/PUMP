@@ -1,6 +1,5 @@
 local Class = require("lib.Class")
 local Anim = require("lib.Animation")
-
 local Sprite = require("lib.components.Sprite")
 local Transform = require("lib.components.Transform")
 local Sat = require("lib.Sat")
@@ -8,18 +7,13 @@ local StateMachine = require("lib.components.StateMachine")
 
 local Shadow = require("lib/components/Shadow")
 
-
-
 local U = require("lib.Utils")
-
 
 -- added these for bullet generation
 local Vector2 = require("lib.Vector2")
 local Entity = require("lib.Entity")
 local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
-
-
 
 
 local Gun = require("entities.Gun")

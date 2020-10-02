@@ -2,12 +2,9 @@ local Class = require("lib.Class") -- require Lua class module
 local Anim = require("lib.Animation") -- require the animation class
 local Vector2 = require("lib.Vector2") -- require Vec2 class
 local Vector3 = require("lib.Vector3") -- require Vec3 class
-
 local CC = require("lib.components.physics.CircleCollider") -- circle collider
 local PC = require("lib.components.physics.PolygonCollider") -- polygon collider
-
 local SEP = require("lib.components.SEP") -- standard entity properties that all entities share
-
 local Sprite = require("lib.components.Sprite") -- sprite class
 local Transform = require("lib.components.Transform") -- transform contains position/angle/speed
 local StateMachine = require("lib.components.StateMachine") -- state machine class
