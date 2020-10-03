@@ -220,6 +220,8 @@ function GPM:startVibe(time, strength)
 end
 
 function GPM:vibrate(joyId, dt)
+    if self.is_connected[joyId] == nil or self.is_connected[joyId] == false then return 0 end
+
 
     -- global speed speed cancel here
     dt = dt / Time.speed
