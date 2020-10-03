@@ -9,6 +9,7 @@ local function layer_compare(e1, e2)
 end
 
 local function sort_by_y(e1, e2)
+    -- error
     return e1.Transform.y < e2.Transform.y
 end
 

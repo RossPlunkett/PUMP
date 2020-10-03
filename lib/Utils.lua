@@ -4,6 +4,9 @@ local U = {}
 local pow = math.pow
 local sqrt = math.sqrt
 
+-- 
+
+
 function U.color(r, g, b, a)
     return {r, g or r, b or r, a or 1}
 end
@@ -130,6 +133,13 @@ end
 --
 function U.same_sign(a,b)
     return U.xor(a >= 0, b < 0 )
+end
+
+-- more functions 
+
+-- for rounding off numbers
+function U.round(n)
+    return n % 1 >= 0.5 and math.ceil(n) or math.floor(n)
 end
 
 return U

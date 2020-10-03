@@ -1,16 +1,22 @@
 
-
+local U = require("lib.Utils")
+local Vtri = require("lib.Vector3")
 
 
 local camera = {}
 camera.x = 0 -- position
 camera.y = 0
-camera.xOffset = 0 -- offset
-camera.yOffset = 0
+camera.targetPosX = 0 -- (offset) 
+camera.targetPosY = 0 -- Changed Offset to Target Position 
 camera.scaleX = 1 -- scale
 camera.scaleY = 1
 camera.rotation = 0 -- rotation around origin
-
+camera.Ppu = 8 -- pixels per unit, might change to 8 or 32
+camera.damp = 0.08 -- smoothing?
+camera.curVel = Vector3(0,0,0)  
+camera.w = 0 -- i think its better to get these values from the start?
+camera.h = 0
+camera.offset = Vector3(0,0)
 
 function camera:init()
 self.shaking = false
@@ -18,6 +24,9 @@ self.shake_time = 0.1 -- just a default, gets set w/every shake
 self.shake_amount = 20 -- world-px, just a default as well
 self.xShakeOffset = 0
 self.yShakeOffset = 0
+self.w, self.h = love.graphics.getDimensions()
+
+offset = Vector3(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 
 self.shakes = {}
 end
@@ -53,32 +62,43 @@ function camera:setPosition(x, y)
   self.y = y or self.y
 end
 
-function camera:center(x, y, offset)
-self.offset = offset or nil -- offset is optional table
-local width, height = love.graphics.getDimensions()-- could be done in a coroutine
+-- function camera:center(x, y, offset)
+-- self.offset = offset or nil -- offset is optional table
+-- local width, height = love.graphics.getDimensions()-- could be done in a coroutine
     
-self.x = x - ((width * 0.5) * self.scaleX)
-self.y = y - ((height * 0.5) * self.scaleY) -- changed this to Y recently
+-- self.x = x - ((self.w * 0.5) * self.scaleX)
+-- self.y = y - ((self.h * 0.5) * self.scaleY) -- changed this to Y recently
 
-self.x = self.x + self.xOffset + self.xShakeOffset
-self.y = self.y + self.yOffset + self.yShakeOffset
+-- self.x = self.x + self.xOffset + self.xShakeOffset
+-- self.y = self.y + self.yOffset + self.yShakeOffset
 
-end
+-- end
 
-function camera:center_on_transform(transform)
-    local width, height = love.graphics.getDimensions() -- could be done in a coroutine
+-- function camera:center_on_transform(transform)
+--     local width, height = love.graphics.getDimensions() -- could be done in a coroutine
         
-    self.x = transform.x - ((width * 0.5) * self.scaleX)
-    self.y = transform.y - ((height * 0.5) * self.scaleX)
+--     self.x = transform.x - ((width * 0.5) * self.scaleX)
+--     self.y = transform.y - ((height * 0.5) * self.scaleX)
 
-    self.x = self.x + self.xOffset + self.xShakeOffset
-    self.y = self.y + self.yOffset + self.yShakeOffset
+--     self.x = self.x + self.xOffset + self.xShakeOffset
+--     self.y = self.y + self.yOffset + self.yShakeOffset
 
+-- end
+
+function camera:updateCameraPosition(dt)
+  -- self.x = self.x - ((self.w * 0.5) * self.scaleX)  
+  -- self.y = self.y -((self.h * 0.5) * self.scaleY) 
+  tempos = Vector3(0,0) 
+  tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)- offset, self.curVel,self.damp, dt)
+  self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
+  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
+  print(tempPos)
+            
 end
 
-function camera:setOffset(xoffset, yoffset)
-  self.xOffset = xoffset
-  self.yOffset = yoffset
+function camera:setTargetPos(xPos, yPos)
+  self.targetPosX = xPos
+  self.targetPosY = yPos
 end
 
 function camera:startShake(x_dir, y_dir, amount, out_time, in_time) -- rotation?
@@ -137,8 +157,15 @@ function camera:shake(dt)
 end
 
 
+-- we need to make 2 entities for the camera
+-- one for the camera holder 
+-- and one for the camera shaker
+-- because I think there will be a conflict between shaking and following the player
 
 function camera:update(dt)
+
+  camera:updateCameraPosition(dt)
+  -- updateCameraPosition have an issues about the equations below
 
   dt = dt / Time.speed -- global speed cancel (?)
 
@@ -150,6 +177,7 @@ function camera:update(dt)
   -- self.rotation = self.rotation + 0.01
 end
 
+-- update camera position
 -- needs a dynamic scaling system where there can be many simultaneous zooms happening.
 function camera:setScale(sx, sy)
   self.scaleX = sx or self.scaleX

@@ -85,12 +85,13 @@ function P:spawn(player_num)
 
     return player
 end
-
+-- (xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function P.create_sprite()
-    local idle = Anim(2, 0, 16, 32, {1, 2, 3, 4}, 4, {{0.4, 0.25, 0.15, 0.25}, 2})
-    local walk = Anim(66, 0, 16, 32, 4, 4, {{0.15, 0.15, 0.15, 0.15}, 3.5})
+    -- changed some sprite to squid
+    local idle = Anim(0, 0, 20, 20, {1, 2, 3, 4, 5, 6}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
+    local walk = Anim(0, 0, 20, 20,{7, 8, 9, 10, 11, 12, 13, 14}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
     if hero_atlas == nil then
-        hero_atlas = love.graphics.newImage("assets/gfx/grfxkid/dungeon_set/male_hero_sheet.png")
+        hero_atlas = love.graphics.newImage("assets/gfx/Characters/Squid.png")
     end
     
     --create a sprite component
@@ -239,7 +240,7 @@ function P:update(dt)
 
     -- the l_trig should send out a message from the gamepad manager, and have it be dependent on scene?
           -- but how could the gamepadmanager know what the current scene is? would it have to query through an event?
-    
+
     -- I guess this message gets sent both to the camera and to the speed module?
 
     -- need self.prev_l_trig to see when it's getting a fresh pull?
@@ -325,16 +326,19 @@ function P:update(dt)
 
     local RSXAR = GPM:r_stick_smooth(self.player_num)[1]
     local RSYAR = GPM:r_stick_smooth(self.player_num)[2]
-
+    local initPos = Vector2(0,0)
+    initPos = Vector2(self.transform.x, self.transform.y)
     if RSXAR ~= 0 or RSYAR ~= 0 then
         local xcamoffset = RSXAR * 100
         local ycamoffset = RSYAR * 100
-        Camera:setOffset(xcamoffset, ycamoffset)
-    else
-        Camera:setOffset(0, 0)
+        initPos = initPos.add(initPos,Vector2(xcamoffset,ycamoffset))
     end
     
-    Camera:center_on_transform(self.transform)
+    Camera:setTargetPos(initPos.x,initPos.y)
+    --Camera:center_on_transform(self.transform)
+
+    -- instead of positioning the camera to a specific location by using offsets,
+    -- make the camera move or lerp between the old position to target position
 
     
 
