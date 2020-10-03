@@ -91,9 +91,7 @@ function camera:updateCameraPosition(dt)
   tempos = Vector3(0,0) 
   tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)- offset, self.curVel,self.damp, dt)
   self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
-  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
-  print(tempPos)
-            
+  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu    
 end
 
 function camera:setTargetPos(xPos, yPos)
