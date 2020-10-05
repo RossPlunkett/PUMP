@@ -84,7 +84,7 @@ function Gun:spawn(num)
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
-            Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 25),
+            Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15),
             Gun.create_sprite(USSR_P_atlas),
             CC(62,40),
             PC({Vector2(-gun_length,-gun_width), Vector2(gun_length,-gun_width), 

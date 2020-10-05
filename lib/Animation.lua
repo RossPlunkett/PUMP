@@ -5,6 +5,7 @@ local Anim = Class:derive("Animation")
 
 function Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
     self.fps = fps
+
     if type(frames) == "table" then
         self.frames = frames
     else
@@ -13,6 +14,7 @@ function Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
             self.frames[i] = i
         end
     end
+
     self.column_size = column_size
     self.start_offset = Vector2(xoffset, yoffset)
     self.offset = Vector2()
@@ -51,6 +53,7 @@ function Anim:set(quad)
 end
 
 function Anim:update(dt, quad)
+    -- skip everything if it's just one frame, like a world tile. Just an image, no need to animate
     if #self.frames <= 1 then 
         self.done = true
         return
@@ -84,16 +87,17 @@ function Anim:update(dt, quad)
     end
 end
 
-function Anim:calc_frame_time()
-    if self.variable_frames then
-        self.timer = self.fps[1][self.index] / self.fps[2] -- calculates time for next frame
-    else
-        self.timer = 1 / self.fps
-    end
-end 
+-- commented out - copied function body into functions to avoid extra function call
+-- Obviously code duplication is dumb but I think it's ok here because these aren't going to change
+-- and even if I do come back and change them, I'll see this note I'm writing and know
+-- that the code is duplicated in this file.
 
--- variable frames
-
--- so. each frame has to have a variance, and the speed of the whole thing must be editable, probably drawing from fps.
+-- function Anim:calc_frame_time()
+--     if self.variable_frames then
+--         self.timer = self.fps[1][self.index] / self.fps[2] -- calculates time for next frame
+--     else
+--         self.timer = 1 / self.fps
+--     end
+-- end
 
 return Anim
