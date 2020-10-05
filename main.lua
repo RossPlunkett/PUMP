@@ -15,6 +15,10 @@ time = nil
 local SM = require("lib.SceneMgr")
 local Event = require("lib.Events")
 
+-- local world = require("lib.World")
+-- World = world(200, 200, 10, 10, 20, 20)
+
+
 
 --TODO before PUMP
 
@@ -47,6 +51,7 @@ function love.load()
     --sm:switch("MainMenu")
     -- sm:switch("TweenTest")
     sm:switch("Test")
+
 
 end
 

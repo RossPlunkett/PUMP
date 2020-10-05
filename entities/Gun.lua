@@ -77,8 +77,8 @@ function Gun:spawn(num)
         local world_height = 1000
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
-        local gun_length = 16
-        local gun_width = 16
+        local gun_length = 4
+        local gun_width = 4
 
         gun_entity = Entity(
             Transform(start_x, start_y, 3, 3, 0), 
@@ -87,8 +87,8 @@ function Gun:spawn(num)
             Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15),
             Gun.create_sprite(USSR_P_atlas),
             CC(62,40),
-            PC({Vector2(-gun_length,-gun_width), Vector2(gun_length,-gun_width), 
-                Vector2(gun_length,gun_width), Vector2(-gun_length, gun_width)}))
+            PC({Vector2(-gun_length,-gun_width), Vector2(gun_length * 2.5,-gun_width), 
+                Vector2(gun_length * 2.5 ,gun_width), Vector2(-gun_length, gun_width)}))
 
         _G.events:invoke("add to em", gun_entity)
     end

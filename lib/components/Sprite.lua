@@ -21,7 +21,7 @@ function Sprite:new(atlas, w, h, color)
     self.current_anim = ""
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
     self.tintColor = color or {1,1,1,1}
-    self.sprite_origin = Vector2(w/2, h/2) -- defaults to center
+    self.origin = Vector2(w/2, h/2) -- defaults to center
 
     self.flash_shader = love.graphics.newShader[[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
@@ -38,19 +38,28 @@ function Sprite:new(atlas, w, h, color)
     self.flash_timer = nil
 end
 
-function Sprite:set_origin(origin)
+function Sprite:set_origin(origin, customx, customy)
     if origin == "bottom" then 
-        self.sprite_origin.x = self.w / 2
-        self.sprite_origin.y = self.h
+        self.origin.x = self.w * 0.5
+        self.origin.y = self.h
     elseif origin == "top" then 
-        self.sprite_origin.x = self.w / 2
-        self.sprite_origin.y = 0
+        self.origin.x = self.w * 0.5
+        self.origin.y = 0
     elseif origin == "left" then
-        self.sprite_origin.x = 0
-        self.sprite_origin.y = self.h / 2
+        self.origin.x = 0
+        self.origin.y = self.h * 0.5
     elseif origin == "right" then
-        self.sprite_origin.x = self.w
-        self.sprite_origin.y = self.h / 2
+        self.origin.x = self.w
+        self.origin.y = self.h * 0.5
+    elseif origin == "center" then
+        self.origin.x = self.w * 0.5
+        self.origin.y = self.y * 0.5
+    elseif origin == "custom" then
+        -- custom values are from 0.0 to 1.0
+        -- 0.0 -> 0.1 X: left to right
+        -- 0.0 -> 0.1 Y: top to bottom
+        self.origin.x = self.w * customx
+        self.origin.y = self.h * customy
     end
 
 end
@@ -149,8 +158,9 @@ function Sprite:draw()
     end
 
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.sprite_origin.x, self.sprite_origin.y)
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
     
+    -- with no arguments, love.graphics.setShader() turns off all shaders
     if self.flashing then
         love.graphics.setShader()
     end
