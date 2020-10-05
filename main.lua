@@ -46,7 +46,7 @@ function love.load()
     --these next ones activate the scene
     --sm:switch("MainMenu")
     -- sm:switch("TweenTest")
-    sm:switch("Test")
+    sm:switch("MainMenu")
 
 end
 
