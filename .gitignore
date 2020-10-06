@@ -1,2 +1,7 @@
 .vscode/**
+<<<<<<< Updated upstream
 
+=======
+.meta/**
+**/.plan_bak/**
+>>>>>>> Stashed changes

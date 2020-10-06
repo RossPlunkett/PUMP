@@ -15,6 +15,13 @@ time = nil
 local SM = require("lib.SceneMgr")
 local Event = require("lib.Events")
 
+<<<<<<< Updated upstream
+=======
+-- local world = require("lib.World")
+-- World = world(200, 200, 10, 10, 20, 20)
+
+Is_Gizmo_On = false -- for debugging colliders and other related things
+>>>>>>> Stashed changes
 
 --TODO before PUMP
 

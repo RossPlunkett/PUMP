@@ -3,11 +3,10 @@ local Vector2 = require("lib.Vector2")
 local Anim = require("lib.Animation")
 local Rect = require("lib.Rect")
 local U = require("lib.Utils")
-
+--local cron = require()
 
 
 local Sprite = Class:derive("Sprite")
-
 --where x,y is the center of the sprite
 --
 --Note: This component assumes the presence of a Transform component!
@@ -66,6 +65,11 @@ function Sprite:animate(anim_name)
         self.animations[anim_name]:reset()
         self.animations[anim_name]:set(self.quad)
     elseif self.animations[anim_name] == nil then
+        -- I added checking if anim_name is not null
+        if not anim_name then
+            print("no animation name entered")
+            return
+        end
         assert(false, anim_name .. " animation not found!")
     end
 end
@@ -155,5 +159,6 @@ function Sprite:draw()
         love.graphics.setShader()
     end
 end
+
 
 return Sprite

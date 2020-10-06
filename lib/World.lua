@@ -22,6 +22,7 @@ function World:new(x_start, y_start, width, height)
     self.diggers = {}
     self.total_digs = 0
 
+<<<<<<< Updated upstream
 
 end
 
@@ -60,6 +61,15 @@ function World:makeDigger()
         digger.direction = {0, 1}
     elseif math.random(4) == 1 then
         digger.direction = {0, -1}
+=======
+for x = 1, self.rows do
+    for y = 1, self.columns do
+
+        -- this throws error on my vs code
+        -- self.tiles[x][y] = {
+        --     "pos": Vector2(x, y)
+        -- }
+>>>>>>> Stashed changes
     end
     
     digger.remove = false -- removal flag

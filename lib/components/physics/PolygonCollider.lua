@@ -40,10 +40,18 @@ end
 function PC:update(dt)
     self:scale_translate()
 end
-
+    
 function PC:draw()
+<<<<<<< Updated upstream
     -- love.graphics.setColor(1, 1, 0, 0.6)
     -- love.graphics.polygon("line", self.draw_points)
+=======
+    if not Is_Gizmo_On then
+        return
+    end
+    love.graphics.setColor(1, 1, 0, 0.6)
+    love.graphics.polygon("line", self.draw_points)
+>>>>>>> Stashed changes
 end
 
 return PC

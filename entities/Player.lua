@@ -5,9 +5,8 @@ local Transform = require("lib.components.Transform")
 local Sat = require("lib.Sat")
 local StateMachine = require("lib.components.StateMachine")
 
-local Shadow = require("lib/components/Shadow")
+local Shadow = require("lib.components.Shadow")
 
-local U = require("lib.Utils")
 
 -- added these for bullet generation
 local Vector2 = require("lib.Vector2")
