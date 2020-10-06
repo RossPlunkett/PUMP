@@ -33,14 +33,9 @@ function Sprite:new(atlas, w, h, color, shadow)
             return pixel;
           }
     ]]
-    self.pixel_shader = love.graphics.newShader [[
-      extern vec2 size;            //vector contains image size, like shader:send('size', {img:getWidth(), img:getHeight()})	
-      extern number factor;    //nimber contains sample size, like shader:send('factor', 2), use number is divisible by two
-      vec4 effect(vec4 color, Image img, vec2 texture_coords, vec2 pixel_coords){
-         vec2 tc = floor(texture_coords * size / factor) * factor / size;
-         return Texel(img, tc);
-      }
-]]
+    -- self.pixel_shader = love.graphics.newShader [[
+        
+    -- ]]
 
     self.flashing = false
     self.flash_timer = nil
@@ -156,7 +151,7 @@ function Sprite:poly()
 end
 
 function Sprite:flash(time)
-    
+    do return end
     love.graphics.setShader(self.flash_shader)
     self.flashing = true
     self.flash_timer = time
@@ -171,11 +166,16 @@ function Sprite:draw()
     -- if self.flashing then
     --     love.graphics.setShader(self.flash_shader)
     -- end
-
+    
+    --love.graphics.setShader(self.pixel_shader)
+    
+   -- self.pixel_shader:send('factor', 2)
+   -- self.pixel_shader:send('size', {self.w*16, self.h*16})
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
 
+    --love.graphics.setShader()
     -- if self.flashing then
     --     love.graphics.setShader()
     -- end
