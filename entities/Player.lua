@@ -257,10 +257,10 @@ function P:update(dt)
             local min_global_speed = 0.1
             Time.speed = ( 1 - ((1 - speed_tween_result) * (1 - min_global_speed)) )
             local cam_scale = (tween_result * 0.07) + 0.93
-            if GPM:button(self.player_num, "y") then
-                cam_scale = 2.5 + (1 - tween_result)
-            end
-            Camera:scale(cam_scale, cam_scale)
+            -- if GPM:button(self.player_num, "y") then
+            --     cam_scale = 2.5 + (1 - tween_result)
+            -- end
+            -- Camera:scale(cam_scale, cam_scale)
         else
             -- all of this kinda ignores if there are other zooming things happening
             -- camera needs dynamic zoom that integrates multiple zooms

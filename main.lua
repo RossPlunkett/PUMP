@@ -6,6 +6,11 @@ local maid64 = require ("lib.maid64")
 local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
+-- do not change else where
+-- maybe use a table so it cant be changed somewhere?
+Pixel_Window_X = 320
+Pixel_Window_Y = 240
+
 Camera = require("lib/Camera")
 Camera:init()
 
@@ -36,9 +41,9 @@ local sm = {}
 function love.load()
 
     --maid settings
-    love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
+    --love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
     love.window.setFullscreen(true)
-    maid64.setup(320,240)
+    maid64.setup(Pixel_Window_X,Pixel_Window_Y,true)
 
     --Love2D game settings
     love.graphics.setDefaultFilter('nearest', 'nearest')
