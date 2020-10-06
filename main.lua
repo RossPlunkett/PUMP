@@ -42,7 +42,7 @@ function love.load()
 
     --maid settings
     --love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
-    love.window.setFullscreen(true)
+    -- love.window.setFullscreen(true)
     maid64.setup(Pixel_Window_X,Pixel_Window_Y,true)
 
     --Love2D game settings

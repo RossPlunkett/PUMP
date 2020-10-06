@@ -74,7 +74,8 @@ function BB:spawn(x_pos, y_pos, x, y, r_trig)
     local bullet = Entity(
         Transform(x_pos, y_pos, 1.9, 1.9, newangle, RSXA or 0, RSYA or 0), 
         BB(), 
-        BB.create_sprite(fast_bullet),CC(35,40),
+        BB.create_sprite(fast_bullet),
+        CC(8,40),
         PC(12,8),
         SBP(10, 10))         
 

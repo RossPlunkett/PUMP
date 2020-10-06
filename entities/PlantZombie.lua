@@ -67,14 +67,14 @@ end
 
 
 function PZ:spawn(x, y)
-        local zombie_length = 9
-        local zombie_width = 9
+        local zombie_height= 4
+        local zombie_width = 5
         local zombie = Entity(
             Transform(x, y, 4, 4, 0),
             PZ(plant_zombie_atlas), 
             self.create_sprite(plant_zombie_atlas),
             CC(70,40),
-            PC({Vector2(-zombie_length,-zombie_width), Vector2(zombie_length,-zombie_width), Vector2(zombie_length,zombie_width), Vector2(-zombie_length, zombie_width)}),
+            PC(zombie_width,zombie_height,Vector2(0,2)),
             SEP(30)
         )
            
@@ -93,6 +93,7 @@ function PZ:spawn(x, y)
 end
 
 function PZ:idle(dt)
+    if true then return end
     local roll = math.random(100) -- should incorporate dt
 
     if roll == 54 then
@@ -105,7 +106,6 @@ function PZ:idle_exit(dt)
 end
 
 function PZ:wander_enter(dt)
-
 
 
     self.sprite:animate("walk_anim")
