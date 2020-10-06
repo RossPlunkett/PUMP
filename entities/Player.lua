@@ -326,7 +326,7 @@ function P:update(dt)
         Vector3(self.equipped_gun.transform.x,self.equipped_gun.transform.y,0),
         Vector3(self.transform.x, self.transform.y+gun_Holster_offset, 0),
         refVel,
-        0.035,
+        0.025, -- nice to see when attaching guns
         dt)
     self.equipped_gun.transform.x = tempPos.x
     self.equipped_gun.transform.y = tempPos.y
