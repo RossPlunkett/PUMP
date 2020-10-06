@@ -79,7 +79,7 @@ function P:spawn(player_num)
         P.create_sprite(),
         CC(46,32),
         PC({Vector2(-player_width,-player_height + 10), Vector2(player_width,-player_height + 10), Vector2(player_width,player_height + 10), Vector2(-player_width, player_height + 10)})
-        ,Shadow(73, 3.14)
+        --,Shadow(73, 3.14)
     )
     _G.events:invoke("add to em", player)
 
