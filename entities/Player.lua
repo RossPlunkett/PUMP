@@ -77,8 +77,8 @@ function P:spawn(player_num)
         P(player_num), -- calling the [new] method
         P.create_sprite(),
         CC(46,32),
-        PC({Vector2(-player_width,-player_height + 10), Vector2(player_width,-player_height + 10), Vector2(player_width,player_height + 10), Vector2(-player_width, player_height + 10)}),
-        Shadow(20, 20, -10, 30)
+        PC({Vector2(-player_width,-player_height + 10), Vector2(player_width,-player_height + 10), Vector2(player_width,player_height + 10), Vector2(-player_width, player_height + 10)})
+        --,Shadow(73, 3.14)
     )
     _G.events:invoke("add to em", player)
 
@@ -87,14 +87,14 @@ end
 -- (xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function P.create_sprite()
     -- changed some sprite to squid
-    local idle = Anim(0, 0, 20, 20, {1, 2, 3, 4, 5, 6}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
+    local idle = Anim(-1, 0, 20, 20, {1, 2, 3, 4, 5, 6}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
     local walk = Anim(0, 0, 20, 20,{7, 8, 9, 10, 11, 12, 13, 14}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
     if hero_atlas == nil then
         hero_atlas = love.graphics.newImage("assets/gfx/Characters/Squid.png")
     end
     
     --create a sprite component
-    local sprite = Sprite(hero_atlas, 24, 16)
+    local sprite = Sprite(hero_atlas, 24, 16, nil, true)
     sprite:add_animations({idle = idle, walk = walk})
     --sprite:animate("idle") -- commented out - I think the state machine does this
     return sprite
@@ -107,7 +107,7 @@ function P:on_start()
     self.entity.Machine = self.machine
 
     self:equip_gun(Gun:spawn(1).Gun) -- hmm
-    self:holster_gun(Gun:spawn(1).Gun) -- hmm
+    --self:holster_gun(Gun:spawn(1).Gun) -- hmm
 
 end
 
@@ -315,12 +315,14 @@ function P:update(dt)
     self.equipped_gun.transform.x = self.transform.x
     self.equipped_gun.transform.y = self.transform.y + 26 -- offset to lower it
 
-    self.holstered_gun.transform.x = self.transform.x
-    self.holstered_gun.transform.y = self.transform.y + 35 -- offset to lower it
+    if self.holstered_gun then
+        self.holstered_gun.transform.x = self.transform.x
+        self.holstered_gun.transform.y = self.transform.y + 35 -- offset to lower it
+        -- this should just happen once right when it's holstered
+        self.holstered_gun.transform.angle =  1.2
+        self.holstered_gun.sprite.tintColor = {1, 1, 1, 0.6}
+    end
 
-    -- this should just happen once right when it's holstered
-    self.holstered_gun.transform.angle =  1.2
-    self.holstered_gun.sprite.tintColor = {1, 1, 1, 0.6}
     
 
     local RSXAR = GPM:r_stick_smooth(self.player_num)[1]
