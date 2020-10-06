@@ -1,11 +1,12 @@
 Key = require("lib.Keyboard")
 Tween = require("lib.Tween")
--- low rez thing
-local maid64 = require ("lib.maid64")
 
 local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
+
+-- low rez thing
+local maid64 = require ("lib.maid64")
 -- do not change else where
 -- maybe use a table so it cant be changed somewhere?
 Pixel_Window_X = 320
@@ -25,7 +26,7 @@ local Event = require("lib.Events")
 
 --for debugging colliders and other related stuff
 IsGizmoOn = true
-
+FullScreenToggle = true
 --TODO before PUMP
 
 -- move stuff out of the player
@@ -39,10 +40,10 @@ math.randomseed(os.time()) -- can be seeded
 local sm = {}
 
 function love.load()
-
+    
     --maid settings
     --love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
-    --love.window.setFullscreen(true)
+    love.window.setFullscreen(FullScreenToggle)
     maid64.setup(Pixel_Window_X,Pixel_Window_Y,true)
 
     --Love2D game settings

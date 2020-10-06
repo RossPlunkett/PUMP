@@ -287,6 +287,7 @@ function P:update(dt)
     end
     
     if GPM:button_down(self.player_num, "b") then
+        FullScreenToggle = not FullScreenToggle
     end
     if GPM:button_down(self.player_num, "rightshoulder") then
         self:pick_up_gun()

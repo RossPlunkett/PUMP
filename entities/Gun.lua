@@ -212,7 +212,8 @@ end
 function Gun:draw(dt)
     if self.in_reach then
         -- maybe offset this with the length of the string ? but i dont know how to do it
-        love.graphics.print(self.name,self.transform.x,self.transform.y)
+        -- love.graphics.print(self.name,self.transform.x,self.transform.y)
+        love.graphics.printf(self.name, self.transform.x, self.transform.y,120, 'center')
     end
 end
 
