@@ -16,14 +16,15 @@ local Transform = require("lib.components.Transform")
 
 local BB = Class:derive("BasicBullet")
 
-
-function BB:new()
+-- i think we should pass the speed for the bullet from the gun
+-- and the damage and life
+function BB:new(bullet_speed, bullet_damage)
     
     self.life = 2
-    self.speed = 1800
+    self.speed = bullet_speed or 1000
     self.size = Vector2(10, 20)
 
-    self.damage = 10
+    self.damage = bullet_damage or 10
     
 end
 
@@ -73,8 +74,9 @@ function BB:spawn(x_pos, y_pos, x, y, r_trig)
     local bullet = Entity(
         Transform(x_pos, y_pos, 1.9, 1.9, newangle, RSXA or 0, RSYA or 0), 
         BB(), 
-        BB.create_sprite(fast_bullet),CC(35,40),
-        PC({Vector2(-bullet_length,-bullet_width), Vector2(bullet_length,-bullet_width), Vector2(bullet_length,bullet_width), Vector2(-bullet_length, bullet_width)}),
+        BB.create_sprite(fast_bullet),
+        CC(8,40),
+        PC(12,8),
         SBP(10, 10))         
 
     _G.events:invoke("add to em", bullet) -- passes entity through
@@ -87,7 +89,7 @@ function BB:update(dt)
     if self.life <= 0 then
         self.entity.remove = true
     end
-
+    
     self.transform.x = self.transform.x + ((self.speed * self.transform.vx) * dt)
     self.transform.y = self.transform.y + ((self.speed * self.transform.vy) * dt)
   

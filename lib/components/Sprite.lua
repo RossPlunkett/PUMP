@@ -5,7 +5,6 @@ local Rect = require("lib.Rect")
 local U = require("lib.Utils")
 --local cron = require()
 
-
 local Sprite = Class:derive("Sprite")
 --where x,y is the center of the sprite
 --
@@ -148,15 +147,22 @@ function Sprite:poly()
     local rx3,ry3 = U.rotate_point( x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local rx4,ry4 = U.rotate_point(-x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local p ={ rx1, ry1, rx2, ry2, rx3, ry3, rx4, ry4 }
+
     return p
 end
 
 function Sprite:flash(time)
+    love.graphics.setShader(self.flash_shader)
     self.flashing = true
     self.flash_timer = time
 end
 
+local function resetFlash()
+    
+end
+
 function Sprite:draw()
+
 
     if self.flashing then
         love.graphics.setShader(self.flash_shader)
@@ -164,8 +170,9 @@ function Sprite:draw()
 
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
 
+    love.graphics.setShader()
     if self.flashing then
         love.graphics.setShader()
     end
@@ -175,8 +182,8 @@ function Sprite:draw()
         --local shadow = self.entity.Shadow -- unused
         --just draw it again for the shadow
         self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
-        love.graphics.setColor(self.tintColor) --                73 px down       flip it over
-        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + 73, self.tr.angle , self.tr.sx * self.flip.x, self.tr.sy * -self.flip.y, self.origin.x, self.origin.y)
+        love.graphics.setColor(self.tintColor) --            offset to the height of the sprite and put it in the center      flip it over
+        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
         self:tint{1, 1, 1, 1} -- return tint to normal
     end
     

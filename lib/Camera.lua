@@ -1,7 +1,7 @@
 
 local U = require("lib.Utils")
-local Vtri = require("lib.Vector3")
 
+require("lib.Vector3")
 
 local camera = {}
 camera.x = 0 -- position
@@ -11,30 +11,34 @@ camera.targetPosY = 0 -- Changed Offset to Target Position
 camera.scaleX = 1 -- scale
 camera.scaleY = 1
 camera.rotation = 0 -- rotation around origin
-camera.Ppu = 8 -- pixels per unit, might change to 8 or 32
-camera.damp = 0.08 -- smoothing?
-camera.curVel = Vector3(0,0,0)  
+camera.Ppu = 32 -- pixels per unit, might change to 8 or 32
+camera.damp = 0.05 -- smoothing?
+camera.curVel = Vector3(0,0,0) 
 camera.w = 0 -- i think its better to get these values from the start?
 camera.h = 0
 camera.offset = Vector3(0,0)
-
 function camera:init()
-self.shaking = false
-self.shake_time = 0.1 -- just a default, gets set w/every shake
-self.shake_amount = 20 -- world-px, just a default as well
-self.xShakeOffset = 0
-self.yShakeOffset = 0
-self.w, self.h = love.graphics.getDimensions()
+  self.shaking = false
+  self.shake_time = 0.1 -- just a default, gets set w/every shake
+  self.shake_amount = 20 -- world-px, just a default as well
+  self.xShakeOffset = 0
+  self.yShakeOffset = 0
+  self.w, self.h = love.graphics.getDimensions()
 
-offset = Vector3(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
+  -- camera orthographic size ? -- deprecated
+  --self.scaleFactor = 4
+  -- multiply it to the scale factor
+  -- to get the middle point of the window
+  offset = Vector3(-Pixel_Window_X/2,-Pixel_Window_Y/2)
 
-self.shakes = {}
+  self.shakes = {}
 end
 
 function camera:set()
   love.graphics.push()
   love.graphics.rotate(-self.rotation)
-  love.graphics.scale(1 / self.scaleX, 1 / self.scaleY)
+  --love.graphics.scale(self.scaleFactor / self.scaleX, self.scaleFactor / self.scaleY)
+  --love.graphics.scale(2,2)
   love.graphics.translate(-self.x, -self.y)
 end
 
@@ -88,10 +92,13 @@ end
 function camera:updateCameraPosition(dt)
   -- self.x = self.x - ((self.w * 0.5) * self.scaleX)  
   -- self.y = self.y -((self.h * 0.5) * self.scaleY) 
-  tempos = Vector3(0,0) 
-  tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)- offset, self.curVel,self.damp, dt)
+
+  -- this is to snap the camera through pixels per unit PPU
+  tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)+ offset, self.curVel,self.damp, dt)
   self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
-  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu    
+  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
+
+            
 end
 
 function camera:setTargetPos(xPos, yPos)
