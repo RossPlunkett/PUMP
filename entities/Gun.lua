@@ -86,9 +86,8 @@ function Gun:spawn(num)
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
             Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15),
             Gun.create_sprite(USSR_P_atlas),
-            CC(62,40),
-            PC({Vector2(-gun_length,-gun_width), Vector2(gun_length * 2.5,-gun_width), 
-                Vector2(gun_length * 2.5 ,gun_width), Vector2(-gun_length, gun_width)}))
+            CC(10,40),
+            PC(gun_width,gun_length))
 
         _G.events:invoke("add to em", gun_entity)
     end

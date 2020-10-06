@@ -39,10 +39,10 @@ local snd
 --Animation data
 --xoffset, yoffset, w, h, frames, column_size, fps, loop
 
-local colliderSize = Vector2(10,10)
+--local colliderSize = Vector2(10,10)
 
 -- used for damping in gun
-local refVel = Vector2(0,0)
+local refVel = Vector3(0,0)
 function P:new(player_num)
 
     assert(player_num ~= nil, "Player number not given to player module!")
@@ -306,25 +306,32 @@ function P:update(dt)
     if RSXA ~= 0 or RSYA ~= 0 then
         gun_angle = math.atan2(RSYA, RSXA)
         self.equipped_gun.transform.angle = gun_angle
-    end
-    -- this is coming up nan with no stick input -should be else?
-    if math.abs(math.deg(gun_angle))  >= 90 and math.abs(math.deg(gun_angle)) <= 180 then
-        self.equipped_gun.sprite:flip_v(true)
-    else
-        self.equipped_gun.sprite:flip_v(false)
-    end
-    -- player moves gun, gun doesn't follow player
-    self.equipped_gun.transform.x = self.transform.x
-    self.equipped_gun.transform.y = self.transform.y
 
-    -- local tempPos = Vector3.SmoothDamp(
-    --    self.equip_gun.transform.x,self.equip_gun.transform.y,
-    --     Vector3(self.targetPosX, self.targetPosY),
-    --     refVel,
-    --     0.05,
-    --     dt)
-    -- self.equipped_gun.transform.x = tempPos.x
-    -- self.equipped_gun.transform.y = tempPos.y
+        -- this is coming up nan with no stick input -should be else?
+        -- only flip when RSXA or RSYA are used
+        if math.abs(math.deg(gun_angle))  >= 90 and math.abs(math.deg(gun_angle)) <= 180 then
+            self.equipped_gun.sprite:flip_v(true)
+        else
+            self.equipped_gun.sprite:flip_v(false)
+    end
+    end
+
+    -- player moves gun, gun doesn't follow player
+    -- self.equipped_gun.transform.x = self.transform.x
+    -- self.equipped_gun.transform.y = self.transform.y
+
+    -- some juice
+    local gun_Holster_offset = 10
+    local tempPos = Vector3.SmoothDamp(
+        Vector3(self.equipped_gun.transform.x,self.equipped_gun.transform.y,0),
+        Vector3(self.transform.x, self.transform.y+gun_Holster_offset, 0),
+        refVel,
+        0.035,
+        dt)
+    self.equipped_gun.transform.x = tempPos.x
+    self.equipped_gun.transform.y = tempPos.y
+    --
+
     if self.holstered_gun then
         self.holstered_gun.transform.x = self.transform.x
         self.holstered_gun.transform.y = self.transform.y + 35 -- offset to lower it
@@ -332,7 +339,6 @@ function P:update(dt)
         self.holstered_gun.transform.angle =  1.2
         self.holstered_gun.sprite.tintColor = {1, 1, 1, 0.6}
     end
-
     
 
     local RSXAR = GPM:r_stick_smooth(self.player_num)[1]
