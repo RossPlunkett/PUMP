@@ -14,11 +14,11 @@ time = nil
 
 local SM = require("lib.SceneMgr")
 local Event = require("lib.Events")
-
 -- local world = require("lib.World")
 -- World = world(200, 200, 10, 10, 20, 20)
 
-
+--for debugging colliders and other related stuff
+IsGizmoOn = true
 
 --TODO before PUMP
 
@@ -57,8 +57,10 @@ end
 
 
 function love.update(dt)
+    
     if dt > 0.035 then return end
-
+    -- i moved the camera here because it has conflicts with the slowmotion effect
+    Camera:update(dt)
     Time:update(dt)
     dt = Time:getDt(dt)
     
@@ -71,7 +73,6 @@ function love.update(dt)
     GPM:update(dt)
     Tween.update(dt)
 
-    Camera:update(dt)
 
 
 

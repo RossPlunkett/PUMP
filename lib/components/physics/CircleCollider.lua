@@ -28,8 +28,9 @@ function CC:get_d()
 end
 
 function CC:draw()
-    -- love.graphics.setColor(1, 1, 1, 1);
-    -- love.graphics.circle("line", self.tr.x, self.tr.y, self.r)
+    if not IsGizmoOn then return end
+    love.graphics.setColor(1, 1, 1, 1);
+    love.graphics.circle("line", self.tr.x, self.tr.y, self.r)
 end
 
 return CC

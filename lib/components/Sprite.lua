@@ -5,7 +5,6 @@ local Rect = require("lib.Rect")
 local U = require("lib.Utils")
 
 
-
 local Sprite = Class:derive("Sprite")
 
 --where x,y is the center of the sprite
@@ -34,6 +33,14 @@ function Sprite:new(atlas, w, h, color, shadow)
             return pixel;
           }
     ]]
+    self.pixel_shader = love.graphics.newShader [[
+      extern vec2 size;            //vector contains image size, like shader:send('size', {img:getWidth(), img:getHeight()})	
+      extern number factor;    //nimber contains sample size, like shader:send('factor', 2), use number is divisible by two
+      vec4 effect(vec4 color, Image img, vec2 texture_coords, vec2 pixel_coords){
+         vec2 tc = floor(texture_coords * size / factor) * factor / size;
+         return Texel(img, tc);
+      }
+]]
 
     self.flashing = false
     self.flash_timer = nil
@@ -144,35 +151,42 @@ function Sprite:poly()
     local rx3,ry3 = U.rotate_point( x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local rx4,ry4 = U.rotate_point(-x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local p ={ rx1, ry1, rx2, ry2, rx3, ry3, rx4, ry4 }
+
     return p
 end
 
 function Sprite:flash(time)
+    
+    love.graphics.setShader(self.flash_shader)
     self.flashing = true
     self.flash_timer = time
 end
 
+local function resetFlash()
+    
+end
+
 function Sprite:draw()
 
-    if self.flashing then
-        love.graphics.setShader(self.flash_shader)
-    end
+    -- if self.flashing then
+    --     love.graphics.setShader(self.flash_shader)
+    -- end
 
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
 
-    if self.flashing then
-        love.graphics.setShader()
-    end
+    -- if self.flashing then
+    --     love.graphics.setShader()
+    -- end
 
         -- I removed and self.entity.Shadow
     if self.shadow then
         --local shadow = self.entity.Shadow -- unused
         --just draw it again for the shadow
         self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
-        love.graphics.setColor(self.tintColor) --                73 px down       flip it over
-        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + 73, self.tr.angle , self.tr.sx * self.flip.x, self.tr.sy * -self.flip.y, self.origin.x, self.origin.y)
+        love.graphics.setColor(self.tintColor) --            offset to the height of the sprite and put it in the center      flip it over
+        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
         self:tint{1, 1, 1, 1} -- return tint to normal
     end
     

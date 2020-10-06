@@ -39,9 +39,10 @@ local snd
 --Animation data
 --xoffset, yoffset, w, h, frames, column_size, fps, loop
 
+local colliderSize = Vector2(10,10)
 
-
-
+-- used for damping in gun
+local refVel = Vector2(0,0)
 function P:new(player_num)
 
     assert(player_num ~= nil, "Player number not given to player module!")
@@ -53,7 +54,7 @@ function P:new(player_num)
     
     
     self.properties = {}
-    self.properties.base_walk_speed = 430 -- value to be multiplied by dt to get number of pixels to move
+    self.properties.base_walk_speed = 150 -- value to be multiplied by dt to get number of pixels to move
     self.properties.base_dash_speed = 4000
     
     -- for automatic weapons
@@ -78,7 +79,7 @@ function P:spawn(player_num)
         P(player_num), -- calling the [new] method
         P.create_sprite(),
         CC(46,32),
-        PC({Vector2(-player_width,-player_height + 10), Vector2(player_width,-player_height + 10), Vector2(player_width,player_height + 10), Vector2(-player_width, player_height + 10)})
+        PC(4,2,Vector2(0,3))
         --,Shadow(73, 3.14)
     )
     _G.events:invoke("add to em", player)
@@ -314,8 +315,16 @@ function P:update(dt)
     end
     -- player moves gun, gun doesn't follow player
     self.equipped_gun.transform.x = self.transform.x
-    self.equipped_gun.transform.y = self.transform.y + 26 -- offset to lower it
+    self.equipped_gun.transform.y = self.transform.y
 
+    -- local tempPos = Vector3.SmoothDamp(
+    --    self.equip_gun.transform.x,self.equip_gun.transform.y,
+    --     Vector3(self.targetPosX, self.targetPosY),
+    --     refVel,
+    --     0.05,
+    --     dt)
+    -- self.equipped_gun.transform.x = tempPos.x
+    -- self.equipped_gun.transform.y = tempPos.y
     if self.holstered_gun then
         self.holstered_gun.transform.x = self.transform.x
         self.holstered_gun.transform.y = self.transform.y + 35 -- offset to lower it
@@ -328,11 +337,12 @@ function P:update(dt)
 
     local RSXAR = GPM:r_stick_smooth(self.player_num)[1]
     local RSYAR = GPM:r_stick_smooth(self.player_num)[2]
+    local look_range = 26
     local initPos = Vector2(0,0)
     initPos = Vector2(self.transform.x, self.transform.y)
     if RSXAR ~= 0 or RSYAR ~= 0 then
-        local xcamoffset = RSXAR * 100
-        local ycamoffset = RSYAR * 100
+        local xcamoffset = RSXAR * look_range
+        local ycamoffset = RSYAR * look_range
         initPos = initPos.add(initPos,Vector2(xcamoffset,ycamoffset))
     end
     
