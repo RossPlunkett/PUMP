@@ -42,13 +42,20 @@ function love.load()
 
     --maid settings
     --love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
-    -- love.window.setFullscreen(true)
+    --love.window.setFullscreen(true)
     maid64.setup(Pixel_Window_X,Pixel_Window_Y,true)
 
     --Love2D game settings
     love.graphics.setDefaultFilter('nearest', 'nearest')
-    local font = love.graphics.newFont("assets/SuperMario256.ttf", 20)
+
+    --local font = love.graphics.newFont("assets/fonts/ARCADECLASSIC.TTF", 20)
     --set the font to the one above
+    -- using an image font is more crisp than TTF I dont know why it gets blurry tho the default filter is set
+    -- anyway, I think it's nice ; so I can make a font just for the game :)
+    local font = love.graphics.newImageFont("assets/fonts/Imagefont.png",
+    " abcdefghijklmnopqrstuvwxyz" ..
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0" ..
+    "123456789.,!?-+/():;%&`'*#=[]\"")
     love.graphics.setFont(font)
 
     _G.events = Event(false)

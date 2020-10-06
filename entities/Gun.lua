@@ -18,19 +18,27 @@ local SBP = require("lib.components.SBP")
 local Transform = require("lib.components.Transform")
 
 local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
-
-local USSR_P_atlas = love.graphics.newImage("assets/gfx/ww2_pack/USSR.png")
-
+-- the default sprite when it i notset
+local default_atlas = love.graphics.newImage("assets/Weapon/Guns/revolver.png")
 
 local Gun = class:derive("Gun")
 
-
+local weapons = {}
+    weapons.type = {}
+        weapons.type.range = {
+            {"Revolver", "bb", 1, 0.25, 1.4, 0.3, true, 8, 15,
+            }
+        }
+        weapons.type.melee = {
+            {"mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15,
+            love.graphics.newImage("assets/Weapon/Guns/revolver.png")}
+        }
 
 
 
 
 function Gun:new(name, proj_type, num_shots, cooldown, 
-                base_proj_speed, inaccuracy, automatic, kickback, magnitude)
+                base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas)
     
     self.name = name
     self.proj_type = proj_type
@@ -43,7 +51,7 @@ function Gun:new(name, proj_type, num_shots, cooldown,
     self.automatic = automatic or false
     self.kickback = kickback or 0
     self.magnitude = magnitude or 20
-    
+    default_atlas = sprite_atlas or default_atlas
     -- should only update certain stuff if it's equipped?
     self.equipped = false
     -- held is for inactive weapon
@@ -53,12 +61,14 @@ function Gun:new(name, proj_type, num_shots, cooldown,
     self.machine = StateMachine(self, "still")
 end
 
+-- Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function Gun.create_sprite(atlas)
-    local still_anim = Anim(0, 17, 32, 16, 1, 1, 1, false)
+    local still_anim = Anim(0, 0, 32, 32, 1, 1, 1, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
-    local spr = Sprite(atlas, 24, 16)
+    -- we make this like sprite.height/2 on the sprite height
+    local spr = Sprite(atlas, 8, 5, true)
     spr:add_animations({still = still_anim})
     spr:animate("still") -- this should be in the state machine
     
@@ -84,8 +94,8 @@ function Gun:spawn(num)
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
-            Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15),
-            Gun.create_sprite(USSR_P_atlas),
+            Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15), -- ive changed it because i think we should make a table or something
+            Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
             CC(10,40),
             PC(gun_width,gun_length))
 
@@ -201,7 +211,8 @@ end
 
 function Gun:draw(dt)
     if self.in_reach then
-        love.graphics.print(self.name,self.transform.x,self.transform.y + 22)
+        -- maybe offset this with the length of the string ? but i dont know how to do it
+        love.graphics.print(self.name,self.transform.x,self.transform.y)
     end
 end
 
