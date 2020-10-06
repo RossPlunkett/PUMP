@@ -1,13 +1,11 @@
 local Class = require("lib.Class")
 local Shadow = Class:derive("Shadow")
 
-function Shadow:new(w, h, xo, yo)
+function Shadow:new(yoffset, angle)
 
-    self.enabled = true
-    self.priority = 0
+    self.yoffset = yoffset
+    self.angle = angle
 
-    self.xoffset = xo
-    self.yoffset = yo
 end
 
 function Shadow:on_start()
@@ -20,9 +18,7 @@ function Shadow:update(dt)
 end
 
 function Shadow:draw()
-    love.graphics.setColor(0, 0, 0, 0.25)
-    love.graphics.circle("fill",self.entity.Transform.x + self.xoffset,self.entity.Transform.y + self.yoffset,20)
-
+-- shadow is drawn in draw() in lib -> components -> Sprite
 end
 
 
