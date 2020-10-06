@@ -28,16 +28,11 @@ function CC:get_d()
 end
 
 function CC:draw()
-<<<<<<< Updated upstream
-    -- love.graphics.setColor(1, 1, 1, 1);
-    -- love.graphics.circle("line", self.tr.x, self.tr.y, self.r)
-=======
     if not Is_Gizmo_On then
         return
     end
     love.graphics.setColor(1, 1, 1, 1);
     love.graphics.circle("line", self.tr.x, self.tr.y, self.r)
->>>>>>> Stashed changes
 end
 
 return CC
