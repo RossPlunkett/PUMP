@@ -166,7 +166,8 @@ function Sprite:draw()
         love.graphics.setShader()
     end
 
-    if self.shadow then
+    if self.shadow and self.entity.Shadow then
+        local shadow = self.entity.Shadow
         --just draw it again for the shadow
         self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
         love.graphics.setColor(self.tintColor) --                73 px down       flip it over
