@@ -42,8 +42,8 @@ function PC:update(dt)
 end
 
 function PC:draw()
-    love.graphics.setColor(1, 1, 0, 0.6)
-    love.graphics.polygon("line", self.draw_points)
+    -- love.graphics.setColor(1, 1, 0, 0.6)
+    -- love.graphics.polygon("line", self.draw_points)
 end
 
 return PC

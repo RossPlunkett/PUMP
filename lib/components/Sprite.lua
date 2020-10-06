@@ -12,7 +12,7 @@ local Sprite = Class:derive("Sprite")
 --
 --Note: This component assumes the presence of a Transform component!
 --
-function Sprite:new(atlas, w, h, color)
+function Sprite:new(atlas, w, h, color, shadow)
     self.w = w
     self.h = h
     self.flip = Vector2(1,1)
@@ -22,6 +22,7 @@ function Sprite:new(atlas, w, h, color)
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
     self.tintColor = color or {1,1,1,1}
     self.origin = Vector2(w/2, h/2) -- defaults to center
+    self.shadow = shadow or false -- no shadow by default
 
     self.flash_shader = love.graphics.newShader[[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
@@ -157,13 +158,23 @@ function Sprite:draw()
         love.graphics.setShader(self.flash_shader)
     end
 
+    self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
-    
-    -- with no arguments, love.graphics.setShader() turns off all shaders
+
     if self.flashing then
         love.graphics.setShader()
     end
+
+    if self.shadow then
+        --just draw it again for the shadow
+        self:tint({0, 0, 0, 0.2}) -- apply transparent black tint
+        love.graphics.setColor(self.tintColor) --                73 px down       flip it over
+        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + 73, self.tr.angle + 3.2, self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
+        self:tint{1, 1, 1, 1} -- return tint to normal
+    end
+    
+    -- with no arguments, love.graphics.setShader() turns off all shaders
 end
 
 return Sprite
