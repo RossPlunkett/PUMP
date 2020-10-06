@@ -33,9 +33,6 @@ function Sprite:new(atlas, w, h, color, shadow)
             return pixel;
           }
     ]]
-    -- self.pixel_shader = love.graphics.newShader [[
-        
-    -- ]]
 
     self.flashing = false
     self.flash_timer = nil
@@ -151,7 +148,6 @@ function Sprite:poly()
 end
 
 function Sprite:flash(time)
-    do return end
     love.graphics.setShader(self.flash_shader)
     self.flashing = true
     self.flash_timer = time
@@ -163,22 +159,19 @@ end
 
 function Sprite:draw()
 
-    -- if self.flashing then
-    --     love.graphics.setShader(self.flash_shader)
-    -- end
-    
-    --love.graphics.setShader(self.pixel_shader)
-    
-   -- self.pixel_shader:send('factor', 2)
-   -- self.pixel_shader:send('size', {self.w*16, self.h*16})
+
+    if self.flashing then
+        love.graphics.setShader(self.flash_shader)
+    end
+
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
 
-    --love.graphics.setShader()
-    -- if self.flashing then
-    --     love.graphics.setShader()
-    -- end
+    love.graphics.setShader()
+    if self.flashing then
+        love.graphics.setShader()
+    end
 
         -- I removed and self.entity.Shadow
     if self.shadow then

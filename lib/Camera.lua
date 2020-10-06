@@ -26,7 +26,7 @@ self.yShakeOffset = 0
 self.w, self.h = love.graphics.getDimensions()
 
 -- camera orthographic size ?
-self.scaleFactor = 4
+self.scaleFactor = 1
 -- multiply it to the scale factor
 -- to get the middle point of the window
 offset = Vector3(love.graphics.getWidth()/(2*self.scaleFactor), love.graphics.getHeight()/(2*self.scaleFactor))
@@ -39,7 +39,7 @@ function camera:set()
   love.graphics.rotate(-self.rotation)
   love.graphics.scale(self.scaleFactor / self.scaleX, self.scaleFactor / self.scaleY)
   --love.graphics.scale(2,2)
-  love.graphics.translate(-self.x, -self.y)
+  --love.graphics.translate(-self.x, -self.y)
 end
 
 function camera:unset()

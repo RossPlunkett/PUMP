@@ -13,11 +13,10 @@ function love.conf(t)
     -- t.window.x = 100
     -- t.window.y = 100
     
-    t.window.width = 320 * scaleFactor
-    t.window.height = 240 * scaleFactor
+    -- t.window.width = 320 * scaleFactor
+    -- t.window.height = 240 * scaleFactor
     t.window.display = 1
-
-    t.window.y = 20
+    -- t.window.y = 20
     t.console = true
 
 end

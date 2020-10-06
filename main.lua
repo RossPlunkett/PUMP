@@ -1,6 +1,7 @@
 Key = require("lib.Keyboard")
 Tween = require("lib.Tween")
-
+-- low rez thing
+local maid64 = require ("lib.maid64")
 
 local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
@@ -33,6 +34,11 @@ math.randomseed(os.time()) -- can be seeded
 local sm = {}
 
 function love.load()
+
+    --maid settings
+    love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
+    love.window.setFullscreen(true)
+    maid64.setup(320,240)
 
     --Love2D game settings
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -79,9 +85,16 @@ function love.update(dt)
 end
 
 function love.draw()
+    maid64.start()--starts the maid64 process
     Camera:set()
     sm:draw()
     Camera:unset()
+    maid64.finish()--finishes the maid64 process
+end
+
+function love.resize(w, h)
+    -- this is used to resize the screen correctly
+    maid64.resize(w, h)
 end
 
 
