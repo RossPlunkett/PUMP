@@ -20,28 +20,12 @@ local Transform = require("lib.components.Transform")
 --local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
 
 -- the default sprite when it i notset
-<<<<<<< Updated upstream
-local default_atlas = love.graphics.newImage("assets/Weapon/Guns/revolver.png")
-=======
 local default_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png")
->>>>>>> Stashed changes
 
 local Gun = class:derive("Gun")
 
 
 local weapons = {}
-<<<<<<< Updated upstream
-    weapons.type = {}
-        weapons.type.range = {
-            {"Revolver", "bb", 1, 0.25, 1.4, 0.3, true, 8, 15,
-            }
-        }
-        weapons.type.melee = {
-            {"mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15,
-            love.graphics.newImage("assets/Weapon/Guns/revolver.png")}
-        }
-=======
->>>>>>> Stashed changes
 
 
 
@@ -72,14 +56,6 @@ end
 
 -- Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function Gun.create_sprite(atlas)
-<<<<<<< Updated upstream
-    local still_anim = Anim(0, 0, 32, 32, 1, 1, 1, false)
-    if atlas == nil then
-        assert(false, "no atlas supplied to sprite!")
-    end
-    -- we make this like sprite.height/2 on the sprite height
-    local spr = Sprite(atlas, 8, 5, true)
-=======
     -- we make this like sprite.height/2 on the sprite height
     
     local spr = Sprite(atlas, 8, 5)
@@ -88,7 +64,6 @@ function Gun.create_sprite(atlas)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
->>>>>>> Stashed changes
     spr:add_animations({still = still_anim})
     spr:animate("still") -- this should be in the state machine
     
@@ -102,10 +77,6 @@ function Gun:spawn(num)
     local gun_entity
     for i = 1, num do
 
-<<<<<<< Updated upstream
-        local world_width = 1000
-        local world_height = 1000
-=======
     -- I don't know where to put it
     --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
     weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png"))
@@ -113,7 +84,6 @@ function Gun:spawn(num)
         -- these four lines are garbage after we do the world module
         local world_width = 100
         local world_height = 100
->>>>>>> Stashed changes
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
         local gun_length = 4
