@@ -8,7 +8,7 @@ local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
 local SBP = require("lib.components.SBP")
 
-local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
+local fast_bullet = love.graphics.newImage("assets/gfx/Weapons/Guns/MediumBullet.png")
 
 
 local Sprite = require("lib.components.Sprite")
@@ -29,11 +29,12 @@ function BB:new()
 end
 
 function BB.create_sprite(atlas)
-    local spin_anim = Anim(0,0, 32, 32, 9, 8, 250)
+    --(xoffset, yoffset, w, h, frames, column_size, fps, loop)
+    local spin_anim = Anim(0,0, 16, 16, 2, 2, 45, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
-    local spr = Sprite(atlas, 32, 32)
+    local spr = Sprite(atlas, 16,16)
     spr:add_animations({spin_anim = spin_anim})
     --spr:animate("rock") -- handled by state machine
 

@@ -25,7 +25,7 @@ local Event = require("lib.Events")
 -- World = world(200, 200, 10, 10, 20, 20)
 
 --for debugging colliders and other related stuff
-IsGizmoOn = false
+IsGizmoOn = true
 FullScreenToggle = true
 --TODO before PUMP
 
