@@ -22,12 +22,21 @@ function Sprite:new(atlas, w, h, color, shadow)
     self.origin = Vector2(w/2, h/2) -- defaults to center
     self.shadow = shadow or false -- no shadow by default
 
+    if self.shadow then
+        -- if we want to be able to unhook() this,
+        -- we have to name the anonymous function, 
+        -- then hook it by that name, so we can unhook() it with that same name.
+        -- unhooking the exact same completely anonymouse function does not work
+        -- when this makes sense you can delete this comment
+        _G.events:hook("draw shadows", function() self:drawShadow() end)
+    end
+
     self.flash_shader = love.graphics.newShader[[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
             vec4 pixel = Texel(texture, texture_coords );//This is the current pixel color
             number average = (pixel.r+pixel.b+pixel.g);
             pixel.r = average;
-            pixel.g = average + 0.2; // slightly green
+            pixel.g = average + 0.2; // slightly green rn
             pixel.b = average;
             return pixel;
           }
@@ -35,6 +44,7 @@ function Sprite:new(atlas, w, h, color, shadow)
 
     self.flashing = false
     self.flash_timer = nil
+
 end
 
 function Sprite:set_origin(origin, customx, customy)
@@ -60,7 +70,7 @@ function Sprite:set_origin(origin, customx, customy)
         self.origin.x = self.w * customx
         self.origin.y = self.h * customy
     end
-
+    
 end
 
 function Sprite:on_start()
@@ -121,12 +131,12 @@ function Sprite:update(dt)
     if self.animations[self.current_anim] ~= nil then
         self.animations[self.current_anim]:update(dt, self.quad)
     end
-
+    
     -- FLASHING
     -- cancel global speed for this?
     if self.flashing then
         self.flash_timer = self.flash_timer - (dt / Time.speed)
-
+        
         if self.flash_timer <= 0 then
             self.flashing = false
             self.flash_timer = nil
@@ -141,13 +151,13 @@ end
 function Sprite:poly()
     local x = (self.w / 2 * self.tr.sx)
     local y = (self.h / 2 * self.tr.sy)
-
+    
     local rx1,ry1 = U.rotate_point(-x, -y, self.tr.angle, self.tr.x, self.tr.y)
     local rx2,ry2 = U.rotate_point( x, -y, self.tr.angle, self.tr.x, self.tr.y)
     local rx3,ry3 = U.rotate_point( x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local rx4,ry4 = U.rotate_point(-x,  y, self.tr.angle, self.tr.x, self.tr.y)
     local p ={ rx1, ry1, rx2, ry2, rx3, ry3, rx4, ry4 }
-
+    
     return p
 end
 
@@ -161,33 +171,33 @@ local function resetFlash()
     
 end
 
+
 function Sprite:draw()
-
-
+    
+    
     if self.flashing then
         love.graphics.setShader(self.flash_shader)
     end
-
+    
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
-
+    
     love.graphics.setShader()
     if self.flashing then
         love.graphics.setShader()
     end
-
-        -- I removed and self.entity.Shadow
-    if self.shadow then
-        --local shadow = self.entity.Shadow -- unused
-        --just draw it again for the shadow
-        self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
-        love.graphics.setColor(self.tintColor) --            offset to the height of the sprite and put it in the center      flip it over
-        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
-        self:tint{1, 1, 1, 1} -- return tint to normal
-    end
     
-    -- with no arguments, love.graphics.setShader() turns off all shaders
+    
+    
+end
+
+function Sprite:drawShadow() -- put this below draw() to make it intuitive - this happens after the draw()
+    self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
+    love.graphics.setColor(self.tintColor) --            offset to the height of the sprite and put it in the center      flip it over
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
+    self:tint{1, 1, 1, 1} -- return tint to normal
+    love.graphics.setColor(1, 1, 1, 1) -- return love draw color to normal
 end
 
 

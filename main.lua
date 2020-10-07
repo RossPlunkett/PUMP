@@ -33,8 +33,6 @@ FullScreenToggle = not true
 
 
 
-
-
 math.randomseed(os.time()) -- can be seeded
 
 local sm = {}

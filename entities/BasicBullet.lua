@@ -8,7 +8,7 @@ local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
 local SBP = require("lib.components.SBP")
 
-local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
+local fast_bullet = love.graphics.newImage("assets/gfx/Weapons/Guns/MediumBullet.png")
 
 
 local Sprite = require("lib.components.Sprite")
@@ -18,22 +18,23 @@ local BB = Class:derive("BasicBullet")
 
 -- i think we should pass the speed for the bullet from the gun
 -- and the damage and life
-function BB:new(bullet_speed, bullet_damage)
+function BB:new()
     
-    self.life = 2
-    self.speed = bullet_speed or 1000
+    --self.life = 2
+    self.speed = 200
     self.size = Vector2(10, 20)
-
-    self.damage = bullet_damage or 10
+    self.drag = (self.speed/2); -- some effect on the bullet
+    self.damage = 10
     
 end
 
 function BB.create_sprite(atlas)
-    local spin_anim = Anim(0,0, 32, 32, 9, 8, 250)
+    --(xoffset, yoffset, w, h, frames, column_size, fps, loop)
+    local spin_anim = Anim(0,0, 16, 16, 2, 2, 45, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
-    local spr = Sprite(atlas, 32, 32)
+    local spr = Sprite(atlas, 16,16)
     spr:add_animations({spin_anim = spin_anim})
     --spr:animate("rock") -- handled by state machine
 
@@ -75,7 +76,7 @@ function BB:spawn(x_pos, y_pos, x, y, r_trig)
         Transform(x_pos, y_pos, 1.9, 1.9, newangle, RSXA or 0, RSYA or 0),
         BB(),
         BB.create_sprite(fast_bullet),
-        CC(8,40),
+        CC(20,40),
         PC(12,8),
         SBP(10, 10))         
 
@@ -84,19 +85,27 @@ end
 
 function BB:update(dt)
 
-    self.life = self.life - dt
+    -- self.life = self.life - dt
 
-    if self.life <= 0 then
-        self.entity.remove = true
+    -- if self.life <= 0 then
+    --     self.entity.remove = true
+    -- end
+
+    -- the speed of the bullet before destroying
+    local threshold = 0.5
+    if(self.speed <= threshold) then 
+        self.entity.remove = true    
     end
-    
     self.transform.x = self.transform.x + ((self.speed * self.transform.vx) * dt)
     self.transform.y = self.transform.y + ((self.speed * self.transform.vy) * dt)
 
     -- slow down the bullet
     self.speed = self.speed - (self.drag * dt)
+<<<<<<< HEAD
     -- make it slow down faster through time
     self.drag = self.drag + dt * 500
+=======
+>>>>>>> master
   
 end
 

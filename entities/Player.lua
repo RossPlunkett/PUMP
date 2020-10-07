@@ -77,8 +77,8 @@ function P:spawn(player_num)
         Transform(100, 100, 3, 3),
         P(player_num), -- calling the [new] method
         P.create_sprite(),
-        CC(46,32),
-        PC(4,2,Vector2(0,3))
+        CC(19,32),
+        PC(5,6,Vector2(0,2))
         --,Shadow(73, 3.14)
     )
     _G.events:invoke("add to em", player)
@@ -89,7 +89,7 @@ end
 function P.create_sprite()
     -- changed some sprite to squid
     local idle = Anim(-1, 0, 20, 20, {1, 2, 3, 4, 5, 6}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
-    local walk = Anim(0, 0, 20, 20,{7, 8, 9, 10, 11, 12, 13, 14}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
+    local walk = Anim(-1, 0, 20, 20,{7, 8, 9, 10, 11, 12, 13, 14}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
     if hero_atlas == nil then
         hero_atlas = love.graphics.newImage("assets/gfx/Characters/Squid.png")
     end
@@ -97,7 +97,6 @@ function P.create_sprite()
     --create a sprite component
     local sprite = Sprite(hero_atlas, 24, 16, nil, true)
     sprite:add_animations({idle = idle, walk = walk})
-    --sprite:animate("idle") -- commented out - I think the state machine does this
     return sprite
 end
 
@@ -135,7 +134,7 @@ function P:dash_enter(dt)
     self.dash_dir_x = GPM:l_stick(self.player_num)[1]
     self.dash_dir_y = GPM:l_stick(self.player_num)[2]
 
-    self.dash_timer = 0.105
+    self.dash_timer = 0.04
     if self.dash_dir_x ~= 0 then
         if self.dash_dir_x < 0 then self.sprite:flip_h(true)
         else self.sprite:flip_h(false)
@@ -327,7 +326,7 @@ function P:update(dt)
         Vector3(self.equipped_gun.transform.x,self.equipped_gun.transform.y,0),
         Vector3(self.transform.x, self.transform.y+gun_Holster_offset, 0),
         refVel,
-        0.035,
+        0.025, -- nice to see when attaching guns
         dt)
     self.equipped_gun.transform.x = tempPos.x
     self.equipped_gun.transform.y = tempPos.y
