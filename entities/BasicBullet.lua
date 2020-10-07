@@ -92,14 +92,11 @@ function BB:update(dt)
     
     self.transform.x = self.transform.x + ((self.speed * self.transform.vx) * dt)
     self.transform.y = self.transform.y + ((self.speed * self.transform.vy) * dt)
-<<<<<<< Updated upstream
-=======
 
     -- slow down the bullet
     self.speed = self.speed - (self.drag * dt)
     -- make it slow down faster through time
     self.drag = self.drag + dt * 500
->>>>>>> Stashed changes
   
 end
 
