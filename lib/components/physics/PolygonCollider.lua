@@ -87,7 +87,7 @@ end
 
 function PC:draw()
     if not IsGizmoOn then return end
-    love.graphics.setColor(1, 1, 0, 0.6)
+    love.graphics.setColor(1, 1, 0, GizmoVisibility)
     love.graphics.polygon("line", self.draw_points)
     love.graphics.setColor(1, 1, 1, 1)
 end

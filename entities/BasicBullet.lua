@@ -21,7 +21,7 @@ local BB = Class:derive("BasicBullet")
 function BB:new()
     
     --self.life = 2
-    self.speed = 200
+    self.speed = 300
     self.size = Vector2(10, 20)
     self.drag = (self.speed/2); -- some effect on the bullet
     self.damage = 10
@@ -30,11 +30,11 @@ end
 
 function BB.create_sprite(atlas)
     --(xoffset, yoffset, w, h, frames, column_size, fps, loop)
-    local spin_anim = Anim(0,0, 16, 16, 2, 2, 45, false)
+    local spin_anim = Anim(0,0,32, 32, 2, 2, 24, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
-    local spr = Sprite(atlas, 16,16)
+    local spr = Sprite(atlas, 16,32)
     spr:add_animations({spin_anim = spin_anim})
     --spr:animate("rock") -- handled by state machine
 
@@ -102,7 +102,7 @@ function BB:update(dt)
     -- slow down the bullet
     self.speed = self.speed - (self.drag * dt)
     -- make it slow down faster through time
-    self.drag = self.drag + dt * 500
+    self.drag = self.drag + dt * self.speed * 10 
   
 end
 

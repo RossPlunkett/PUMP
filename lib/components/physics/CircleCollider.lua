@@ -29,8 +29,9 @@ end
 
 function CC:draw()
     if not IsGizmoOn then return end
-    love.graphics.setColor(1, 1, 1, 1);
+    love.graphics.setColor(1, 0.5, 1, GizmoVisibility);
     love.graphics.circle("line", self.tr.x, self.tr.y, self.r)
+    love.graphics.setColor(1, 1, 1, 1)
 end
 
 return CC

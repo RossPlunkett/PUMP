@@ -9,8 +9,8 @@ GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 local maid64 = require ("lib.maid64")
 -- do not change else where
 -- maybe use a table so it cant be changed somewhere?
-Pixel_Window_X = 320
-Pixel_Window_Y = 240
+Pixel_Window_X = 128 *3
+Pixel_Window_Y = 128 *2
 
 Camera = require("lib/Camera")
 Camera:init()
@@ -24,9 +24,10 @@ local Event = require("lib.Events")
 -- local world = require("lib.World")
 -- World = world(200, 200, 10, 10, 20, 20)
 
---for debugging colliders and other related stuff
-IsGizmoOn = true
-FullScreenToggle = not true
+
+IsGizmoOn = true --for debugging colliders and other related stuff
+GizmoVisibility = 0.4 -- alpha/ the opacity of the gizmo
+FullScreenToggle = true
 --TODO before PUMP
 
 -- move stuff out of the player
@@ -40,9 +41,9 @@ local sm = {}
 function love.load()
     
     --maid settings
-    --love.window.setMode(640, 480, {resizable=false, vsync=true, minwidth=200, minheight=200})
+    --love.window.setMode(Pixel_Window_X*2,Pixel_Window_Y*2, {resizable=false, vsync=true, minwidth=200, minheight=200})
     love.window.setFullscreen(FullScreenToggle)
-    maid64.setup(Pixel_Window_X,Pixel_Window_Y,true)
+    maid64.setup(Pixel_Window_X,Pixel_Window_Y,false)
 
     --Love2D game settings
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -96,6 +97,8 @@ function love.update(dt)
 end
 
 function love.draw()
+    
+    love.graphics.setLineStyle('rough')-- sets the line to be rough -- i dont know if it is right to be here tho
     maid64.start()--starts the maid64 process
     Camera:set()
     sm:draw()

@@ -21,6 +21,8 @@ local Transform = require("lib.components.Transform")
 
 -- the default sprite when it i notset
 local default_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png")
+local revolver_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png")
+local uzi_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/Uzi.png")
 
 local Gun = class:derive("Gun")
 
@@ -79,8 +81,8 @@ function Gun:spawn(num)
 
     -- I don't know where to put it
     --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
-    weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png"))
-    weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2, 0.2, true, 0, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Uzi.png"))
+    weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 5,revolver_atlas)
+    weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2.5, 0.2, true, 0, 5,uzi_atlas)
         -- these four lines are garbage after we do the world module
         local world_width = 100
         local world_height = 100
@@ -91,7 +93,7 @@ function Gun:spawn(num)
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
-            weapons.Revolver, -- ive changed it because i think we should make a table or something
+            weapons.Uzi, -- ive changed it because i think we should make a table or something
             Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
             CC(16,40),
             PC(6, 4, Vector2(1, 1)))

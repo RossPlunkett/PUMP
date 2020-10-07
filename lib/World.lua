@@ -10,7 +10,7 @@ local World = Class:derive("World")
 
 
 function World:new(w, h, cell_width, cell_height, rows, columns)
-
+self.
 self.width = w
 self.height = h
 self.cell_width = cell_width
