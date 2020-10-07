@@ -72,8 +72,8 @@ function BB:spawn(x_pos, y_pos, x, y, r_trig)
     local bullet_length = 16
     local bullet_width = 9
     local bullet = Entity(
-        Transform(x_pos, y_pos, 1.9, 1.9, newangle, RSXA or 0, RSYA or 0), 
-        BB(), 
+        Transform(x_pos, y_pos, 1.9, 1.9, newangle, RSXA or 0, RSYA or 0),
+        BB(),
         BB.create_sprite(fast_bullet),
         CC(8,40),
         PC(12,8),
@@ -92,6 +92,14 @@ function BB:update(dt)
     
     self.transform.x = self.transform.x + ((self.speed * self.transform.vx) * dt)
     self.transform.y = self.transform.y + ((self.speed * self.transform.vy) * dt)
+<<<<<<< Updated upstream
+=======
+
+    -- slow down the bullet
+    self.speed = self.speed - (self.drag * dt)
+    -- make it slow down faster through time
+    self.drag = self.drag + dt * 500
+>>>>>>> Stashed changes
   
 end
 

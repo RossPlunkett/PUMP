@@ -26,7 +26,7 @@ local Event = require("lib.Events")
 
 --for debugging colliders and other related stuff
 IsGizmoOn = true
-FullScreenToggle = true
+FullScreenToggle = not true
 --TODO before PUMP
 
 -- move stuff out of the player

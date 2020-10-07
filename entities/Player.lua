@@ -276,7 +276,8 @@ function P:update(dt)
         and (RSXA ~= 0 or RSYA ~= 0)
         then
             self.equipped_gun:shoot(RSXA ,RSYA, r_trig)
-            Camera:startShake(RSXA, RSYA, 1000, 0.05, 0.05)
+            -- i moved the shake into gun
+            -- i think it should be unique to every gun
             GPM:startVibe(0.08, 0.2) -- vibe needs stick number
 
 

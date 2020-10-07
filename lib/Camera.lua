@@ -112,9 +112,9 @@ function camera:startShake(x_dir, y_dir, amount, out_time, in_time) -- rotation?
   --amount is pixels to shake
   local shake = {
     x_dir=x_dir,
-    y_dir=y_dir, 
+    y_dir=y_dir,
     amount=amount,
-    out_time=out_time, 
+    out_time=out_time,
     in_time=in_time,
     timer=out_time+in_time
   }
@@ -169,15 +169,16 @@ end
 
 function camera:update(dt)
 
-  camera:updateCameraPosition(dt)
   -- updateCameraPosition have an issues about the equations below
-
-  dt = dt / Time.speed -- global speed cancel (?)
-
+  
+  --dt = dt / Time.speed -- global speed cancel (?)
+  
   if #self.shakes > 0 then
     self:shake(dt)
+    print("shaking")
   end
-
+  
+  camera:updateCameraPosition(dt)
   -- rotates around map origin (0, 0)
   -- self.rotation = self.rotation + 0.01
 end

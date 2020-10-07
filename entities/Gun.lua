@@ -17,13 +17,20 @@ local SBP = require("lib.components.SBP")
 
 local Transform = require("lib.components.Transform")
 
-local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
+--local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
+
 -- the default sprite when it i notset
+<<<<<<< Updated upstream
 local default_atlas = love.graphics.newImage("assets/Weapon/Guns/revolver.png")
+=======
+local default_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png")
+>>>>>>> Stashed changes
 
 local Gun = class:derive("Gun")
 
+
 local weapons = {}
+<<<<<<< Updated upstream
     weapons.type = {}
         weapons.type.range = {
             {"Revolver", "bb", 1, 0.25, 1.4, 0.3, true, 8, 15,
@@ -33,6 +40,8 @@ local weapons = {}
             {"mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15,
             love.graphics.newImage("assets/Weapon/Guns/revolver.png")}
         }
+=======
+>>>>>>> Stashed changes
 
 
 
@@ -51,7 +60,7 @@ function Gun:new(name, proj_type, num_shots, cooldown,
     self.automatic = automatic or false
     self.kickback = kickback or 0
     self.magnitude = magnitude or 20
-    default_atlas = sprite_atlas or default_atlas
+    default_atlas = sprite_atlas
     -- should only update certain stuff if it's equipped?
     self.equipped = false
     -- held is for inactive weapon
@@ -63,12 +72,23 @@ end
 
 -- Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function Gun.create_sprite(atlas)
+<<<<<<< Updated upstream
     local still_anim = Anim(0, 0, 32, 32, 1, 1, 1, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
     -- we make this like sprite.height/2 on the sprite height
     local spr = Sprite(atlas, 8, 5, true)
+=======
+    -- we make this like sprite.height/2 on the sprite height
+    
+    local spr = Sprite(atlas, 8, 5)
+    
+    local still_anim = Anim(0, 0, 32, 32, 1, 1, 8, false)
+    if atlas == nil then
+        assert(false, "no atlas supplied to sprite!")
+    end
+>>>>>>> Stashed changes
     spr:add_animations({still = still_anim})
     spr:animate("still") -- this should be in the state machine
     
@@ -80,11 +100,20 @@ function Gun:spawn(num)
     -- if num is 1, it returns the gun to the function
 
     local gun_entity
-
     for i = 1, num do
 
+<<<<<<< Updated upstream
         local world_width = 1000
         local world_height = 1000
+=======
+    -- I don't know where to put it
+    --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
+    weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png"))
+    weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2, 0.2, true, 0, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Uzi.png"))
+        -- these four lines are garbage after we do the world module
+        local world_width = 100
+        local world_height = 100
+>>>>>>> Stashed changes
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
         local gun_length = 4
@@ -94,7 +123,7 @@ function Gun:spawn(num)
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
-            Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15), -- ive changed it because i think we should make a table or something
+            weapons.Revolver, -- ive changed it because i think we should make a table or something
             Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
             CC(10,40),
             PC(gun_width,gun_length))
@@ -113,6 +142,7 @@ end
 function Gun:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
+    -- create guns here ? maybe
 end
 
 function Gun:equip(holder)
@@ -170,6 +200,9 @@ function Gun:shoot(x, y, r_trig) -- these are directionally summed
             RSXA = RSXA * self.base_proj_speed
             RSYA = RSYA * self.base_proj_speed
     
+            -- shake the camera
+            Camera:startShake(RSXA, RSYA, 1, 0.2, 0.05)
+
             -- spawn in the bullet at the right speed, angle and heading
             -- need to add magnitude, which should be inherent to the gun in the end
             -- so replace that 35 with 
@@ -213,7 +246,7 @@ function Gun:draw(dt)
     if self.in_reach then
         -- maybe offset this with the length of the string ? but i dont know how to do it
         -- love.graphics.print(self.name,self.transform.x,self.transform.y)
-        love.graphics.printf(self.name, self.transform.x, self.transform.y,120, 'center')
+        love.graphics.printf(self.name, self.transform.x-#self.name*2, self.transform.y-16,120, 'left')
     end
 end
 
