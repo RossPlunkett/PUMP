@@ -19,7 +19,7 @@ local Transform = require("lib.components.Transform")
 
 local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
 -- the default sprite when it i notset
-local default_atlas = love.graphics.newImage("assets/Weapon/Guns/revolver.png")
+local default_atlas = love.graphics.newImage("assets/gfx/Weapon/Guns/revolver.png")
 
 local Gun = class:derive("Gun")
 
@@ -31,7 +31,7 @@ local weapons = {}
         }
         weapons.type.melee = {
             {"mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15,
-            love.graphics.newImage("assets/Weapon/Guns/revolver.png")}
+            love.graphics.newImage("assets/gfx/Weapon/Guns/revolver.png")}
         }
 
 
