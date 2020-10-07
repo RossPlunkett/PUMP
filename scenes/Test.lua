@@ -15,6 +15,9 @@ function T:new(scene_mgr)
     self.event_funcs.add_to_em = function(ent) self.em:add(ent) end
     _G.events:add("add to em")
     _G.events:hook("add to em", self.event_funcs.add_to_em)
+
+    _G.events:add("draw shadows") -- hooked and invoked in Sprite
+
     
     Player:spawn(1)
 
@@ -31,7 +34,7 @@ end
 function T:update(dt)
     self.super.update(self,dt)
 
-    T.do_collisions(self) -- does this copy the entire scene? I think not
+    T.do_collisions(self)
 
 end
 
@@ -40,6 +43,7 @@ function T:draw()
     love.graphics.clear(0.06,0.2,0)
     self.super.draw(self)
     --World:drawGrid()
+    _G.events:invoke("draw shadows")
 
 end
 

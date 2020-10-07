@@ -83,12 +83,11 @@ function Gun:spawn(num)
 
     for i = 1, num do
 
+        -- these four lines are garbage after we do the world module
         local world_width = 1000
         local world_height = 1000
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
-        local gun_length = 4
-        local gun_width = 4
 
         gun_entity = Entity(
             Transform(start_x, start_y, 3, 3, 0), 
@@ -96,8 +95,8 @@ function Gun:spawn(num)
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
             Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15), -- ive changed it because i think we should make a table or something
             Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
-            CC(10,40),
-            PC(gun_width,gun_length))
+            CC(16,40),
+            PC(6, 4, Vector2(1, 1)))
 
         _G.events:invoke("add to em", gun_entity)
     end
@@ -156,7 +155,7 @@ function Gun:shoot(x, y, r_trig) -- these are directionally summed
             RSXA = RSXA + x_inaccuracy
             RSYA = RSYA + y_inaccuracy
 
-            -- re-sum after inaccuracy
+            -- re-sum after inaccuracy to keep bullet speed consistent
             local sum = math.abs(RSXA) + math.abs(RSYA) 
             RSXA = RSXA / sum
             RSYA = RSYA / sum
