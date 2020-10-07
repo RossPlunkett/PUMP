@@ -20,28 +20,12 @@ local Transform = require("lib.components.Transform")
 --local fast_bullet = love.graphics.newImage("assets/gfx/fast_bullet_border.png")
 
 -- the default sprite when it i notset
-<<<<<<< HEAD
 local default_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png")
-=======
-local default_atlas = love.graphics.newImage("assets/gfx/Weapons/Guns/revolver.png")
->>>>>>> master
 
 local Gun = class:derive("Gun")
 
 
 local weapons = {}
-<<<<<<< HEAD
-=======
-    weapons.type = {}
-        weapons.type.range = {
-            {"Revolver", "bb", 1, 0.25, 1.4, 0.3, true, 8, 15,
-            }
-        }
-        weapons.type.melee = {
-            {"mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true, 8, 15,
-            love.graphics.newImage("assets/gfx/Weapons/Guns/revolver.png")}
-        }
->>>>>>> master
 
 
 
@@ -72,22 +56,14 @@ end
 
 -- Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function Gun.create_sprite(atlas)
-<<<<<<< HEAD
     -- we make this like sprite.height/2 on the sprite height
     
     local spr = Sprite(atlas, 8, 5)
     
-=======
->>>>>>> master
     local still_anim = Anim(0, 0, 32, 32, 1, 1, 8, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
-<<<<<<< HEAD
-=======
-    -- we make this like sprite.height/2 on the sprite height
-    local spr = Sprite(atlas, 8, 5)
->>>>>>> master
     spr:add_animations({still = still_anim})
     spr:animate("still") -- this should be in the state machine
     
@@ -101,13 +77,10 @@ function Gun:spawn(num)
     local gun_entity
     for i = 1, num do
 
-<<<<<<< HEAD
     -- I don't know where to put it
     --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
     weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png"))
     weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2, 0.2, true, 0, 15,love.graphics.newImage("assets/gfx/Weapons/Guns/Uzi.png"))
-=======
->>>>>>> master
         -- these four lines are garbage after we do the world module
         local world_width = 100
         local world_height = 100

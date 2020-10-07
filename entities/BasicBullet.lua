@@ -101,11 +101,8 @@ function BB:update(dt)
 
     -- slow down the bullet
     self.speed = self.speed - (self.drag * dt)
-<<<<<<< HEAD
     -- make it slow down faster through time
     self.drag = self.drag + dt * 500
-=======
->>>>>>> master
   
 end
 
