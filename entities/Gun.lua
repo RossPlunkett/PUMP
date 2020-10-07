@@ -63,12 +63,12 @@ end
 
 -- Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
 function Gun.create_sprite(atlas)
-    local still_anim = Anim(0, 0, 32, 32, 1, 1, 1, false)
+    local still_anim = Anim(0, 0, 32, 32, 1, 1, 8, false)
     if atlas == nil then
         assert(false, "no atlas supplied to sprite!")
     end
     -- we make this like sprite.height/2 on the sprite height
-    local spr = Sprite(atlas, 8, 5, true)
+    local spr = Sprite(atlas, 8, 5)
     spr:add_animations({still = still_anim})
     spr:animate("still") -- this should be in the state machine
     
@@ -84,8 +84,8 @@ function Gun:spawn(num)
     for i = 1, num do
 
         -- these four lines are garbage after we do the world module
-        local world_width = 1000
-        local world_height = 1000
+        local world_width = 100
+        local world_height = 100
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
 

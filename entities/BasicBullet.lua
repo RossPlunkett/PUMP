@@ -20,10 +20,10 @@ local BB = Class:derive("BasicBullet")
 -- and the damage and life
 function BB:new()
     
-    self.life = 2
-    self.speed = 1000
+    --self.life = 2
+    self.speed = 200
     self.size = Vector2(10, 20)
-
+    self.drag = (self.speed/2); -- some effect on the bullet
     self.damage = 10
     
 end
@@ -84,14 +84,22 @@ end
 
 function BB:update(dt)
 
-    self.life = self.life - dt
+    -- self.life = self.life - dt
 
-    if self.life <= 0 then
-        self.entity.remove = true
+    -- if self.life <= 0 then
+    --     self.entity.remove = true
+    -- end
+
+    -- the speed of the bullet before destroying
+    local threshold = 0.5
+    if(self.speed <= threshold) then 
+        self.entity.remove = true    
     end
-    
     self.transform.x = self.transform.x + ((self.speed * self.transform.vx) * dt)
     self.transform.y = self.transform.y + ((self.speed * self.transform.vy) * dt)
+
+    -- slow down the bullet
+    self.speed = self.speed - (self.drag * dt)
   
 end
 

@@ -193,11 +193,11 @@ function Sprite:draw()
 end
 
 function Sprite:drawShadow() -- put this below draw() to make it intuitive - this happens after the draw()
-        self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
-        love.graphics.setColor(self.tintColor) --            offset to the height of the sprite and put it in the center      flip it over
-        love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
-        self:tint{1, 1, 1, 1} -- return tint to normal
-        love.graphics.setColor(1, 1, 1, 1) -- return love draw color to normal
+    self:tint({0, 0, 0, 0.5}) -- apply transparent black tint
+    love.graphics.setColor(self.tintColor) --            offset to the height of the sprite and put it in the center      flip it over
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
+    self:tint{1, 1, 1, 1} -- return tint to normal
+    love.graphics.setColor(1, 1, 1, 1) -- return love draw color to normal
 end
 
 

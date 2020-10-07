@@ -25,13 +25,11 @@ local Event = require("lib.Events")
 -- World = world(200, 200, 10, 10, 20, 20)
 
 --for debugging colliders and other related stuff
-IsGizmoOn = true
+IsGizmoOn = false
 FullScreenToggle = true
 --TODO before PUMP
 
 -- move stuff out of the player
-
-
 
 
 
