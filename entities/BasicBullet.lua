@@ -18,13 +18,13 @@ local BB = Class:derive("BasicBullet")
 
 -- i think we should pass the speed for the bullet from the gun
 -- and the damage and life
-function BB:new(bullet_speed, bullet_damage)
+function BB:new()
     
     self.life = 2
-    self.speed = bullet_speed or 1000
+    self.speed = 1000
     self.size = Vector2(10, 20)
 
-    self.damage = bullet_damage or 10
+    self.damage = 10
     
 end
 
