@@ -42,8 +42,11 @@ end
 function T:draw()
     love.graphics.clear(0.06,0.2,0)
     self.super.draw(self)
-    --World:drawGrid()
+    -- sets color for shadow here
+    -- if you want to do a shadow shader, here's where you activate it, before and after the invoke()
+    love.graphics.setColor(0, 0, 0, 0.5)
     _G.events:invoke("draw shadows")
+    love.graphics.setColor(1, 1, 1, 1)
 
 end
 
