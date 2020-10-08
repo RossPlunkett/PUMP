@@ -94,7 +94,12 @@ function camera:updateCameraPosition(dt)
   -- self.y = self.y -((self.h * 0.5) * self.scaleY) 
 
   -- this is to snap the camera through pixels per unit PPU
-  tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)+ offset, self.curVel,self.damp, dt)
+  tempPos = Vector3.SmoothDamp(
+    Vector3(self.x,self.y), 
+    Vector3(self.targetPosX + self.xShakeOffset, self.targetPosY + self.yShakeOffset)+ offset,
+    self.curVel,
+    self.damp,
+    dt)
   self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
   self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
 
@@ -176,6 +181,12 @@ function camera:update(dt)
   if #self.shakes > 0 then
     self:shake(dt)
     print("shaking")
+    for v,p in pairs(self.shakes) do 
+      print("--")
+      for i, x in pairs(p) do
+        print(x)
+      end
+    end
   end
   
   camera:updateCameraPosition(dt)

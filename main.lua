@@ -26,8 +26,8 @@ local Event = require("lib.Events")
 
 
 IsGizmoOn = true --for debugging colliders and other related stuff
-GizmoVisibility = 0.4 -- alpha/ the opacity of the gizmo
-FullScreenToggle = true
+GizmoVisibility = 0.2 -- alpha/ the opacity of the gizmo
+FullScreenToggle = not true
 --TODO before PUMP
 
 -- move stuff out of the player

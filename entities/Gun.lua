@@ -81,7 +81,7 @@ function Gun:spawn(num)
 
     -- I don't know where to put it
     --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
-    weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 5,revolver_atlas)
+    weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 0, 5,revolver_atlas)
     weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2.5, 0.2, true, 0, 5,uzi_atlas)
         -- these four lines are garbage after we do the world module
         local world_width = 100
@@ -93,7 +93,7 @@ function Gun:spawn(num)
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
-            weapons.Uzi, -- ive changed it because i think we should make a table or something
+            weapons.Revolver, -- ive changed it because i think we should make a table or something
             Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
             CC(16,40),
             PC(6, 4, Vector2(1, 1)))
@@ -171,7 +171,8 @@ function Gun:shoot(x, y, r_trig) -- these are directionally summed
             RSYA = RSYA * self.base_proj_speed
     
             -- shake the camera
-            Camera:startShake(RSXA, RSYA, 1, 0.2, 0.05)
+            --(x_dir, y_dir, amount, out_time, in_time)
+            Camera:startShake(RSXA, RSYA, 500, 0.01, 0.05)
 
             -- spawn in the bullet at the right speed, angle and heading
             -- need to add magnitude, which should be inherent to the gun in the end
