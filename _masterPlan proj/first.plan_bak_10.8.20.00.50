@@ -4,8 +4,8 @@
   "BoardIndex": 0,
   "BoardCount": 1,
   "AutoSave": false,
-  "Pan.X": -250,
-  "Pan.Y": 2,
+  "Pan.X": -216,
+  "Pan.Y": -112,
   "ZoomLevel": 2,
   "ColorTheme": "Cloudy",
   "TaskTransparency": 5,
@@ -146,6 +146,54 @@
       "Selected": false,
       "TaskType.CurrentChoice": 2,
       "CreationTime": "Oct 3 2020 23:29:07"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 544,
+      "Position.Y": -224,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "A field of tall grass that blows in the wind. You walk in, and it's tall enough that you see a\nlittle bit of the player poking out. In the grass are shorter creatures, who are small enough\nto wander through the grass undetected.\n\nBefore they attack, they make a sound. Because the player now knows where they are,\na circle of grass around them becomes transparent for 1/4 - 1/3 of a second.\nAlso when they move, the grass becomes slightly transparent. The transparency level goes down\n(or the opaqueness goes up) the farther away the rodent-like creature is.\n\nWhen they move they also rustle the grass that they touch, and maybe sometimes they eat grass\n\nThey will often wait until the player is deep in the grass to make their move:\n\nBefore starting to dart around, they will sometimes (30% of the time) make a\nrodent-like battlecry before starting to attack.\n\nFor the attack phase, they dash toward you, and also will fake you out by dashing away or to the side.\n\nIf they get near you, they wind up and then bite you\n\nIf they're REAL smart, maybe they can team up and try to surround you",
+      "Selected": false,
+      "TaskType.CurrentChoice": 2,
+      "CreationTime": "Oct 7 2020 23:36:14"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 560,
+      "Position.Y": 176,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "\nYou are walking through the grass\nThere is a strong gust of wind from the side, and you see a spider(?) \n\nHE IS RIGHT NEXT TO YOU.\n\nIf he bites you, you will probably die.\n\nLucky for you, there's about a half of a second from when the gust of wind hits the character\nand when the spider appears, and then you have about a half second to kill the spider\n\ntime will slow down slightly after the wind gust as it's dying down, and speed back up into the\nspider making it's attack call and.. maybe vibrating? or slowly moving toward the character \nbefore it makes its swift strike?\n\nSo as it speeds back up into the spider making it's call, the grass around him is made transparent briefly.\nYou will want to kill it because it only makes the attack call once. If you run, you either have to guess \nby the grass that it rustles or just run out of the grass to lure it out and then kill it\n\nbecause it only makes the attack call and makes the grass transparent ONCE\n\n-- time only slows down if it is able to do something very cinematic with the grass, wind, maybe\nrain and rind sounds that also slow down. Maybe light clouds sometimes.\nMaybe spiders only come in the dark, rainy tall-grass type areas",
+      "Selected": false,
+      "TaskType.CurrentChoice": 2,
+      "CreationTime": "Oct 7 2020 23:57:21"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 48,
+      "Position.Y": 368,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "Jump over some attacks and duck beneath others?\n\nLike in PUMP where bad guys would jump over bullets",
+      "Selected": false,
+      "TaskType.CurrentChoice": 2,
+      "CreationTime": "Oct 8 2020 00:37:32"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 48,
+      "Position.Y": 416,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "A button could jump, classic button for jumping,\nmaybe click/push the right stick to duck`",
+      "Selected": false,
+      "TaskType.CurrentChoice": 2,
+      "CreationTime": "Oct 8 2020 00:37:56"
     }
   ]
 }
