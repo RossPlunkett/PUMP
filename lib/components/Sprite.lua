@@ -3,7 +3,6 @@ local Vector2 = require("lib.Vector2")
 local Anim = require("lib.Animation")
 local Rect = require("lib.Rect")
 local U = require("lib.Utils")
---local cron = require()
 
 local Sprite = Class:derive("Sprite")
 --where x,y is the center of the sprite

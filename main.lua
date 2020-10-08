@@ -7,10 +7,13 @@ GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
 -- low rez thing
 local maid64 = require ("lib.maid64")
+gscreen = require('lib.sysl.pixel') --The mouse cursor thing -- and can also be used as shader changer
+gscreen.load(1) -- Draw at x Size.
 -- do not change else where
 -- maybe use a table so it cant be changed somewhere?
 Pixel_Window_X = 128 *3
 Pixel_Window_Y = 128 *2
+
 
 Camera = require("lib/Camera")
 Camera:init()
@@ -46,7 +49,8 @@ function love.load()
     maid64.setup(Pixel_Window_X,Pixel_Window_Y,false)
 
     --Love2D game settings
-    love.graphics.setDefaultFilter('nearest', 'nearest')
+    love.graphics.setLineStyle('rough')-- sets the line to be rough 
+    love.graphics.setDefaultFilter('nearest', 'nearest', 1)
 
     --local font = love.graphics.newFont("assets/fonts/ARCADECLASSIC.TTF", 20)
     --set the font to the one above
@@ -90,6 +94,8 @@ function love.update(dt)
     Key:update(dt)
     GPM:update(dt)
     Tween.update(dt)
+    -- Update Pixel
+    gscreen.update(dt)
 
 
 
@@ -98,11 +104,13 @@ end
 
 function love.draw()
     
-    love.graphics.setLineStyle('rough')-- sets the line to be rough -- i dont know if it is right to be here tho
+    gscreen.start()
     maid64.start()--starts the maid64 process
     Camera:set()
     sm:draw()
     Camera:unset()
+    gscreen.stop()
+    -- Things drawn here will *not* scale.
     maid64.finish()--finishes the maid64 process
 end
 

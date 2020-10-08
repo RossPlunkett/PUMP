@@ -11,7 +11,7 @@ camera.targetPosY = 0 -- Changed Offset to Target Position
 camera.scaleX = 1 -- scale
 camera.scaleY = 1
 camera.rotation = 0 -- rotation around origin
-camera.Ppu = 1 -- pixels per unit, might change to 8 or 32
+camera.Ppu = 1-- pixels per unit, might change to 8 or 32
 camera.damp = 0.05 -- smoothing?
 camera.curVel = Vector3(0,0,0) 
 camera.w = 0 -- i think its better to get these values from the start?
@@ -30,7 +30,9 @@ function camera:init()
   -- multiply it to the scale factor
   -- to get the middle point of the window
   offset = Vector3(-Pixel_Window_X/2,-Pixel_Window_Y/2)
-
+  -- local x = love.graphics.getWidth() / gscreen.scale
+  -- local y = love.graphics.getHeight() / gscreen.scale
+  -- offset = Vector3(-x/2, -y/2)
   self.shakes = {}
 end
 
@@ -100,10 +102,8 @@ function camera:updateCameraPosition(dt)
     self.curVel,
     self.damp,
     dt)
-  self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
-  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
-
-            
+  self.x =  U.round(tempPos.x * camera.Ppu) / camera.Ppu
+  self.y =  U.round(tempPos.y * camera.Ppu) / camera.Ppu
 end
 
 function camera:setTargetPos(xPos, yPos)
@@ -180,13 +180,6 @@ function camera:update(dt)
   
   if #self.shakes > 0 then
     self:shake(dt)
-    print("shaking")
-    for v,p in pairs(self.shakes) do 
-      print("--")
-      for i, x in pairs(p) do
-        print(x)
-      end
-    end
   end
   
   camera:updateCameraPosition(dt)

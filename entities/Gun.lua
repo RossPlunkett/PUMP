@@ -88,12 +88,14 @@ function Gun:spawn(num)
         local world_height = 100
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
-
+        start_x = math.floor(start_x)
+        start_y = math.floor(start_y)
+        print(start_x.."\n"..start_y)
         gun_entity = Entity(
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
             -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
-            weapons.Revolver, -- ive changed it because i think we should make a table or something
+            weapons.Uzi, -- ive changed it because i think we should make a table or something
             Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
             CC(16,40),
             PC(6, 4, Vector2(1, 1)))
@@ -172,7 +174,7 @@ function Gun:shoot(x, y, r_trig) -- these are directionally summed
     
             -- shake the camera
             --(x_dir, y_dir, amount, out_time, in_time)
-            Camera:startShake(RSXA, RSYA, 500, 0.01, 0.05)
+            Camera:startShake(RSXA, RSYA, 300, 0.01, 0.05)
 
             -- spawn in the bullet at the right speed, angle and heading
             -- need to add magnitude, which should be inherent to the gun in the end
