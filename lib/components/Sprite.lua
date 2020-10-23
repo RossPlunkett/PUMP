@@ -183,7 +183,7 @@ function Sprite:draw()
     love.graphics.setColor(self.tintColor)
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
     
-    Sprite:drawGizmo(self.tr.x,self.tr.y)
+
     love.graphics.setShader()
     if self.flashing then
         love.graphics.setShader()
@@ -198,16 +198,6 @@ function Sprite:drawShadow() -- put this below draw() to make it intuitive - thi
     love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
 end
 
-function Sprite:drawGizmo(x,y)
 
-    if not IsGizmoOn then return end
-    local length = 10
-
-    love.graphics.setColor(1, 0, 0, GizmoVisibility)
-    love.graphics.line(x-length,y, x+length,y)
-    love.graphics.line(x,y-length, x,y+length)
-    love.graphics.setColor(1, 1, 1, 1)
-
-end
 
 return Sprite

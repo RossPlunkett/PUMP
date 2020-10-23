@@ -4,6 +4,7 @@ local Sprite = require("lib.components.Sprite")
 local Transform = require("lib.components.Transform")
 local Sat = require("lib.Sat")
 local StateMachine = require("lib.components.StateMachine")
+local Gizmo = require("lib.components.Gizmo")
 
 local Shadow = require("lib.components.Shadow")
 
@@ -78,7 +79,8 @@ function P:spawn(player_num)
         P(player_num), -- calling the [new] method
         P.create_sprite(),
         CC(19,32),
-        PC(5,6,Vector2(0,2))
+        PC(5,6,Vector2(0,2)),
+        Gizmo()
         --,Shadow(73, 3.14)
     )
     _G.events:invoke("add to em", player)
