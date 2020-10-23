@@ -6,6 +6,8 @@ local Entity = require("lib.Entity")
 local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
 local StateMachine = require("lib.components.StateMachine")
+local Gizmo = require("lib.components.Gizmo")
+
 
 
 local Anim = require("lib/Animation")
@@ -96,7 +98,9 @@ function Gun:spawn(num)
             weapons.Uzi, -- ive changed it because i think we should make a table or something
             Gun.create_sprite(default_atlas), -- I think its redundant to the gun constructor method -- hmm
             CC(16,40),
-            PC(6, 4, Vector2(1, 1)))
+            PC(6, 4, Vector2(1, 1)),
+            Gizmo()
+        )
 
         _G.events:invoke("add to em", gun_entity)
     end
