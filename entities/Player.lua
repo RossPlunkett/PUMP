@@ -29,9 +29,18 @@ local PlantZombie = require("entities.PlantZombie")
 
 --
 
+-- Player class inherits from HP class
+
+local HP = require('entities.base.HP'); HP:new();
+
+local P = HP:derive("Player")
+
+print("printing HP....")
+
+print(P.hp)
 
 
-local P = Class:derive("Player")
+
 
 local hero_atlas
 local snd
@@ -55,7 +64,7 @@ function P:new(player_num)
     
     self.properties = {}
     self.properties.base_walk_speed = 150 -- value to be multiplied by dt to get number of pixels to move
-    self.properties.base_dash_speed = 4000
+    self.properties.base_dash_speed = 4000 -- value to be multiplied by dt to get number of pixels to move
     
     -- for automatic weapons
     self.r_trig_up = true
@@ -64,9 +73,10 @@ function P:new(player_num)
     self.holstered_gun = nil
     self.held_gun = nil
     self.closest_gun = nil
-
+    
     -- state machine at bottom of new, gets entire self... and lasting self? ??? ????? ????? think so
     self.machine = StateMachine(self, "idle")
+    self.ent_name = "Player"
 end
 
 function P:spawn(player_num)
@@ -107,9 +117,12 @@ function P:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
     self.entity.Machine = self.machine
+    self.entity.form = self
 
     self:equip_gun(Gun:spawn(1).Gun) -- hmm
     --self:holster_gun(Gun:spawn(1).Gun) -- hmm
+
+    self.entity.form = self
 
 end
 
@@ -207,7 +220,7 @@ end
 
 function P:pick_up_gun()
     if self.closest_gun == nil then return end
-    self:equip_gun(self.closest_gun.Gun)
+    self:equip_gun(self.closest_gun.Gun) --hmm
 end
 
 function P:equip_gun(gun)
@@ -296,12 +309,13 @@ function P:update(dt)
     end
     if GPM:button_down(self.player_num, "leftshoulder") then
         PlantZombie:spawn(12)
-        --Missile:spawn(2)
+        Missile:spawn(2)
     end
     if GPM:button_down(self.player_num, "dpup") then
     end
 
     if (GPM:button_down(self.player_num, "y")) then
+        print("y")
     end
 
     local gun_angle = 0

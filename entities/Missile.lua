@@ -9,7 +9,8 @@ local StateMachine = require("lib.components.StateMachine")
 local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
 
-local M = Class:derive("Missile")
+local HP = require('entities.base.HP'); HP:new();
+local M = HP:derive("Missile")
 
 local missile_atlas
 local target_object
@@ -22,6 +23,7 @@ function M:new()
     self.vx = 0
 
     self.machine = StateMachine(self, "idle")
+    self.ent_name = "Missile"
 
 end
 
@@ -39,6 +41,7 @@ end
 function M:on_start()
     self.transform = self.entity.Transform
     self.entity.Machine = self.machine
+    self.entity.form = self
 end
 
 function M:spawn(num)

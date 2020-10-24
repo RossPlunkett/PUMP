@@ -15,7 +15,6 @@ local Sprite = require("lib/components/Sprite")
 
 local GPM = require("lib.GamepadMgr")
 local BasicBullet = require("entities.BasicBullet")
-local SBP = require("lib.components.SBP")
 
 local Transform = require("lib.components.Transform")
 
@@ -48,7 +47,7 @@ function Gun:new(name, proj_type, num_shots, cooldown,
     self.automatic = automatic or false
     self.kickback = kickback or 0
     self.magnitude = magnitude or 20
-    default_atlas = sprite_atlas
+    if sprite_atlas then default_atlas = sprite_atlas end
     -- should only update certain stuff if it's equipped?
     self.equipped = false
     -- held is for inactive weapon
@@ -56,6 +55,8 @@ function Gun:new(name, proj_type, num_shots, cooldown,
     
     
     self.machine = StateMachine(self, "still")
+    self.ent_name = "Gun"
+    
 end
 
 -- Anim:new(xoffset, yoffset, w, h, frames, column_size, fps, loop)
@@ -75,22 +76,22 @@ function Gun.create_sprite(atlas)
 end
 
 function Gun:spawn(num)
-
+    
     -- if num is 1, it returns the gun to the function
-
+    
     local gun_entity
     for i = 1, num do
-
-    -- I don't know where to put it
-    --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
-    weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 5,revolver_atlas)
-    weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2.5, 0.2, true, 0, 5,uzi_atlas)
+        
+        -- I don't know where to put it
+        --name, proj_type, num_shots, cooldown,base_proj_speed, inaccuracy, automatic, kickback, magnitude, sprite_atlas
+        weapons.Revolver = Gun("Revolver", "bb", 1, 0.25, 2, 0.15, false, 5, 5,revolver_atlas)
+        weapons.Uzi = Gun("Uzi", "bb", 1, 0.15, 2.5, 0.2, true, 0, 5,uzi_atlas)
         -- these four lines are garbage after we do the world module
         local world_width = 100
         local world_height = 100
         local start_x = (math.random(world_width) * 2) - world_width
         local start_y = (math.random(world_height) * 2) - world_width
-
+        
         gun_entity = Entity(
             Transform(start_x, start_y, 3, 3, 0), 
             -- name, proj_type, num_shots, cooldown, 
@@ -101,21 +102,22 @@ function Gun:spawn(num)
             PC(6, 4, Vector2(1, 1)),
             Gizmo()
         )
-
+        
         _G.events:invoke("add to em", gun_entity)
     end
-
-
+    
+    
     
     if num == nil or num < 2 then -- this seems dumb
         return gun_entity
     end
-
+    
 end
 
 function Gun:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
+    self.entity.form = self
     -- create guns here ? maybe
 end
 

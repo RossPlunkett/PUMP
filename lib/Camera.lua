@@ -175,7 +175,7 @@ function camera:update(dt)
   
   if #self.shakes > 0 then
     self:shake(dt)
-    print("shaking")
+    -- print("shaking")
   end
   
   camera:updateCameraPosition(dt)

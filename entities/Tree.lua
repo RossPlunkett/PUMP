@@ -21,6 +21,7 @@ local tree_atlas
 
 function Tree:new()
     self.machine = StateMachine(self, "idle")
+    self.ent_name = "Tree"
 end
 
 function Tree.create_sprite()
@@ -37,6 +38,7 @@ end
 function Tree:on_start()
     self.transform = self.entity.Transform -- seems to be standar for entities?
     self.sprite = self.entity.Sprite
+    self.entity.form = self
 end
 
 function Tree:spawn(x, y)

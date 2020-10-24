@@ -6,7 +6,7 @@ local Vector3 = require("lib.Vector3")
 local Entity = require("lib.Entity")
 local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
-local SBP = require("lib.components.SBP")
+
 
 local fast_bullet = love.graphics.newImage("assets/gfx/Weapons/Guns/MediumBullet.png")
 
@@ -25,6 +25,8 @@ function BB:new()
     self.size = Vector2(10, 20)
     self.drag = (self.speed/2); -- some effect on the bullet
     self.damage = 10
+    
+    self.ent_name = "BasicBullet"
     
 end
 
@@ -48,7 +50,7 @@ end
 function BB:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
-    self.entity.tag = self
+    self.entity.form = self
 
 
 end
@@ -77,8 +79,8 @@ function BB:spawn(x_pos, y_pos, x, y, r_trig)
         BB(),
         BB.create_sprite(fast_bullet),
         CC(20,40),
-        PC(12,8),
-        SBP(10, 10))         
+        PC(12,8)
+        )         
 
     _G.events:invoke("add to em", bullet) -- passes entity through
 end

@@ -15,8 +15,8 @@ local Gun = require("entities.Gun") -- gun class, for spawning
 
 
 
-
-local PZ = Class:derive("PlantZombie")
+local HP = require('entities.base.HP'); HP:new();
+local PZ = HP:derive("PlantZombie")
 
 local plant_zombie_atlas = love.graphics.newImage("assets/gfx/grfxkid/dungeon_set/plant_zombie_sheet.png")
 
@@ -33,6 +33,7 @@ function PZ:new(atlas)
     self.base_wander_speed = 100
     
     self.machine = StateMachine(self, "idle")
+    self.ent_name = "PlantZombie"
 end
 
 
@@ -46,7 +47,7 @@ function PZ.create_sprite(atlas)
     local spr = Sprite(atlas, 32, 64)
     spr:add_animations({idle_anim = idle_anim, walk_anim = walk_anim})
     spr:animate("walk_anim") -- handled by state machine
-
+    
     return spr
 end
 
@@ -61,8 +62,8 @@ end
 function PZ:on_start()
     self.transform = self.entity.Transform -- seems to be standard for entities?
     self.sprite = self.entity.Sprite -- seems to be standard as well?
-    self.entity.tag = self -- don't think this works
     self.entity.Machine = self.machine -- hmm
+    self.entity.form = self
 end
 
 
@@ -93,7 +94,7 @@ function PZ:spawn(x, y)
 end
 
 function PZ:idle(dt)
-    if true then return end
+    -- if true then return end
     local roll = math.random(100) -- should incorporate dt
 
     if roll == 54 then

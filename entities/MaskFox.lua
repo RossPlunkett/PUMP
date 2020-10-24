@@ -12,8 +12,8 @@ local StateMachine = require("lib.components.StateMachine")
 local Entity = require("lib.Entity")
 
 
-
-local MF = Class:derive("MaskFox")
+local HP = require('entities.base.HP'); HP:new();
+local MF = HP:derive("MaskFox")
 
 local mask_fox_atlas = love.graphics.newImage("assets/gfx/enchanted_forest.png")
 
@@ -32,6 +32,7 @@ function MF:new(atlas)
     self.base_wander_speed = 200
     
     self.machine = StateMachine(self, "idle")
+    self.ent_name = "MaskFox"
 end
 
 
@@ -45,7 +46,7 @@ function MF.create_sprite(atlas)
     local spr = Sprite(atlas, 32, 32)
     spr:add_animations({idle_anim = idle_anim, walk_anim = walk_anim})
     spr:animate("walk_anim") -- handled by state machine
-
+    
     return spr
 end
 
@@ -53,8 +54,8 @@ end
 function MF:on_start()
     self.transform = self.entity.Transform -- seems to be standar for entities?
     self.sprite = self.entity.Sprite
-    self.entity.tag = self
     self.entity.Machine = self.machine
+    self.entity.form = self
 end
 
 function MF:spawn(x, y)
