@@ -42,15 +42,15 @@ local do_collisions =  function(scene)
 
         local ent_name = the_entity.form.ent_name or "no-ent-name"
         
-        if the_entity.SEP ~= nil then
+        if the_entity.SEP then
             enemies[#enemies + 1] = i
-        elseif the_entity.SBP ~= nil then
+        elseif the_entity.SBP then
             bullets[#bullets + 1] = i
         end
 
-        if the_entity.Player ~= nil
-        or the_entity.PlantZombie ~= nil
-        or the_entity.MaskFox ~= nil
+        if the_entity.Player
+        or the_entity.PlantZombie
+        or the_entity.MaskFox
         then
             creatures[#creatures + 1] = i
         end
@@ -67,17 +67,17 @@ local do_collisions =  function(scene)
         
        
 
-        if the_entity.BasicBullet ~= nil then
-        bbs[#bbs + 1] = i
-        elseif the_entity.Missile ~= nil then
+        if the_entity.BasicBullet then
+        bullets[#bullets + 1] = i
+        elseif the_entity.Missile then
         missiles[#missiles + 1] = i
-        elseif the_entity.Tree ~= nil then
+        elseif the_entity.Tree then
         trees[#trees + 1] = i
-        elseif the_entity.Player ~= nil then
+        elseif the_entity.Player then
         players[#players + 1] = i
-        elseif the_entity.Gun ~= nil then
+        elseif the_entity.Gun then
         guns[#guns + 1] = i
-        elseif the_entity.PlantZombie ~= nil then
+        elseif the_entity.PlantZombie then
         plant_zombies[#plant_zombies + 1] = i
         else
         end
@@ -98,10 +98,9 @@ local do_collisions =  function(scene)
 
 
 
-    for i = 1, #bbs do
+    for i = 1, #bullets do
+        local bullet = entities[bullets[i]].form
         for q = 1, #mobs do
-
-            local bullet = entities[bbs[i]].form
             local mob = entities[mobs[q]].form
 
             if bullet.entity.CircleCollider:CC(mob.transform) then  
@@ -160,8 +159,8 @@ local do_collisions =  function(scene)
 
     -- -- thie one checks each bullet against each missile
     -- local used_bullets = {} -- used_bullets
-    -- for i = 1, #bbs do
-    --     local bullet = entities[bbs[i]] -- bullet entity
+    -- for i = 1, #bullets do
+    --     local bullet = entities[bullets[i]] -- bullet entity
     --     if not U.contains(used_bullets, i) then -- if this bullet hasn't already hit something
     --         if #missiles == 0 then break end
     --         for q = 1, #missiles do
@@ -226,15 +225,15 @@ local do_collisions =  function(scene)
     --     end
     -- end
 
-    -- -- remove the hit bullets from [bbs] here? maybe not worth it
-    -- for i = #bbs, 1, -1 do
-    --     table.remove(bbs, bbs[i])
+    -- -- remove the hit bullets from [bullets] here? maybe not worth it
+    -- for i = #bullets, 1, -1 do
+    --     table.remove(bullets, bullets[i])
     -- end
 
     -- -- check each bullet against each tree
     -- used_bullets = {}
-    -- for i = 1, #bbs do
-    --     local bullet = entities[bbs[i]] -- bullet entity
+    -- for i = 1, #bullets do
+    --     local bullet = entities[bullets[i]] -- bullet entity
     --     if not U.contains(used_bullets, i) then -- if this bullet hasn't already hit something
     --         if #trees == 0 then break end
     --         for q = 1, #trees do
