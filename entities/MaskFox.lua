@@ -27,7 +27,6 @@ function MF:new(atlas)
         self.atlas = atlas
     end
 
-    self.hp = 30
     
     self.base_wander_speed = 200
     

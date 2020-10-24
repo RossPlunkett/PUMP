@@ -4,7 +4,6 @@ local Vector2 = require("lib.Vector2") -- require Vec2 class
 local Vector3 = require("lib.Vector3") -- require Vec3 class
 local CC = require("lib.components.physics.CircleCollider") -- circle collider
 local PC = require("lib.components.physics.PolygonCollider") -- polygon collider
-local SEP = require("lib.components.SEP") -- standard entity properties that all entities share
 local Sprite = require("lib.components.Sprite") -- sprite class
 local Transform = require("lib.components.Transform") -- transform contains position/angle/speed
 local StateMachine = require("lib.components.StateMachine") -- state machine class
@@ -27,8 +26,6 @@ function PZ:new(atlas)
     if atlas then
         self.atlas = atlas
     end
-
-    self.hp = 30
     
     self.base_wander_speed = 100
     
@@ -75,8 +72,7 @@ function PZ:spawn(x, y)
             PZ(plant_zombie_atlas), 
             self.create_sprite(plant_zombie_atlas),
             CC(70,40),
-            PC(zombie_width,zombie_height,Vector2(0,2)),
-            SEP(30)
+            PC(zombie_width,zombie_height,Vector2(0,2))
         )
            
             

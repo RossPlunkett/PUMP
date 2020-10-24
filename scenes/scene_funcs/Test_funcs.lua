@@ -104,13 +104,15 @@ local do_collisions =  function(scene)
             local mob = entities[mobs[q]].form
 
             if bullet.entity.CircleCollider:CC(mob.transform) then  
-                local msuv, amount = Sat.Collide(bullet.entity.PolygonCollider.world_vertices, mob.entity.PolygonCollider.world_vertices)
+                local msuv, amount = Sat.Collide(
+                                            bullet.entity.PolygonCollider.world_vertices, 
+                                            mob.entity.PolygonCollider.world_vertices)
                 if msuv ~= nil then
 
-                    mob.hp = mob.hp - 20 -- need to implement bullet damage
+                    mob:takeDamage(20)
                     -- and bullet knockback
-                    mob.transform.x = mob.transform.x + (bullet.transform.vx * 20)
-                    mob.transform.y = mob.transform.y + (bullet.transform.vy * 20)
+                    mob.transform.x = mob.transform.x + (bullet.transform.vx * 4)
+                    mob.transform.y = mob.transform.y + (bullet.transform.vy * 4)
 
                     if mob.hp <= 0 then
                         mob.machine:change("KOed")
