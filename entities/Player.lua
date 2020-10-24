@@ -309,7 +309,7 @@ function P:update(dt)
     end
     if GPM:button_down(self.player_num, "leftshoulder") then
         PlantZombie:spawn(12)
-        Missile:spawn(2)
+        -- Missile:spawn(2)
     end
     if GPM:button_down(self.player_num, "dpup") then
     end

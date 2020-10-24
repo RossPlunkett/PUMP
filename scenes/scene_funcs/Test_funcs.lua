@@ -68,7 +68,6 @@ local do_collisions =  function(scene)
        
 
         if the_entity.BasicBullet ~= nil then
-            print("counting a bullet!")
         bbs[#bbs + 1] = i
         elseif the_entity.Missile ~= nil then
         missiles[#missiles + 1] = i
@@ -87,7 +86,6 @@ local do_collisions =  function(scene)
 
     end
 
-    print("finished indexing, bullets is ", #bullets)
 
     -- target missiles if they're untargeted
     for i = 1, #missiles do
@@ -97,7 +95,7 @@ local do_collisions =  function(scene)
         end
     end
 
-    
+
 
     for i = 1, #bbs do
         for q = 1, #mobs do
