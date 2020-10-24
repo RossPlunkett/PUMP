@@ -91,6 +91,7 @@ local do_collisions =  function(scene)
     for i = 1, #missiles do
         if not entities[missiles[i]].form.target_transform then
             -- only does 1 player atm -- BADMULTI
+            -- also this will crash if there's no player
             entities[missiles[i]].form:target(entities[players[1]].Transform)
         end
     end
@@ -109,6 +110,7 @@ local do_collisions =  function(scene)
                                             mob.entity.PolygonCollider.world_vertices)
                 if msuv ~= nil then
 
+                    mob.entity.Sprite:flash(0.05)
                     mob:takeDamage(20)
                     -- and bullet knockback
                     mob.transform.x = mob.transform.x + (bullet.transform.vx * 4)
