@@ -10,7 +10,7 @@ local Sprite = Class:derive("Sprite")
 --
 --Note: This component assumes the presence of a Transform component!
 --
-function Sprite:new(atlas, w, h, color, shadow)
+function Sprite:new(atlas, w, h, color)
     self.w = w
     self.h = h
     self.flip = Vector2(1,1)
@@ -20,16 +20,6 @@ function Sprite:new(atlas, w, h, color, shadow)
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
     self.tintColor = color or {1,1,1,1}
     self.origin = Vector2(w/2, h/2) -- defaults to center
-    self.shadow = shadow or false -- no shadow by default
-
-    if self.shadow then
-        -- if we want to be able to unhook() this,
-        -- we have to name the anonymous function, 
-        -- then hook it by that name, so we can unhook() it with that same name.
-        -- unhooking the exact same completely anonymouse function does not work
-        -- when this makes sense you can delete this comment
-        _G.events:hook("draw shadows", function() self:drawShadow() end)
-    end
 
     self.flash_shader = love.graphics.newShader[[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){

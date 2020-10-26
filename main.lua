@@ -25,7 +25,7 @@ local Event = require("lib.Events")
 -- World = world(200, 200, 10, 10, 20, 20)
 
 
-IsGizmoOn = true --for debugging colliders and other related stuff
+IsGizmoOn = false --for debugging colliders and other related stuff
 GizmoVisibility = 0.4 -- alpha/ the opacity of the gizmo
 FullScreenToggle = false
 --TODO before PUMP

@@ -1,5 +1,6 @@
 local Class = require("lib.Class")
 local U = require("lib.Utils")
+local Vector3 = require("lib.Vector3")
 
 local E = Class:derive("Entity")
 
@@ -89,6 +90,7 @@ function E:on_start()
     end
 end
 
+local refVel = Vector3(0,0)
 function E:update(dt)
     for i = 1, #self.components do
         --if the component is enabled, then update it
@@ -96,6 +98,40 @@ function E:update(dt)
             self.components[i]:update(dt)
         end
     end
+
+    --gun carrying
+    if self.equipped_gun then
+        
+        self.equipped_gun.transform.x = self.Transform.x
+        self.equipped_gun.transform.y = self.Transform.y
+        
+        -- some juice
+        -- i dont know why this juice thing isn't working after moving- something about Vec3
+        -- local gun_Holster_offset = 10
+        -- local tempPos = Vector3.SmoothDamp(
+        --     Vector3(self.equipped_gun.transform.x,self.equipped_gun.transform.y,0),
+        --     Vector3(self.Transform.x, self.Transform.y+gun_Holster_offset, 0),
+        --     refVel,
+        --     0.025, -- nice to see when attaching guns
+        --     dt)
+        -- self.equipped_gun.transform.x = tempPos.x
+        -- self.equipped_gun.transform.y = tempPos.y
+
+
+    end
+
+    -- Invincibility frames
+    if self.Invincibility then
+        if self.Invincibility.inv_frame > 0 then
+            self.Invincibility.on = true
+            -- makes invincibility frames last longer when time is slowed
+            self.Invincibility.inv_frame = self.Invincibility.inv_frame - Time.speed
+            
+        else
+            self.Invincibility.on = false
+        end
+    end
+
 end
 
 function E:draw()

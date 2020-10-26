@@ -5,6 +5,7 @@ local Transform = require("lib.components.Transform")
 local Sat = require("lib.Sat")
 local StateMachine = require("lib.components.StateMachine")
 local Gizmo = require("lib.components.Gizmo")
+local IM = require("lib.InheritanceModule")
 
 local Shadow = require("lib.components.Shadow")
 
@@ -34,6 +35,7 @@ local PlantZombie = require("entities.PlantZombie")
 local HP = require('entities.base.HP'); HP:new();
 
 local P = HP:derive("Player")
+
 
 print("printing HP....")
 
@@ -118,11 +120,16 @@ function P:on_start()
     self.sprite = self.entity.Sprite
     self.entity.Machine = self.machine
     self.entity.form = self
+    
+    -- IM is Inheritance Module
+    -- attaches properties and methods to various parts of the entity
+    IM:HP(self.entity, 100)
+    IM:PLAYER(self.entity)
+    IM:HOLD_WEAPONS(self.entity)
 
+    self.im = self.entity.IM
+    
     self:equip_gun(Gun:spawn(1).Gun) -- hmm
-    --self:holster_gun(Gun:spawn(1).Gun) -- hmm
-
-    self.entity.form = self
 
 end
 
@@ -224,11 +231,11 @@ function P:pick_up_gun()
 end
 
 function P:equip_gun(gun)
-    if self.equipped_gun ~= nil then
-        self.equipped_gun:unequip()
+    if self.entity.equipped_gun ~= nil then
+        self.entity.equipped_gun:unequip()
     end
-    self.equipped_gun = gun
-    self.equipped_gun:equip(self.entity) -- gives self os gun knows who's holding it
+    self.entity.equipped_gun = gun
+    self.entity.equipped_gun:equip(self.entity) -- gives self os gun knows who's holding it
 end
 
 function P:holster_gun(gun)
@@ -285,11 +292,11 @@ function P:update(dt)
 
     local r_trig = GPM:r_trig(self.player_num)
     if r_trig > 0 then
-        if self.equipped_gun.cooling == false
-        and (self.equipped_gun.automatic == true or self.r_trig_up == true)
+        if self.entity.equipped_gun.cooling == false
+        and (self.entity.equipped_gun.automatic == true or self.r_trig_up == true)
         and (RSXA ~= 0 or RSYA ~= 0)
         then
-            self.equipped_gun:shoot(RSXA ,RSYA, r_trig)
+            self.entity.equipped_gun:shoot(RSXA ,RSYA, r_trig)
             -- i moved the shake into gun
             -- i think it should be unique to every gun
             GPM:startVibe(0.08, 0.2) -- vibe needs stick number
@@ -308,7 +315,9 @@ function P:update(dt)
         self:pick_up_gun()
     end
     if GPM:button_down(self.player_num, "leftshoulder") then
-        PlantZombie:spawn(12)
+        for i = 1, 100 do
+            PlantZombie:spawn(12)
+        end
         -- Missile:spawn(2)
     end
     if GPM:button_down(self.player_num, "dpup") then
@@ -321,31 +330,20 @@ function P:update(dt)
     local gun_angle = 0
     if RSXA ~= 0 or RSYA ~= 0 then
         gun_angle = math.atan2(RSYA, RSXA)
-        self.equipped_gun.transform.angle = gun_angle
+        self.entity.equipped_gun.transform.angle = gun_angle
 
         -- this is coming up nan with no stick input -should be else?
         -- only flip when RSXA or RSYA are used
         if math.abs(math.deg(gun_angle))  >= 90 and math.abs(math.deg(gun_angle)) <= 180 then
-            self.equipped_gun.sprite:flip_v(true)
+            self.entity.equipped_gun.sprite:flip_v(true)
         else
-            self.equipped_gun.sprite:flip_v(false)
+            self.entity.equipped_gun.sprite:flip_v(false)
     end
     end
 
     -- player moves gun, gun doesn't follow player
-    -- self.equipped_gun.transform.x = self.transform.x
-    -- self.equipped_gun.transform.y = self.transform.y
-
-    -- some juice
-    local gun_Holster_offset = 10
-    local tempPos = Vector3.SmoothDamp(
-        Vector3(self.equipped_gun.transform.x,self.equipped_gun.transform.y,0),
-        Vector3(self.transform.x, self.transform.y+gun_Holster_offset, 0),
-        refVel,
-        0.025, -- nice to see when attaching guns
-        dt)
-    self.equipped_gun.transform.x = tempPos.x
-    self.equipped_gun.transform.y = tempPos.y
+    -- self.entity.equipped_gun.transform.x = self.transform.x
+    -- self.entity.equipped_gun.transform.y = self.transform.y
     --
 
     if self.holstered_gun then

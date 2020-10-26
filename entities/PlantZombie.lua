@@ -7,15 +7,18 @@ local PC = require("lib.components.physics.PolygonCollider") -- polygon collider
 local Sprite = require("lib.components.Sprite") -- sprite class
 local Transform = require("lib.components.Transform") -- transform contains position/angle/speed
 local StateMachine = require("lib.components.StateMachine") -- state machine class
+local IM = require("lib.InheritanceModule") -- inheritance module
 
 local Entity = require("lib.Entity") -- entity class
+local Shadow = require("lib.components.Shadow")
+
 
 local Gun = require("entities.Gun") -- gun class, for spawning
 
 
 
-local HP = require('entities.base.HP'); HP:new();
-local PZ = HP:derive("PlantZombie")
+
+local PZ = Class:derive("PlantZombie")
 
 local plant_zombie_atlas = love.graphics.newImage("assets/gfx/grfxkid/dungeon_set/plant_zombie_sheet.png")
 
@@ -61,6 +64,14 @@ function PZ:on_start()
     self.sprite = self.entity.Sprite -- seems to be standard as well?
     self.entity.Machine = self.machine -- hmm
     self.entity.form = self
+
+    IM:HP(self.entity, 100)
+    IM:HOLD_WEAPONS(self.entity)
+    IM:MOB(self.entity)
+
+
+    self.im = self.entity.IM
+
 end
 
 
@@ -71,8 +82,10 @@ function PZ:spawn(x, y)
             Transform(x, y, 4, 4, 0),
             PZ(plant_zombie_atlas), 
             self.create_sprite(plant_zombie_atlas),
-            CC(70,40),
-            PC(zombie_width,zombie_height,Vector2(0,2))
+            CC(20),
+            PC(zombie_width,zombie_height,Vector2(0,2),
+            Shadow(0, 0)
+            )
         )
            
             
@@ -82,9 +95,10 @@ function PZ:spawn(x, y)
     
     function PZ:idle_enter(dt)
 
-        if not self.equipped_gun then
-            self:equip_gun(Gun:spawn(1).Gun);
-        end
+        -- no gun for him, during refactor
+        -- if not self.equipped_gun then
+        --     self:equip_gun(Gun:spawn(1).Gun);
+        -- end
 
     self.sprite:animate("idle_anim")
 end
@@ -140,7 +154,7 @@ end
 
 function PZ:KOed(dt)
     
-    self.equipped_gun.entity.remove = true
+    -- self.equipped_gun.entity.remove = true
 
     dt = dt / Time.speed
     self.shrink_timer = self.shrink_timer - (dt * 20)

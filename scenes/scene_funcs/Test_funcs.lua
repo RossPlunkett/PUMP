@@ -99,32 +99,22 @@ local do_collisions =  function(scene)
 
 
     for i = 1, #bullets do
-        local bullet = entities[bullets[i]].form
+        local bullet = entities[bullets[i]]
         for q = 1, #mobs do
-            local mob = entities[mobs[q]].form
+            local mob = entities[mobs[q]]
 
-            if bullet.entity.CircleCollider:CC(mob.transform) then  
+            if bullet.CircleCollider:CC(mob.Transform) then  
                 local msuv, amount = Sat.Collide(
-                                            bullet.entity.PolygonCollider.world_vertices, 
-                                            mob.entity.PolygonCollider.world_vertices)
+                                            bullet.PolygonCollider.world_vertices, 
+                                            mob.PolygonCollider.world_vertices)
                 if msuv ~= nil then
 
-                    mob.entity.Sprite:flash(0.05)
-                    mob:takeDamage(20)
-                    -- and bullet knockback
-                    mob.transform.x = mob.transform.x + (bullet.transform.vx * 4)
-                    mob.transform.y = mob.transform.y + (bullet.transform.vy * 4)
-
-                    if mob.hp <= 0 then
-                        mob.machine:change("KOed")
-                    end
-
-                    bullet.entity.remove = true
+                    bullet:hit(mob) -- damage, knockback, flash from
+                                    -- composition/inheritance system
 
                 end
-
             end
-        end
+        end    
     end
 
 

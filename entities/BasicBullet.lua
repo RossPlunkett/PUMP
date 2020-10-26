@@ -2,6 +2,8 @@ local Class = require("lib.Class")
 local Anim = require("lib.Animation")
 local Vector2 = require("lib.Vector2")
 local Vector3 = require("lib.Vector3")
+local IM = require("lib.InheritanceModule")
+
 
 local Entity = require("lib.Entity")
 local CC = require("lib.components.physics.CircleCollider")
@@ -24,7 +26,6 @@ function BB:new()
     self.speed = 300
     self.size = Vector2(10, 20)
     self.drag = (self.speed/2); -- some effect on the bullet
-    self.damage = 10
     
     self.ent_name = "BasicBullet"
     
@@ -51,6 +52,11 @@ function BB:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
     self.entity.form = self
+
+
+
+
+    IM:PROJECTILE(self.entity, 40) -- damage
 
 
 end

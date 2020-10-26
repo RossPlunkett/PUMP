@@ -168,8 +168,8 @@ function Gun:shoot(x, y, r_trig) -- these are directionally summed
             RSYA = RSYA / sum
 
             -- apply kickback to the holding entity
-            self.holder.Transform.x = self.holder.Transform.x - (RSXA * self.kickback)
-            self.holder.Transform.y = self.holder.Transform.y - (RSYA * self.kickback)
+            -- self.holder.Transform.x = self.holder.Transform.x - (RSXA * self.kickback)
+            -- self.holder.Transform.y = self.holder.Transform.y - (RSYA * self.kickback)
     
     
             -- add projectile velocity from self
