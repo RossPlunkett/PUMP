@@ -1,6 +1,5 @@
 local Scene = require("lib.Scene")
 local Label = require("lib.ui.Label")
-local Player = require("entities.Player")
 
 local T = Scene:derive("TweenTest")
 

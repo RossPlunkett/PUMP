@@ -42,22 +42,15 @@ local do_collisions =  function(scene)
 
         local ent_name = the_entity.form.ent_name or "no-ent-name"
         
-        if the_entity.SEP then
-            enemies[#enemies + 1] = i
-        elseif the_entity.SBP then
-            bullets[#bullets + 1] = i
-        end
 
-        if the_entity.Player
-        or the_entity.PlantZombie
-        or the_entity.MaskFox
-        then
+        if the_entity:is('CREATURE') then
             creatures[#creatures + 1] = i
         end
 
 
         if the_entity.PlantZombie
         or the_entity.MaskFox
+        or the_entity.Missile
         then
             mobs[#mobs + 1] = i
         end
@@ -67,18 +60,14 @@ local do_collisions =  function(scene)
         
        
 
-        if the_entity.BasicBullet then
+        if the_entity:is('PROJECTILE') then
         bullets[#bullets + 1] = i
         elseif the_entity.Missile then
         missiles[#missiles + 1] = i
-        elseif the_entity.Tree then
-        trees[#trees + 1] = i
-        elseif the_entity.Player then
+        elseif the_entity:is('PLAYER') then
         players[#players + 1] = i
-        elseif the_entity.Gun then
+        elseif the_entity:is('GUN') then
         guns[#guns + 1] = i
-        elseif the_entity.PlantZombie then
-        plant_zombies[#plant_zombies + 1] = i
         else
         end
 
@@ -86,8 +75,10 @@ local do_collisions =  function(scene)
 
     end
 
+    NUM_PLAYERS = #players
 
     -- target missiles if they're untargeted
+    -- needs to find the nearest player
     for i = 1, #missiles do
         if not entities[missiles[i]].form.target_transform then
             -- only does 1 player atm -- BADMULTI
@@ -98,9 +89,14 @@ local do_collisions =  function(scene)
 
 
 
+
     for i = 1, #bullets do
         local bullet = entities[bullets[i]]
         for q = 1, #mobs do
+            -- piercing projectiles will check their ents_hit list and make sure it doesn't
+            -- match any mobs here - if it doesn't it'll [goto skip_ent]
+
+
             local mob = entities[mobs[q]]
 
             if bullet.CircleCollider:CC(mob.Transform) then  
@@ -109,166 +105,40 @@ local do_collisions =  function(scene)
                                             mob.PolygonCollider.world_vertices)
                 if msuv ~= nil then
 
-                    bullet:hit(mob) -- damage, knockback, flash from
-                                    -- composition/inheritance system
+                    bullet:hit(mob) -- damage, knockback, flash from inheritance system
+
 
                 end
             end
-        end    
+            ::skip_ent::
+        end
+        ::skip::  
     end
-
-
-    -- collides creatures with the trees
-    -- should filter out surrounded trees eventually
-
-    -- scene.alternate_frames.world_collision_counter = scene.alternate_frames.world_collision_counter - 1
-    -- if scene.alternate_frames.world_collision_counter <= 0 then
-        
-    -- scene.alternate_frames.world_collision_counter = scene.alternate_frames.world_collision
-    -- for i = 1, #creatures do
-    --     local creature = entities[creatures[i]]
-    --     for q = 1, #trees do
-    --         local tree = entities[trees[q]]
-    --         if creature.CircleCollider:CC(tree.Transform) then
-    --             local msuv, amount = Sat.Collide(creature.PolygonCollider.world_vertices, tree.PolygonCollider.world_vertices)
-    --             if msuv ~= nil then
-    --                 -- this part pushes the creature away from the tree
-    --                 local sepDir = Vector2(creature.Transform.x - tree.Transform.x, creature.Transform.y - tree.Transform.y)
-
-    --                 if not U.same_sign(sepDir.x, msuv.x) then msuv.x = msuv.x * -1 end
-    --                 if not U.same_sign(sepDir.y, msuv.y) then msuv.y = msuv.y * -1 end
-            
-    --                  creature.Transform.x = creature.Transform.x + msuv.x * amount
-    --                  creature.Transform.y = creature.Transform.y + msuv.y * amount
-                    
-    --             end
-    --         end
-    --     end
-    -- end
-    -- end -- alternate frame processing conditional
-
-    -- -- thie one checks each bullet against each missile
-    -- local used_bullets = {} -- used_bullets
-    -- for i = 1, #bullets do
-    --     local bullet = entities[bullets[i]] -- bullet entity
-    --     if not U.contains(used_bullets, i) then -- if this bullet hasn't already hit something
-    --         if #missiles == 0 then break end
-    --         for q = 1, #missiles do
-    --             local missile = entities[missiles[q]]
-    --             -- right here - if the circle colliders collide, it does the poly
-    --             if not U.contains(used_bullets, i) then -- make sure this bullet doesn't hit two things this frame... probably not needed
-    --                 if bullet.CircleCollider:CC(missile.Transform) then
-    --                     local msuv, amount = Sat.Collide(bullet.PolygonCollider.world_vertices, missile.PolygonCollider.world_vertices)
-    --                     if msuv ~= nil then
-    --                         missile.remove = true
-    --                         used_bullets[#used_bullets + 1] = i
-    --                         bullet.remove = true
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --     end
-    -- end
-
-    --new collision function for checking Bullets against mobs using [.form] and HP inheritance
-    -- much slicker this way
     
- 
-
-
-
-    -- -- checks bullets against enemies, any entity with a SEP component
-    -- used_bullets = {}
-    -- for i = 1, #bullets do
-    --     local bullet = entities[bullets[i]] -- bullet entity
-    --     if not U.contains(used_bullets, i) then -- if this bullet hasn't already hit something
-    --         if #enemies == 0 then break end
-    --         for q = 1, #enemies do
-    --             local enemy = entities[enemies[q]]
-    --             -- right here - if the circle colliders collide, it does the poly
-    --             if not U.contains(used_bullets, i) then -- make sure this bullet doesn't hit two things this frame... probably not needed
-    --                 if bullet.CircleCollider:CC(enemy.Transform) then
-    --                     local msuv, amount = Sat.Collide(bullet.PolygonCollider.world_vertices, enemy.PolygonCollider.world_vertices)
-    --                     if msuv ~= nil
-    --                     and enemy.SEP.hp > 0 then -- and enemy is still alive
-    --                         enemy.Sprite:flash(0.05)
-    --                         -- SEP = Standard Entity Properties
-    --                         -- SPP = Standard Projectile Properties
-
-    --                         -- enemy takes damage
-    --                         enemy.SEP.hp = enemy.SEP.hp - bullet.SBP.damage
-                            
-    --                         -- enemy gets pushed back
-    --                         enemy.Transform.x = enemy.Transform.x + (bullet.Transform.vx * bullet.SBP.knockback)
-    --                         enemy.Transform.y = enemy.Transform.y + (bullet.Transform.vy * bullet.SBP.knockback)
-
-    --                         if enemy.SEP.hp <= 0 then
-    --                             enemy.Machine:change("KOed") -- this can easily be a universal state
-    --                         end
-    --                         used_bullets[#used_bullets + 1] = i
-    --                         -- will later trigger an explosion state
-    --                         bullet.remove = true
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --     end
-    -- end
-
-    -- -- remove the hit bullets from [bullets] here? maybe not worth it
-    -- for i = #bullets, 1, -1 do
-    --     table.remove(bullets, bullets[i])
-    -- end
-
-    -- -- check each bullet against each tree
-    -- used_bullets = {}
-    -- for i = 1, #bullets do
-    --     local bullet = entities[bullets[i]] -- bullet entity
-    --     if not U.contains(used_bullets, i) then -- if this bullet hasn't already hit something
-    --         if #trees == 0 then break end
-    --         for q = 1, #trees do
-    --             local tree = entities[trees[q]]
-    --             -- right here - if the circle colliders collide, it does the poly
-    --             if not U.contains(used_bullets, i) then -- make sure this bullet doesn't hit to things this frame... probably not needed
-    --                 if bullet.CircleCollider:CC(tree.Transform) then
-    --                     local msuv, amount = Sat.Collide(bullet.PolygonCollider.world_vertices, tree.PolygonCollider.world_vertices)
-    --                     if msuv ~= nil then
-    --                         used_bullets[#used_bullets + 1] = i
-    --                         bullet.remove = true
-    --                     end
-    --                 end
-    --             end
-    --         end
-    --     end
-    -- end
-
+    --false out all guns as not in_reach
+    if #guns ~= 0 then
+        for i = 1, #guns do
+            entities[guns[i]].in_reach = false
+        end
+    end
     -- see if the player is standing by a gun and record distances from guns
-    local distances = {}
     for i = 1, #players do
+        local distances = {}
         local player = entities[players[i]]
         for q = 1, #guns do
             local gun = entities[guns[q]]
             -- add them to the nearby guns if they collide,
             if player.CircleCollider:CC(gun.Transform)
             -- AND if they aren't currently being used
-            and not gun.Gun.equipped
-            and not gun.Gun.held then
+            and not gun.equipped
+            and not gun.holstered then
                 distances[#distances + 1] = {q, player.CircleCollider:get_d()} -- get_d grabs the last recorded distance from the CircleCollider component
             end
-        end
-    end
 
-    --false out all guns as not in_reach
-    if #guns ~= 0 then
-        for i = 1, #guns do
-            entities[guns[i]].Gun.in_reach = false
         end
-    end
-    
-    for i = 1, #players do
-        local player = entities[players[i]]
+
         if #distances == 0 then -- player not standing by any guns
-            player.Player.closest_gun = nil --- DOTP
+            player.closest_gun = nil --- DOTP
         else -- player standing by at least one gun
             -- [closest] represents index in local table [guns]
             local closest = distances[1][1]
@@ -280,12 +150,13 @@ local do_collisions =  function(scene)
                 end
             end
             -- in_reach means it's the closest gun to a player
-            entities[guns[closest]].Gun.in_reach = true -- in_reach seems fragile - perhaps this behavior can come from the 
-            player.Player.closest_gun = entities[guns[closest]]
-
+            entities[guns[closest]].in_reach = true
+            player.closest_gun = entities[guns[closest]]
         end
     end
+
 end
+
 
 
 

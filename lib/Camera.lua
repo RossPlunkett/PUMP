@@ -1,7 +1,7 @@
 
 local U = require("lib.Utils")
 
-require("lib.Vector3")
+local Vector3 = require("lib.Vector3")
 
 local camera = {}
 camera.x = 0 -- position
@@ -17,6 +17,7 @@ camera.curVel = Vector3(0,0,0)
 camera.w = 0 -- i think its better to get these values from the start?
 camera.h = 0
 camera.offset = Vector3(0,0)
+
 function camera:init()
   self.shaking = false
   self.shake_time = 0.1 -- just a default, gets set w/every shake
@@ -181,6 +182,15 @@ function camera:update(dt)
   camera:updateCameraPosition(dt)
   -- rotates around map origin (0, 0)
   -- self.rotation = self.rotation + 0.01
+
+
+  -- print('camera position is, ', self.x, self.y)
+
+
+    -- Mouse.worldX = Mouse.x + self.x
+    -- Mouse.worldY = Mouse.y + self.y
+    -- print("worldX, WorldY: ", Mouse.worldX, Mouse.worldY)
+
 end
 
 -- update camera position
@@ -188,6 +198,11 @@ end
 function camera:setScale(sx, sy)
   self.scaleX = sx or self.scaleX
   self.scaleY = sy or sx or self.scaleY --allows for one arg
+end
+
+function camera:draw()
+  -- HUD is starting here
+  love.graphics.print(tostring(love.timer.getFPS()),self.x + 5,self.y + 5)
 end
 
 return camera

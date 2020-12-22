@@ -1,26 +1,12 @@
 local Class = require("lib.Class") -- require Lua class module
-local Anim = require("lib.Animation") -- require the animation class
 local Vector2 = require("lib.Vector2") -- require Vec2 class
-local Vector3 = require("lib.Vector3") -- require Vec3 class
-local CC = require("lib.components.physics.CircleCollider") -- circle collider
-local PC = require("lib.components.physics.PolygonCollider") -- polygon collider
-local Sprite = require("lib.components.Sprite") -- sprite class
-local Transform = require("lib.components.Transform") -- transform contains position/angle/speed
+local Anim = require("lib.Animation")
+local Sprite = require("lib.components.Sprite")
 local StateMachine = require("lib.components.StateMachine") -- state machine class
-local IM = require("lib.InheritanceModule") -- inheritance module
-
-local Entity = require("lib.Entity") -- entity class
-local Shadow = require("lib.components.Shadow")
-
-
-local Gun = require("entities.Gun") -- gun class, for spawning
-
 
 
 
 local PZ = Class:derive("PlantZombie")
-
-local plant_zombie_atlas = love.graphics.newImage("assets/gfx/grfxkid/dungeon_set/plant_zombie_sheet.png")
 
 
 
@@ -33,7 +19,7 @@ function PZ:new(atlas)
     self.base_wander_speed = 100
     
     self.machine = StateMachine(self, "idle")
-    self.ent_name = "PlantZombie"
+    self.ent_name = "PlantZombie" -- maybe the name should go directly on the entity
 end
 
 
@@ -53,7 +39,7 @@ end
 
 function PZ:equip_gun(gun)
     if self.equipped_gun ~= nil then
-        self.equipped_gun:unequip()
+        self.equipped_gun:holster()
     end
     self.equipped_gun = gun
     self.equipped_gun:equip(self.entity) -- gives self os gun knows who's holding it
@@ -65,41 +51,39 @@ function PZ:on_start()
     self.entity.Machine = self.machine -- hmm
     self.entity.form = self
 
-    IM:HP(self.entity, 100)
-    IM:HOLD_WEAPONS(self.entity)
-    IM:MOB(self.entity)
+    local hp_args = {
+        hp= 19
+    }
+
+    -- list classes and their arguments, if any, to add classes
+    -- IM:runAlt(self.entity, "HP", hp_args)
+    -- IM:runAlt(self.entity, "MOB") 
+    -- IM:runAlt(self.entity, "WEAPON_SKILLS")
 
 
     self.im = self.entity.IM
 
+
 end
 
 
-function PZ:spawn(x, y)
-        local zombie_height= 4
-        local zombie_width = 5
-        local zombie = Entity(
-            Transform(x, y, 4, 4, 0),
-            PZ(plant_zombie_atlas), 
-            self.create_sprite(plant_zombie_atlas),
-            CC(20),
-            PC(zombie_width,zombie_height,Vector2(0,2),
-            Shadow(0, 0)
-            )
-        )
-           
-            
-        _G.events:invoke("add to em", zombie)
+function PZ:spawn(arg)
 
-    end
+    local tbl = {
+        {"Transform", arg.x, arg.y, 1.8, 1.8, 0},
+        {"CC", 20},
+        "PlantZombie",
+        {"PC", 15, 19, Vector2(0,2)},
+        {"Shadow", 15}
+    }
+
+    tbl.ent_class = "CREATURE" -- what to inherit onto the entity core
+
+    _G.events:invoke("EF", tbl)
+
+end
     
-    function PZ:idle_enter(dt)
-
-        -- no gun for him, during refactor
-        -- if not self.equipped_gun then
-        --     self:equip_gun(Gun:spawn(1).Gun);
-        -- end
-
+function PZ:idle_enter(dt)
     self.sprite:animate("idle_anim")
 end
 
@@ -139,8 +123,8 @@ function PZ:wander(dt)
         return
     end
 
-    self.transform.x = self.transform.x + ((self.transform.vx  * dt) * self.base_wander_speed)
-    self.transform.y = self.transform.y + ((self.transform.vy  * dt) * self.base_wander_speed)
+    self.transform.x = self.transform.x + ( (self.transform.vx  * dt) * self.base_wander_speed )
+    self.transform.y = self.transform.y + ( (self.transform.vy  * dt) * self.base_wander_speed )
 end
 
 function PZ:wander_exit(dt)
@@ -148,7 +132,6 @@ function PZ:wander_exit(dt)
 end
 
 function PZ:KOed_enter(dt)
-    self.entity.Sprite:flash(0.05)
     self.shrink_timer = self.transform.sx
 end
 
@@ -163,6 +146,8 @@ function PZ:KOed(dt)
 
     if self.shrink_timer <= 0 then
         self.entity.remove = true
+        -- self.transform.sx = 0 -- crappy band-aid for shadow issue
+        -- self.transform.sy = 0
     end
 end
 
@@ -171,12 +156,6 @@ end
 
 function PZ:update(dt)
     self.machine:update(dt)
-
-
-    if self.equipped_gun then
-        self.equipped_gun.entity.Transform.x = self.entity.Transform.x + 1
-        self.equipped_gun.entity.Transform.y = self.entity.Transform.y + 1
-    end
 end
 
 return PZ

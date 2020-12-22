@@ -13,7 +13,8 @@ function SM:new(scene_dir, scenes)
         assert(type(scenes) == "table", "parameter scenes must be table!")
         for i =1, #scenes do
             local M = require(scene_dir .. "." .. scenes[i])
-            assert(M:is(Scene), "File: " .. scene_dir .. "." .. scenes[i] .. ".lua is not of type Scene!")
+            -- assert(M:is(Scene), "File: " .. scene_dir .. "." .. scenes[i] .. ".lua is not of type Scene!")
+            -- need to assert this not using :is()
             self.scenes[scenes[i]] = M(self)
         end
     end

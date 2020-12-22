@@ -152,18 +152,16 @@ function Sprite:poly()
 end
 
 function Sprite:flash(time)
-    love.graphics.setShader(self.flash_shader)
     self.flashing = true
     self.flash_timer = time
-end
-
-local function resetFlash()
-    
 end
 
 
 function Sprite:draw()
     
+    if self.entity.Shadow then
+        self.entity.Shadow:drawShadow()
+    end
     
     if self.flashing then
         love.graphics.setShader(self.flash_shader)
@@ -171,22 +169,14 @@ function Sprite:draw()
     
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
     
-
-    love.graphics.setShader()
+    -- love.graphics.setShader()
     if self.flashing then
         love.graphics.setShader()
     end
-    
-    
 end
 
-function Sprite:drawShadow() -- put this below draw() to make it intuitive - this happens after the draw()
-    -- optimized: did the setColor before and after the shadow event to remove all of the coloring here
-                                      --            offset to the height of the sprite and put it in the center      flip it over
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
-end
 
 
 

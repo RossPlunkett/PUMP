@@ -1,9 +1,9 @@
 local Class = require("lib.Class")
 local U = require("lib.Utils")
 
-local E = Class:derive("Entity")
+local ENTITY = Class:derive("ENTITY")
 
-function E:new(...)
+function ENTITY:new(...)
     self.components = {}
     local components_to_add = {...}
     
@@ -12,6 +12,9 @@ function E:new(...)
             self:add(components_to_add[i])
         end
     end
+
+    self.age = 0 -- age for all entities, in seconds
+
 end
 
 --helps us sort our priorities because priorities are important
@@ -23,7 +26,7 @@ end
 --
 --Note: name is optional and if it is not used, the component's class type
 --will be used instead
-function E:add(component, name)
+function ENTITY:add(component, name)
     if U.contains(self.components, component) then return end
     --Add additional table entries that we want to exist for all components
     
@@ -59,7 +62,7 @@ function E:add(component, name)
     table.sort(self.components, priority_compare)
 end
 
-function E:remove(component)
+function ENTITY:remove(component)
     local i = U.index_of(self.components, component)
     if i == -1 then return end
 
@@ -72,11 +75,11 @@ function E:remove(component)
     --if so, remove it from this entity
     if component.type and type(component.type) == "string" then
         self[component.type] = nil
-        component.entity = nil -- this seems like it kiils the whole entity
+        component.entity = nil -- this seems like it kiils the whole entity. maybe it removes the reference?
     end
 end
 
-function E:on_start()
+function ENTITY:on_start()
     for i = 1, #self.components do
         local component = self.components[i]
         --if the component is enabled, then call on_start() if it has one
@@ -89,10 +92,9 @@ function E:on_start()
     end
 end
 
-function E:update(dt)
+function ENTITY:update(dt)
 
-    -- run the IM_update first if you got it
-    if self.IM_update then self:IM_update(dt) end
+
     -- C_update for inheritance
     if self.C_update then self:C_update(dt) end
 
@@ -103,9 +105,12 @@ function E:update(dt)
         end
     end
 
+    self.age = self.age + dt
+    if self.age > 600000 then self.age = 20000 end -- prevent ages from going infinite when AFK
+
 end
 
-function E:draw()
+function ENTITY:draw()
     for i = 1, #self.components do
         if self.components[i].enabled and self.components[i].draw then
             self.components[i]:draw()
@@ -113,7 +118,7 @@ function E:draw()
     end
 end
 
-return E
+return ENTITY
 
 -- anatomy of a component
 

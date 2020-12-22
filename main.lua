@@ -1,6 +1,19 @@
-Key = require("lib.Keyboard")
-Tween = require("lib.Tween")
+PROFILING = false
+LOVEDEBUG = false
 
+
+
+
+Key = require 'lib.Keyboard'
+Mouse = require 'lib.Mouse'
+Tween = require 'lib.Tween'
+
+
+LANGUAGE = "ENGLISH"
+
+NUM_PLAYERS = 1;
+
+-- gamepad support
 local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
@@ -25,9 +38,10 @@ local Event = require("lib.Events")
 -- World = world(200, 200, 10, 10, 20, 20)
 
 
+-- Gizmo lowers FPS significantly, so if you have low frame rates that could be why
 IsGizmoOn = false --for debugging colliders and other related stuff
 GizmoVisibility = 0.4 -- alpha/ the opacity of the gizmo
-FullScreenToggle = false
+FullScreenToggle = true
 --TODO before PUMP
 
 -- move stuff out of the player
@@ -38,7 +52,28 @@ math.randomseed(os.time()) -- can be seeded
 
 local sm = {}
 
-function love.load()
+-- comment the line above and uncomment these two to activate console
+-- sm = {}
+-- require('extlib.lovedebug')
+
+
+function love.load(arg)
+
+    if PROFILING then
+        love.profiler = require('extlib/profile') 
+        love.profiler.start()
+    end
+
+  -- this line enables debugging in ZeroBrane
+    if arg and arg[#arg] == "-debug" then 
+      require("mobdebug").start()
+      require("mobdebug").off() --<-- turn the debugger off
+      
+    end
+
+    love.mouse.setRelativeMode( true ) -- seems good right?
+    -- cursor = love.mouse.getSystemCursor("hand")
+    -- love.mouse.setCursor(cursor)
     
     --maid settings
     --love.window.setMode(Pixel_Window_X*2,Pixel_Window_Y*2, {resizable=false, vsync=true, minwidth=200, minheight=200})
@@ -47,6 +82,8 @@ function love.load()
 
     --Love2D game settings
     love.graphics.setDefaultFilter('nearest', 'nearest')
+    love.graphics.setLineStyle('rough')-- sets the line to be rough
+
 
     --local font = love.graphics.newFont("assets/fonts/ARCADECLASSIC.TTF", 20)
     --set the font to the one above
@@ -62,46 +99,62 @@ function love.load()
 
     Key:hook_love_events()
 
+    local EC = require("entities.EntityFactory")
+
     --.whole game is spawned with this line:
     sm = SM("scenes", {"MainMenu", "Test", "TweenTest"})
 
     --these next ones activate the scene
     --sm:switch("MainMenu")
     -- sm:switch("TweenTest")
-    sm:switch("Test")
+    sm:switch("Test") 
+
+
 
 
 end
 
 
+if PROFILING then love.frame = 0 end
 function love.update(dt)
     
     if dt > 0.035 then return end
+    
+    if PROFILING then
+        love.frame = love.frame + 1
+        -- generates a report every 100 frames 
+        if love.frame%100 == 0 then
+            love.report = love.profiler.report(60)
+            love.profiler.reset()
+        end
+    end
+    
+    
     -- i moved the camera here because it has conflicts with the slowmotion effect
     Camera:update(dt)
     Time:update(dt)
+
     dt = Time:getDt(dt)
-    
+
     if Key:key_down("escape") then
         love.event.quit()
     end
     
     sm:update(dt)
+    Mouse:update(dt)
     Key:update(dt)
     GPM:update(dt)
     Tween.update(dt)
-
-
-
-
+    
 end
 
 function love.draw()
     
-    love.graphics.setLineStyle('rough')-- sets the line to be rough -- i dont know if it is right to be here tho
     maid64.start()--starts the maid64 process
     Camera:set()
     sm:draw()
+    if PROFILING then love.graphics.print(love.report or "Please wait...") end
+    Camera:draw() -- FPS stuff, HUD (for now)
     Camera:unset()
     maid64.finish()--finishes the maid64 process
 end
@@ -110,6 +163,7 @@ function love.resize(w, h)
     -- this is used to resize the screen correctly
     maid64.resize(w, h)
 end
+
 
 
 

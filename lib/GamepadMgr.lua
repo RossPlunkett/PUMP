@@ -10,6 +10,7 @@ local function hook_love_events(self)
 
     function love.joystickadded(joystick)
         local id = joystick:getID()
+        print("jpystick added, is is", id)
         assert(self.connected_sticks[id] == nil, "Joystick " .. id .. "already exists!")
         self.connected_sticks[id] = joystick
         self.is_connected[id] = true
@@ -19,6 +20,7 @@ local function hook_love_events(self)
 
     function love.joystickremoved(joystick)
         local id = joystick:getID()
+        print("jpystick removed, is is", id)
         self.is_connected[id] = false
         self.connected_sticks[id] = nil
         self.button_map[id] = {}
@@ -70,6 +72,8 @@ function GPM:new(db_files, ad_enabled)
 
     self.base_vibe_strength = 0.7
     self.vibe_strength = nil
+
+    self.dead_zone = DEAD_ZONE
 end
 
 --Returns true if a joystick with the given id exists
@@ -146,7 +150,7 @@ function GPM:l_stick(joyId)
     return {xAxis, yAxis}
 end
 
-function GPM:r_stick(joyId, tune)
+function GPM:stick2(joyId, tune)
     local stick = self.connected_sticks[joyId]
     if self.is_connected[joyId] == nil or self.is_connected[joyId] == false then return {0,0} end
 
@@ -214,7 +218,8 @@ end
 
 function GPM:startVibe(time, strength)
 
-
+    -- could check if the controller supports vibration
+    -- vibes should be individual tables with timers, like shakes
     self.vibrating, self.vibe_time, self.vibe_timer = true, time, time
     self.vibe_strength = strength or nil
 end
