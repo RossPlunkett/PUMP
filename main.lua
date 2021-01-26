@@ -18,7 +18,7 @@ local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
 
--- low rez thing
+-- low rez thingL 
 local maid64 = require ("lib.maid64")
 -- do not change else where
 -- maybe use a table so it cant be changed somewhere?

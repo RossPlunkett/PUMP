@@ -4,8 +4,8 @@
   "BoardIndex": 0,
   "BoardCount": 1,
   "AutoSave": false,
-  "Pan.X": -216,
-  "Pan.Y": -112,
+  "Pan.X": -428,
+  "Pan.Y": -89,
   "ZoomLevel": 2,
   "ColorTheme": "Cloudy",
   "TaskTransparency": 5,
@@ -194,6 +194,18 @@
       "Selected": false,
       "TaskType.CurrentChoice": 2,
       "CreationTime": "Oct 8 2020 00:37:56"
+    }, 
+    {
+      "BoardIndex": 0,
+      "Position.X": 0,
+      "Position.Y": 464,
+      "Checkbox.Checked": false,
+      "Progression.Current": 0,
+      "Progression.Max": 0,
+      "Description": "If jump mechanic were to add in the game should it be an ability\nfor a character or just one character with different abilities like skill tree?\nand maybe the characters will be just cosmetics?",
+      "Selected": false,
+      "TaskType.CurrentChoice": 2,
+      "CreationTime": "Dec 30 2020 11:24:54"
     }
   ]
 }
