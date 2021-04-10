@@ -26,6 +26,11 @@ function MediumBullet:new(arg)
     self.drag = (self.speed/2); -- some effect on the bullet
     
     self.ent_name = "MediumBullet"
+    local theta = (Sprite.angle * math.pi / 180)
+    local dx = 1 * math.cos(theta)
+    local dy = 1 * math.sin(theta)
+    Camera.startShake(self,dx,dy,10,2,0)
+    --as
     
 end
 

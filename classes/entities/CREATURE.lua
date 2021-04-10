@@ -14,7 +14,8 @@ CREATURE.holstered_gun = nil
 function CREATURE:pick_up_gun(forced_gun) -- arg is for forcing a certain gun
 
     if not self.equipped_gun then -- if holding no weapons
-        if not forced_gun then
+        if not forced_gun and not self.closest_gun.equipped then
+            -- check for closest_gun in case another player picks it up that frame?
             self:equip_gun(self.closest_gun)
         else
             self.equip_gun(forced_gun) 
@@ -72,6 +73,7 @@ function CREATURE:drop_gun(gun) -- player can't drop explicitly, only when picki
 end
 
 function CREATURE:CREATURE_update(dt)
+
     if self.equipped_gun then
         
         -- some juice
@@ -86,6 +88,7 @@ function CREATURE:CREATURE_update(dt)
         self.equipped_gun.Transform.x = tempPos.x
         self.equipped_gun.Transform.y = tempPos.y
     end
+    
 
     if self.holstered_gun then
         self.holstered_gun.Transform.x = self.Transform.x
@@ -94,9 +97,6 @@ function CREATURE:CREATURE_update(dt)
     
 end
 CREATURE.UF[#CREATURE.UF + 1] = 'CREATURE_update'
-
-
-
 
 
 return CREATURE

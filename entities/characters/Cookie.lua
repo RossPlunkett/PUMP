@@ -28,11 +28,10 @@ end
 function Cookie:spawn(arg)    
 
     local ent = {
-        {"Transform", arg.x, arg.y, 1.3, 1.3},
+        {"Transform", arg.x, arg.y, 1, 1},
         {"Cookie", arg},
         {"CC", 19, 32},
         {"PC", 15, 16, Vector2(0,2)},
-        "Gizmo",
         {"Shadow", 12}
     }
 

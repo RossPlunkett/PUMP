@@ -23,9 +23,15 @@ function PLAYER:getLS()
         else LSYA = 0; vert = false end
         local sum = math.abs(LSXA) + math.abs(LSYA)
 
-        if sum ~= 0 then -- sum it
-            LSXA = LSXA / sum
-            LSYA = LSYA / sum
+        -- old 
+        -- if sum ~= 0 then -- sum it
+        --     LSXA = LSXA / sum
+        --     LSYA = LSYA / sum
+        -- end
+        --new -- this is to make sure the player wont move faster diagonally
+        if sum > 1 then -- sum it
+            LSXA = LSXA / 1.55
+            LSYA = LSYA / 1.55
         end
         -- stops player from 'slowing down' when moving diagonally with the keyboard
         -- with a little speed boost

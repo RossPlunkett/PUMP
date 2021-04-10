@@ -99,7 +99,9 @@ function PLAYER:PLAYER_update(dt)
 
     if GPM:button(self.player_num, "leftshoulder") then
         for i = 1, 2 do
-            _G.events:invoke("EF_spawn", "PlantZombie", {x = 100, y = 100})
+            -- _G.events:invoke("EF_spawn", "PlantZombie", {x = 100, y = 100})
+            _G.events:invoke("EF_spawn", "Mom1", {x = 100, y = 100})
+            -- _G.events:invoke("EF_spawn", "Mom2", {x = 100, y = 100})
              local xcoord = math.floor(math.random() * 100)
              local ycoord = math.floor(math.random() * 100)
              local angle = math.random() * 3.14
@@ -135,9 +137,9 @@ function PLAYER:PLAYER_update(dt)
         initPos = initPos.add(initPos,Vector2(xcamoffset,ycamoffset))
     end
     
-    if self.player_num == 1 then
+    -- if self.player_num == 1 then
         Camera:setTargetPos(initPos.x,initPos.y)
-    end
+    -- end
 end
 
 PLAYER.UF[#PLAYER.UF + 1] = 'PLAYER_update'

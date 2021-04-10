@@ -18,6 +18,7 @@ function GUN:GUN_init(arg)
     self.base_proj_speed = arg.base_proj_speed
     self.automatic = arg.automatic or false
     self.kickback = arg.kickback or 0
+    self.knockback = arg.knockback or 0
     self.recoil = arg.recoil or 0
     self.magnitude = arg.magnitude or 20
     -- this one... will it be on the arg like this?
@@ -83,8 +84,6 @@ function GUN:shoot(x, y, r_trig) -- these are directionally summed
             -- apply recoil to gun itself
             self.Transform.x = self.Transform.x - (RSXA * self.recoil)
             self.Transform.y = self.Transform.y - (RSYA * self.recoil)
-
-            
             
             -- add projectile velocity from self
             RSXA = RSXA * self.base_proj_speed

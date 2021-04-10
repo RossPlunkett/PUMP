@@ -4,7 +4,11 @@ local World = Class:derive("World")
 
 local mouth_atlas = love.graphics.newImage("assets/gfx/Tiles/Teeth/TEETH_FOREST.png")
 local stomach_atlas = love.graphics.newImage("assets/gfx/Tiles/stomach/StomachTiles.png")
--- need to manually make some quads?
+local stomach_walls = love.graphics.newImage("assets/gfx/Tiles/stomach/WallTiles.png")
+
+
+
+
 
 
 

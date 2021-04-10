@@ -45,12 +45,15 @@ local do_collisions =  function(scene)
 
         if the_entity:is('CREATURE') then
             creatures[#creatures + 1] = i
+            creatures[#creatures + 1] = i
         end
 
 
         if the_entity.PlantZombie
         or the_entity.MaskFox
         or the_entity.Missile
+        or the_entity.Mom1
+        or the_entity.Mom2
         then
             mobs[#mobs + 1] = i
         end

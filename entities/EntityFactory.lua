@@ -7,6 +7,8 @@ local EF = {}
 local Class = require("lib.Class")
 
 
+
+
 local ent_classes = {}
 
 ent_classes.ENTITY = require('classes.entities.ENTITY')
@@ -45,6 +47,9 @@ components.Vase = require("entities.characters.Vase")
 -- mob forms
 components.Missile = require("entities.mobs.Missile")
 components.PlantZombie = require("entities.mobs.PlantZombie")
+components.Mom1 = require("entities.mobs.Mom1")
+components.Mom2 = require("entities.mobs.Mom2")
+
 
 -- gun forms
 components.Uzi = require("entities.guns.Uzi")
@@ -73,6 +78,8 @@ atlases.Vase = love.graphics.newImage("assets/gfx/Characters/Vase.png")
 -- mob atlases
 atlases.Missile = love.graphics.newImage("assets/gfx/missile.png")
 atlases.PlantZombie = love.graphics.newImage("assets/gfx/grfxkid/dungeon_set/plant_zombie_sheet.png")
+atlases.Mom1 = love.graphics.newImage("mom1.png")
+atlases.Mom2 = love.graphics.newImage("mom2.png")
 
 -- gun atlases
 atlases.Revolver = love.graphics.newImage("assets/gfx/Weapons/Guns/Revolver.png")
@@ -132,10 +139,11 @@ function EF:run(arg)
             local Sprite = components[L].create_sprite(atlases[L])
             ent:add(Sprite)
         end
-
         
-
     end
+
+    -- add Gizmo to every entity if enabled
+    if IsGizmoOn then ent:add(components["Gizmo"]()) end
 
     ent:on_start()
 

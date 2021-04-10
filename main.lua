@@ -8,6 +8,7 @@ Key = require 'lib.Keyboard'
 Mouse = require 'lib.Mouse'
 Tween = require 'lib.Tween'
 
+Physics = require 'lib.Physics'
 
 LANGUAGE = "ENGLISH"
 
@@ -18,12 +19,12 @@ local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
 
--- low rez thingL 
+-- low rez thing
 local maid64 = require ("lib.maid64")
 -- do not change else where
 -- maybe use a table so it cant be changed somewhere?
-Pixel_Window_X = 128 *3
-Pixel_Window_Y = 128 *2
+Pixel_Window_X = 320
+Pixel_Window_Y = 240
 
 Camera = require("lib/Camera")
 Camera:init()
@@ -38,7 +39,8 @@ local Event = require("lib.Events")
 -- World = world(200, 200, 10, 10, 20, 20)
 
 
--- Gizmo lowers FPS significantly, so if you have low frame rates that could be why
+-- Gizmo lowers FPS significantly, so if you have low frame rates that is part of it
+-- now Gizmo is automatically attached to each entity if IsGizmoOn is true
 IsGizmoOn = false --for debugging colliders and other related stuff
 GizmoVisibility = 0.4 -- alpha/ the opacity of the gizmo
 FullScreenToggle = true
@@ -71,9 +73,9 @@ function love.load(arg)
       
     end
 
-    love.mouse.setRelativeMode( true ) -- seems good right?
-    -- cursor = love.mouse.getSystemCursor("hand")
-    -- love.mouse.setCursor(cursor)
+    love.mouse.setRelativeMode( false ) -- seems good right?
+    cursor = love.mouse.newCursor("assets/gfx/cursor.png", 0, 0)
+    love.mouse.setCursor(cursor)
     
     --maid settings
     --love.window.setMode(Pixel_Window_X*2,Pixel_Window_Y*2, {resizable=false, vsync=true, minwidth=200, minheight=200})
@@ -144,7 +146,7 @@ function love.update(dt)
     Mouse:update(dt)
     Key:update(dt)
     GPM:update(dt)
-    Tween.update(dt)
+    Tween:update(dt)
     
 end
 

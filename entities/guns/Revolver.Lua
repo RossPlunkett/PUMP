@@ -53,23 +53,13 @@ function Revolver:makeProjectile()
     -- bullet sprite angle calculation
     local newangle = math.atan2(RSYA, RSXA)
 
-    -- qualities to supply to MediumBullet:new()
-    local arg = {
-        -- starting position
-        x = self.transform.x + (RSXA  * self.entity.magnitude), 
-        y = self.transform.y + (RSYA  * self.entity.magnitude),
-        -- velocity
-        vx = RSXA,
-        vy = RSYA,
-        -- get damage from gun entity, this one gets passed through to the MediumBullet:new()
-        damage = self.entity.damage
-    }
+    local x = self.transform.x + (RSXA  * self.entity.magnitude)
+    local y = self.transform.y + (RSYA  * self.entity.magnitude)
 
-
-    -- create component list to send to EntityFactory            
+-- create component list to send to EntityFactory          
     local bullet = {
-        {"Transform", arg.x, arg.y, 1, 1, newangle, arg.vx or 0, arg.vy or 0},
-        {"MediumBullet", arg},
+        {"Transform", x, y, 1, 1, newangle, RSXA or 0, RSYA or 0},
+        {"MediumBullet", {damage = self.entity.damage}},
         {"CC", 20, 40},
         {"PC", 30, 9, Vector2(-6, 0)},
         {"Shadow", 2}
@@ -108,7 +98,6 @@ function Revolver:spawn(arg)
         "Revolver",
         {"CC", 16, 40},
         {"PC", 6, 4, Vector2(1, 1)},
-        "Gizmo",
         {"Shadow", -4, 0, -1}
     }
     gun_entity.ent_class = "GUN"

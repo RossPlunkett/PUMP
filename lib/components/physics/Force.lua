@@ -1,64 +1,50 @@
-local Class = require("lib.Class")
+local Force = {}
+
+--[[
+1. Entities each have specific weights, and forces are of specific power
+2. the total distance a force moves and entity is power / weight
+3. each force takes place over a specified amount of time
+
+4. to determine the distance for the current frame,
+we take the current amount of time elapsed so far in the exertion,
+and see exactly how far it moves between that time,
+and that time plus the current dt.
+and then of course add the current dt onto that elapsed time
 
 
-local Force = Class:derive("Force")
 
-function Force:new(x_dir, y_dir, distance, time, ease_func)
-    
---x_xir and y_dir are summed RSXA/RSYA style
---distance is in world-pixels
--- time is  in seconds
--- ease_func is the anymous easing function
-self.x = x_dir
-self.y = y_dir
+]]
 
--- to assign exactly how much to push this frame, it has to
--- keep track of how far it's traveled in the easingfunction
--- since the last frame and apply that to the entity's transform.
-self.distance = distance
+function Force:new()
 
-self.time = time
-self.timer = time
+    self.forces = {}
 
--- these two 
-self.tween_result = nil
-self.prev_tween_result = nil
+end
 
-self.ease_func = ease_func
+function Force:add(power, time, tween, vx, vy)
+
+    local force = {
+        power = power,
+        time = time,
+        tween = tween,
+        vx = vx,
+        vy = vy
+    }
+
+    table.add(self.forces, force)
+
+
+-- power, time, tween type, direction (summed)
 
 end
 
 function Force:on_start()
 
-
-
 end
 
-function Force:update(dt)
-
-self.timer = self.timer - dt
-if self.timer <= 0 then
-    self.entity:remove(self)
-    return
-end
-
-if self.prev_tween_result == nil then
-    self.prev_tween_result = 0
-end
-
-local ratio = self.timer / self.time
-
-local tween = function(ratio) return math.pow(ratio -1, 3) + 1 end
-
-self.tween_result = tween(ratio)
-
-local move_amt = (self.tween_result - self.prev_tween_result) * self.distance
-
-self.entity.Transform.x = self.entity.Transform.x + (move_amt * self.x)
-self.entity.Transform.y = self.entity.Transform.y + (move_amt * self.y)
-
-
-
+function Force:update()
+    -- bail if no forces
+    if #self.forces < 1 then return end
 
 end
 

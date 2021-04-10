@@ -6,11 +6,11 @@ local StateMachine = require("lib.components.StateMachine") -- state machine cla
 
 
 
-local PZ = Class:derive("PlantZombie")
+local Mom2 = Class:derive("Mom2")
 
 
 
-function PZ:new(atlas)
+function Mom2:new(atlas)
     
     if atlas then
         self.atlas = atlas
@@ -25,14 +25,14 @@ function PZ:new(atlas)
     -- self.base_wander_speed = 100
     
     self.machine = StateMachine(self, "idle")
-    self.ent_name = "PlantZombie" -- maybe the name should go directly on the entity
+    self.ent_name = "Mom2" -- maybe the name should go directly on the entity
 end
 
 
 
-function PZ.create_sprite(atlas)
-    local idle_anim = Anim(0,0, 32, 64, {1, 2, 3, 4}, 4, {{0.1, 0.1, 0.15, 0.1}, 1})
-    local walk_anim = Anim(128,0, 32, 64, {1, 2, 3, 4}, 4, {{0.15, 0.1, 0.1, 0.15}, 1})
+function Mom2.create_sprite(atlas)
+    local idle_anim = Anim(0,0, 32, 32, {1, 2}, 2, {{0.5, 0.5}, 1})
+    local walk_anim = Anim(0,0, 32, 32, {1, 2}, 2, {{0.5, 0.5}, 1})
     if atlas == nil then
         assert(false, "no atlas supplied to sprite! Also none in self.atlas, so basically no atlases to draw from here. Kapeche?")
     end
@@ -43,7 +43,7 @@ function PZ.create_sprite(atlas)
     return spr
 end
 
-function PZ:equip_gun(gun)
+function Mom2:equip_gun(gun)
     if self.equipped_gun ~= nil then
         self.equipped_gun:holster()
     end
@@ -51,7 +51,7 @@ function PZ:equip_gun(gun)
     self.equipped_gun:equip(self.entity) -- gives self os gun knows who's holding it
 end
 
-function PZ:on_start()
+function Mom2:on_start()
     self.transform = self.entity.Transform -- seems to be standard for entities?
     self.sprite = self.entity.Sprite -- seems to be standard as well?
     self.entity.Machine = self.machine -- hmm
@@ -69,18 +69,23 @@ function PZ:on_start()
 
     self.im = self.entity.IM
 
+    self.OG_x = self.transform.x
+    self.OG_y = self.transform.y
+
+    self.move_range = 20
+
 
 end
 
 
-function PZ:spawn(arg)
+function Mom2:spawn(arg)
 
     local tbl = {
-        {"Transform", arg.x, arg.y, 1.8, 1.8, 0},
+        {"Transform", arg.x, arg.y, 1, 1, 0},
         {"CC", 20},
-        "PlantZombie",
+        "Mom2",
         {"PC", 15, 19, Vector2(0,2)},
-        {"Shadow", 15}
+        {"Shadow", -34}
     }
 
     tbl.ent_class = "CREATURE" -- what to inherit onto the entity core
@@ -89,68 +94,93 @@ function PZ:spawn(arg)
 
 end
     
-function PZ:idle_enter(dt)
-    self.sprite:animate("idle_anim")
-end
 
-function PZ:idle(dt)
 
-        -- we want the chance to go up linearly with dt
+function Mom2:idle_enter(dt)
 
-        local chance = dt * 1000 -- this number will be larger, when the dt is larger.
-        -- how to make the chance proportional?
-
-        -- -- if true then return end
-        local roll = math.random(100)
-
-        if roll == 1 then
-            self.machine:change("wander")
-        end
-end
-
-function PZ:idle_exit(dt)
+    self.idle_timer = 1
 
 end
 
-function PZ:wander_enter(dt)
+function Mom2:idle(dt) 
+    self.idle_timer = self.idle_timer - dt
 
-    self.sprite:animate("walk_anim")
-    self.wander_timer = math.random() * self.max_wander_time
-    self.transform.vx = (math.random() * 2) - 1
-    self.transform.vy = (math.random() * 2) - 1
-    if self.transform.vx >= 0 then
-        self.sprite:flip_h(false)
-    else
-        self.sprite:flip_h(true)
+    if (self.idle_timer <= 0) then
+        self.machine:change('wander')
     end
+
 end
 
-function PZ:wander(dt)
+function Mom2:idle_exit(dt) end
+
+--------------------------------------------------------
+
+function Mom2:wander_enter(dt)
+
+    self.wander_time = 1
+    self.wander_timer = 1
+    self.wander_elapsed = 0
+    self.wander_distance = 10
+
+    self.my_rando_x = math.random() - 0.5;
+    self.my_rando_y = math.random() - 0.5;
+    self.my_rando_speed = math.random(2)
+
+    if (math.abs(self.OG_x - self.transform.x) > self.move_range) then
+        if(self.transform.x < self.OG_x) then
+            self.my_rando_x = self.my_rando_x + 0.5
+        end
+        if(self.transform.x > self.OG_x) then
+            self.my_rando_x = self.my_rando_x - 0.5
+        end
+    end
+    if (math.abs(self.OG_y - self.transform.y) > self.move_range) then
+        if(self.transform.y < self.OG_y) then
+            self.my_rando_y = self.my_rando_y + 0.5
+        end
+        if(self.transform.y > self.OG_y) then
+            self.my_rando_y = self.my_rando_y - 0.5
+        end
+    end
+    
+
+end
+function Mom2:wander(dt) 
 
     self.wander_timer = self.wander_timer - dt
+    self.wander_elapsed = self.wander_elapsed + dt
 
-    if self.wander_timer <= 0 then
-        self.machine:change("idle")
-        return
+    if (self.wander_timer <= 0) then
+        self.machine:change('idle')
     end
 
-    self.transform.x = self.transform.x + ( (self.transform.vx * dt) * self.base_wander_speed)
-    self.transform.y = self.transform.y + ( (self.transform.vy * dt) * self.base_wander_speed)
-end
+    self.transform.x = self.transform.x + (Tween.sine_inout(self.wander_elapsed) * (self.my_rando_x * self.my_rando_speed))
 
-function PZ:wander_exit(dt)
+    self.transform.y = self.transform.y + (Tween.sine_inout(self.wander_elapsed) * (self.my_rando_y * self.my_rando_speed))
 
-end
-
-function PZ:jump_enter()
+    -- self.transform.x = self.transform.x + (self.my_rando_x)
+    -- self.transform.y = self.transform.y + (self.my_rando_y)
 
 end
+function Mom2:wander_exit(dt) end
 
-function PZ:KOed_enter(dt)
+
+
+
+
+
+
+
+
+
+
+
+
+function Mom2:KOed_enter(dt)
     self.shrink_timer = self.transform.sx
 end
 
-function PZ:KOed(dt)
+function Mom2:KOed(dt)
     
     -- self.equipped_gun.entity.remove = true
 
@@ -169,8 +199,8 @@ end
 -- no KOed exit function, done at end of KOed
 
 
-function PZ:update(dt)
+function Mom2:update(dt)
     self.machine:update(dt)
 end
 
-return PZ
+return Mom2

@@ -7,10 +7,10 @@ local StateMachine = require("lib.components.StateMachine")
 local Vector2 = require("lib.Vector2")
 
 local PLAYER = require('classes.forms.fPLAYER')
-local P = PLAYER:derive("Player")
+local Candy = PLAYER:derive("Candy")
 
 
-function P:new(arg)
+function Candy:new(arg)
 
     assert(arg.player_num ~= nil, "Player number not given to player form")
     self.player_num = arg.player_num
@@ -25,14 +25,13 @@ function P:new(arg)
     self.ent_name = "Candy"
 end
 
-function P:spawn(arg)    
+function Candy:spawn(arg)    
 
     local ent = {
         {"Transform", arg.x, arg.y, 1, 1},
         {"Candy", arg},
         {"CC", 19, 32},
         {"PC", 15, 16, Vector2(0,2)},
-        "Gizmo",
         {"Shadow", 9}
     }
 
@@ -42,7 +41,7 @@ function P:spawn(arg)
 
 end
 -- (xoffset, yoffset, w, h, frames, column_size, fps, loop)
-function P.create_sprite(atlas)
+function Candy.create_sprite(atlas)
     -- changed some sprite to squid
     local idle = Anim(0, 0, 20, 20, {1, 2, 3, 4, 5, 6}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
     local walk = Anim(0, 0, 20, 20,{7, 8, 9, 10, 11, 12, 13, 14}, 14, {{0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15}, 2})
@@ -54,7 +53,7 @@ function P.create_sprite(atlas)
 end
 
 
-function P:on_start()
+function Candy:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
     self.entity.Machine = self.machine
@@ -68,26 +67,26 @@ function P:on_start()
 
 end
 
-function P:idle_enter(dt)
+function Candy:idle_enter(dt)
     self.sprite:animate("idle")
 end
 
-function P:update(dt)
+function Candy:update(dt)
     self.machine:update(dt)
 
 end
 
--- function P:draw()
+-- function Candy:draw()
 -- end
 
 --This function responds to a collision event on any of the
 -- given sides of the player's collision rect
 -- top, bottom, left, right are all boolean values
-function P:collided(top, bottom, left, right)
+function Candy:collided(top, bottom, left, right)
     if bottom then end
     if top then end
     if left then end
     if right then end
 end
 
-return P
+return Candy
