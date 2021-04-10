@@ -82,6 +82,8 @@ function PC:scale_translate()
 end
 
 function PC:update(dt)
+    -- does this have to happen every frame, or just when a collision is about to happen?
+    -- I think the main benifit of running this is to see it visually
     self:scale_translate()
 end
 

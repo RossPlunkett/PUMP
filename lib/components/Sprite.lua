@@ -3,13 +3,14 @@ local Vector2 = require("lib.Vector2")
 local Anim = require("lib.Animation")
 local Rect = require("lib.Rect")
 local U = require("lib.Utils")
+--local cron = require()
 
 local Sprite = Class:derive("Sprite")
 --where x,y is the center of the sprite
 --
 --Note: This component assumes the presence of a Transform component!
 --
-function Sprite:new(atlas, w, h, color, shadow)
+function Sprite:new(atlas, w, h, color)
     self.w = w
     self.h = h
     self.flip = Vector2(1,1)
@@ -19,16 +20,6 @@ function Sprite:new(atlas, w, h, color, shadow)
     self.quad = love.graphics.newQuad(0,0, w, h, atlas:getDimensions())
     self.tintColor = color or {1,1,1,1}
     self.origin = Vector2(w/2, h/2) -- defaults to center
-    self.shadow = shadow or false -- no shadow by default
-
-    if self.shadow then
-        -- if we want to be able to unhook() this,
-        -- we have to name the anonymous function, 
-        -- then hook it by that name, so we can unhook() it with that same name.
-        -- unhooking the exact same completely anonymouse function does not work
-        -- when this makes sense you can delete this comment
-        _G.events:hook("draw shadows", function() self:drawShadow() end)
-    end
 
     self.flash_shader = love.graphics.newShader[[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords ){
@@ -161,18 +152,16 @@ function Sprite:poly()
 end
 
 function Sprite:flash(time)
-    love.graphics.setShader(self.flash_shader)
     self.flashing = true
     self.flash_timer = time
-end
-
-local function resetFlash()
-    
 end
 
 
 function Sprite:draw()
     
+    if self.entity.Shadow then
+        self.entity.Shadow:drawShadow()
+    end
     
     if self.flashing then
         love.graphics.setShader(self.flash_shader)
@@ -180,33 +169,15 @@ function Sprite:draw()
     
     self:tint({1, 1, 1, 1})
     love.graphics.setColor(self.tintColor)
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.flip.x, self.flip.y, self.origin.x, self.origin.y)
+    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y, self.tr.angle,self.tr.sx * self.flip.x, self.tr.sy * self.flip.y, self.origin.x, self.origin.y)
     
-    Sprite:drawGizmo(self.tr.x,self.tr.y)
-    love.graphics.setShader()
+    -- love.graphics.setShader()
     if self.flashing then
         love.graphics.setShader()
     end
-    
-    
 end
 
-function Sprite:drawShadow() -- put this below draw() to make it intuitive - this happens after the draw()
-    -- optimized: did the setColor before and after the shadow event to remove all of the coloring here
-                                      --            offset to the height of the sprite and put it in the center      flip it over
-    love.graphics.draw(self.atlas, self.quad, self.tr.x, self.tr.y + self.h + (self.h/2) , self.tr.angle ,  self.flip.x, -self.flip.y, self.origin.x, self.origin.y)
-end
 
-function Sprite:drawGizmo(x,y)
 
-    if not IsGizmoOn then return end
-    local length = 10
-
-    love.graphics.setColor(1, 0, 0, GizmoVisibility)
-    love.graphics.line(x-length,y, x+length,y)
-    love.graphics.line(x,y-length, x,y+length)
-    love.graphics.setColor(1, 1, 1, 1)
-
-end
 
 return Sprite

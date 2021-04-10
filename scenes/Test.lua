@@ -1,22 +1,13 @@
 local Scene = require("lib.Scene")
 local U = require("lib.Utils")
-<<<<<<< Updated upstream
-local Player = require("entities.Player")
-local Gun = require("entities.Gun")
-local some_guns = {Gun("pistol", "bb", 1, 0.1, 1, 0, false),Gun("shotgun", "bb", 9, 0.4, 1, 0.9, false),Gun("mega-blaster", "bb", 1, 0.04, 1.4, 0.3, true),}
-=======
->>>>>>> Stashed changes
 
 local T = Scene:derive("Test")
 T.do_collisions = require("scenes/scene_funcs/Test_funcs")
 
-<<<<<<< Updated upstream
-=======
 local world = require("lib.World")
 local World = world(32, 32, 50, 40)
 -- World:print()
 
->>>>>>> Stashed changes
 function T:new(scene_mgr) 
     T.super.new(self, scene_mgr)
 
@@ -26,19 +17,6 @@ function T:new(scene_mgr)
     _G.events:add("add to em")
     _G.events:hook("add to em", self.event_funcs.add_to_em)
 
-<<<<<<< Updated upstream
-    _G.events:add("draw shadows") -- hooked and invoked in Sprite
-
-    
-    Player:spawn(1)
-
-    self.alternate_frames = {
-        world_collision=2, -- meaning world collisions happen every x frames
-        world_collision_counter=0
-    }
-
-    Gun:spawn(10)
-=======
 
     --spawn players
     -- _G.events:invoke("EF_spawn", "Cookie", {player_num = 1, x = 350, y = 380, control_scheme = "Gamepad"})
@@ -69,7 +47,6 @@ function T:new(scene_mgr)
     }
 
     
->>>>>>> Stashed changes
 end
 
 
@@ -81,16 +58,12 @@ function T:update(dt)
 
 end
 
-
 function T:draw()
-    love.graphics.clear(0.06,0.2,0)
+    love.graphics.clear(0.2588,0.5647,0.34509) -- stomach bg color
+    World:draw();
     self.super.draw(self)
-    -- sets color for shadow here
-    -- if you want to do a shadow shader, here's where you activate it, before and after the invoke()
-    love.graphics.setColor(0, 0, 0, 0.5)
-    _G.events:invoke("draw shadows")
-    love.graphics.setColor(1, 1, 1, 1)
-
+    -- World:drawGrid()
+    love.graphics.print("entities: " .. #self.em.entities,Camera.x + 5,Camera.y + 25)
 end
 
 function T:destroy()

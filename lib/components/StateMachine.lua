@@ -17,6 +17,8 @@ function SM:new(state_table, start_state_name)
     self:change(start_state_name)
 end
 
+-- possible to add addState?
+
 function SM:reset()
     self.state = nil
     self.state_name = nil

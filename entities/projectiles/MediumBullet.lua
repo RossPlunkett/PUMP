@@ -6,38 +6,34 @@ local Vector3 = require("lib.Vector3")
 local Entity = require("lib.Entity")
 local CC = require("lib.components.physics.CircleCollider")
 local PC = require("lib.components.physics.PolygonCollider")
-local SBP = require("lib.components.SBP")
 
-local fast_bullet = love.graphics.newImage("assets/gfx/Weapons/Guns/MediumBullet.png")
+
+
 
 
 local Sprite = require("lib.components.Sprite")
 local Transform = require("lib.components.Transform")
 
-local BB = Class:derive("BasicBullet")
+local MediumBullet = Class:derive("MediumBullet")
 
 -- i think we should pass the speed for the bullet from the gun
 -- and the damage and life
-function BB:new()
+function MediumBullet:new(arg)
     
-    --self.life = 2
+    self.damage = arg.damage
     self.speed = 300
     self.size = Vector2(10, 20)
     self.drag = (self.speed/2); -- some effect on the bullet
-<<<<<<< Updated upstream:entities/BasicBullet.lua
-    self.damage = 10
-=======
     
     self.ent_name = "MediumBullet"
     local theta = (Sprite.angle * math.pi / 180)
     local dx = 1 * math.cos(theta)
     local dy = 1 * math.sin(theta)
     Camera.startShake(self,dx,dy,10,2,0)
->>>>>>> Stashed changes:entities/projectiles/MediumBullet.lua
     
 end
 
-function BB.create_sprite(atlas)
+function MediumBullet.create_sprite(atlas)
     --(xoffset, yoffset, w, h, frames, column_size, fps, loop)
     local spin_anim = Anim(0,0,32, 32, 2, 2, 24, false)
     if atlas == nil then
@@ -54,51 +50,49 @@ function BB.create_sprite(atlas)
 end
  
 
-function BB:on_start()
+function MediumBullet:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
-    self.entity.tag = self
+    self.entity.form = self
+
+
+    self.entity:PROJECTILE_init()
 
 
 end
 
--- a lot of info is needed
---starting position
--- angle
--- vx and vy
-function BB:spawn(x_pos, y_pos, x, y, r_trig)
+function MediumBullet:spawn(arg)
 
 
-
+    -- r_trig?
     -- should use the bullet's spawn function
     
     
-    local RSXA, RSYA = x, y
+    local RSXA, RSYA = arg.vx, arg.vy
     -- bullet sprite angle calculation
     local newangle = math.atan2(RSYA, RSXA)
 
+    -- got damage in the [arg]
     -- conditional for projectile type here?
             
-    local bullet_length = 16
-    local bullet_width = 9
-    local bullet = Entity(
-        Transform(x_pos, y_pos, 1.9, 1.9, newangle, RSXA or 0, RSYA or 0),
-        BB(),
-        BB.create_sprite(fast_bullet),
-        CC(20,40),
-        PC(12,8),
-        SBP(10, 10))         
+    local bullet = {
+        {"Transform", arg.x, arg.y, 1, 1, newangle, RSXA or 0, RSYA or 0},
+        {"MediumBullet", arg},
+        {"CC", 24, 40},
+        {"PC", 30, 9, Vector2(-6, 0)},
+        {"Shadow", 2}
+    }
 
-    _G.events:invoke("add to em", bullet) -- passes entity through
+    bullet.ent_class = "PROJECTILE"
+
+    _G.events:invoke("EF", bullet) -- sends entity table to EntityFactory
 end
 
-function BB:update(dt)
+function MediumBullet:update(dt)
 
-    -- self.life = self.life - dt
-
-    -- if self.life <= 0 then
-    --     self.entity.remove = true
-    -- end
+    if self.entity.age <= self.entity.moving_age then return end -- this conditional starts the bullet at the gun,
+                                        -- it keeps the bullet at the muzzle at low frame rates
+                                        -- this should be put on all projectile entity forms
 
     -- the speed of the bullet before destroying
     local threshold = 0.5
@@ -111,12 +105,13 @@ function BB:update(dt)
     -- slow down the bullet
     self.speed = self.speed - (self.drag * dt)
     -- make it slow down faster through time
-    self.drag = self.drag + dt * self.speed * 10 
+    self.drag = self.drag + dt * self.speed * 10
+
   
 end
 
-function BB:draw()
+function MediumBullet:draw()
 
 end
 
-return BB
+return MediumBullet

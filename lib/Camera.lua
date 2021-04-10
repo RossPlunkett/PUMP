@@ -1,7 +1,7 @@
 
 local U = require("lib.Utils")
 
-require("lib.Vector3")
+local Vector3 = require("lib.Vector3")
 
 local camera = {}
 camera.x = 0 -- position
@@ -11,12 +11,13 @@ camera.targetPosY = 0 -- Changed Offset to Target Position
 camera.scaleX = 1 -- scale
 camera.scaleY = 1
 camera.rotation = 0 -- rotation around origin
-camera.Ppu = 1-- pixels per unit, might change to 8 or 32
+camera.Ppu = 1 -- pixels per unit, might change to 8 or 32
 camera.damp = 0.05 -- smoothing?
 camera.curVel = Vector3(0,0,0) 
 camera.w = 0 -- i think its better to get these values from the start?
 camera.h = 0
 camera.offset = Vector3(0,0)
+
 function camera:init()
   self.shaking = false
   self.shake_time = 0.1 -- just a default, gets set w/every shake
@@ -30,9 +31,7 @@ function camera:init()
   -- multiply it to the scale factor
   -- to get the middle point of the window
   offset = Vector3(-Pixel_Window_X/2,-Pixel_Window_Y/2)
-  -- local x = love.graphics.getWidth() / gscreen.scale
-  -- local y = love.graphics.getHeight() / gscreen.scale
-  -- offset = Vector3(-x/2, -y/2)
+
   self.shakes = {}
 end
 
@@ -96,14 +95,11 @@ function camera:updateCameraPosition(dt)
   -- self.y = self.y -((self.h * 0.5) * self.scaleY) 
 
   -- this is to snap the camera through pixels per unit PPU
-  tempPos = Vector3.SmoothDamp(
-    Vector3(self.x,self.y), 
-    Vector3(self.targetPosX + self.xShakeOffset, self.targetPosY + self.yShakeOffset)+ offset,
-    self.curVel,
-    self.damp,
-    dt)
-  self.x =  U.round(tempPos.x * camera.Ppu) / camera.Ppu
-  self.y =  U.round(tempPos.y * camera.Ppu) / camera.Ppu
+  tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)+ offset, self.curVel,self.damp, dt)
+  self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
+  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
+
+            
 end
 
 function camera:setTargetPos(xPos, yPos)
@@ -180,11 +176,21 @@ function camera:update(dt)
   
   if #self.shakes > 0 then
     self:shake(dt)
+    -- print("shaking")
   end
   
   camera:updateCameraPosition(dt)
   -- rotates around map origin (0, 0)
   -- self.rotation = self.rotation + 0.01
+
+
+  -- print('camera position is, ', self.x, self.y)
+
+
+    -- Mouse.worldX = Mouse.x + self.x
+    -- Mouse.worldY = Mouse.y + self.y
+    -- print("worldX, WorldY: ", Mouse.worldX, Mouse.worldY)
+
 end
 
 -- update camera position
@@ -192,6 +198,11 @@ end
 function camera:setScale(sx, sy)
   self.scaleX = sx or self.scaleX
   self.scaleY = sy or sx or self.scaleY --allows for one arg
+end
+
+function camera:draw()
+  -- HUD is starting here
+  love.graphics.print(tostring(love.timer.getFPS()),self.x + 5,self.y + 5)
 end
 
 return camera

@@ -18,11 +18,11 @@ local rawget = rawget
 local rad2Deg = math.rad2Deg
 local deg2Rad = math.deg2Rad
 
-local V = Class:derive("Vector3")
+local Vector3  = Class:derive("Vector3")
 
 
 
-function V:new(x,y, z)
+function Vector3:new(x,y, z)
     self.x = x or 0
     self.y = y or 0
     self.z = z or 0
@@ -30,14 +30,7 @@ end
 
 --Takes 2 vector3 objects and returns their cross product
 --
-function V.cross(a, b)
-    --NOTE: if both vectors are 2D, then this isnt really a cross product!It is something else.
-    if a.z == nil and b.z == nil then
-        return V(0, 0, a.x*b.y - a.y*b.x)
-    else
-        return V(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x)
-    end
-end
+
 
 
 -- i added some code i found on github haha, I dont know how to clean this up
@@ -71,6 +64,15 @@ function Vector3.New(x, y, z)
 	local v = {x = x or 0, y = y or 0, z = z or 0}		
 	setmetatable(v, Vector3)		
 	return v
+end
+
+function Vector3.cross(a, b)
+    --NOTE: if both vectors are 2D, then this isnt really a cross product!It is something else.
+    if a.z == nil and b.z == nil then
+        return Vector3(0, 0, a.x*b.y - a.y*b.x)
+    else
+        return Vector3(a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x)
+    end
 end
 	
 function Vector3:Set(x,y,z)	
@@ -573,4 +575,4 @@ fields.magnitude 	= Vector3.Magnitude
 fields.normalized 	= Vector3.Normalize
 fields.sqrMagnitude = Vector3.SqrMagnitude
 
-return V
+return Vector3
