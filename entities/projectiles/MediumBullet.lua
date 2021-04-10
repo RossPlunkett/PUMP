@@ -30,6 +30,7 @@ function MediumBullet:new(arg)
     local dx = 1 * math.cos(theta)
     local dy = 1 * math.sin(theta)
     Camera.startShake(self,dx,dy,10,2,0)
+    --as
     
 end
 
