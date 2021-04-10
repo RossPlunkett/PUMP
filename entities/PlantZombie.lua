@@ -28,9 +28,18 @@ function PZ:new(atlas)
         self.atlas = atlas
     end
 
+<<<<<<< Updated upstream:entities/PlantZombie.lua
     self.hp = 30
     
+=======
+    self.max_wander_time = 2 -- seconds
+
+
+>>>>>>> Stashed changes:entities/mobs/PlantZombie.lua
     self.base_wander_speed = 100
+    
+        
+    -- self.base_wander_speed = 100
     
     self.machine = StateMachine(self, "idle")
 end
@@ -93,12 +102,23 @@ function PZ:spawn(x, y)
 end
 
 function PZ:idle(dt)
+<<<<<<< Updated upstream:entities/PlantZombie.lua
     if true then return end
     local roll = math.random(100) -- should incorporate dt
+=======
+>>>>>>> Stashed changes:entities/mobs/PlantZombie.lua
 
-    if roll == 54 then
-        self.machine:change("wander")
-    end
+        -- we want the chance to go up linearly with dt
+
+        local chance = dt * 1000 -- this number will be larger, when the dt is larger.
+        -- how to make the chance proportional?
+
+        -- -- if true then return end
+        local roll = math.random(100)
+
+        if roll == 1 then
+            self.machine:change("wander")
+        end
 end
 
 function PZ:idle_exit(dt)
@@ -107,9 +127,8 @@ end
 
 function PZ:wander_enter(dt)
 
-
     self.sprite:animate("walk_anim")
-    self.wander_timer = math.random() * 2
+    self.wander_timer = math.random() * self.max_wander_time
     self.transform.vx = (math.random() * 2) - 1
     self.transform.vy = (math.random() * 2) - 1
     if self.transform.vx >= 0 then
@@ -128,11 +147,20 @@ function PZ:wander(dt)
         return
     end
 
+<<<<<<< Updated upstream:entities/PlantZombie.lua
     self.transform.x = self.transform.x + ((self.transform.vx  * dt) * self.base_wander_speed)
     self.transform.y = self.transform.y + ((self.transform.vy  * dt) * self.base_wander_speed)
+=======
+    self.transform.x = self.transform.x + ( (self.transform.vx * dt) * self.base_wander_speed)
+    self.transform.y = self.transform.y + ( (self.transform.vy * dt) * self.base_wander_speed)
+>>>>>>> Stashed changes:entities/mobs/PlantZombie.lua
 end
 
 function PZ:wander_exit(dt)
+
+end
+
+function PZ:jump_enter()
 
 end
 

@@ -98,7 +98,7 @@ function T.create(target, prop_name, to, duration, ease_function)
     return tween
 end
 
-function T.update(dt)
+function T:update(dt)
     for i=#active_tweens, 1, -1 do
         if not active_tweens[i]:update(dt) then
             local t = active_tweens[i]

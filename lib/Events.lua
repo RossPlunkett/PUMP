@@ -77,6 +77,7 @@ function Events:invoke(evt_type, ...)
     end
 end
 
+-- invoke2 takes a table as an arg
 function Events:invoke2(evt_type, tooble)
     if self.handlers[evt_type] == nil then return end
     -- assert(self.handlers[evt_type] ~= nil, "Event of type " .. evt_type .. " does not exist!")

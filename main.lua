@@ -1,6 +1,23 @@
 Key = require("lib.Keyboard")
 Tween = require("lib.Tween")
 
+<<<<<<< Updated upstream
+=======
+
+
+
+Key = require 'lib.Keyboard'
+Mouse = require 'lib.Mouse'
+Tween = require 'lib.Tween'
+
+Physics = require 'lib.Physics'
+
+LANGUAGE = "ENGLISH"
+
+NUM_PLAYERS = 1;
+
+-- gamepad support
+>>>>>>> Stashed changes
 local gpm = require("lib.GamepadMgr")
 GPM = gpm({"assets/gamecontrollerdb.txt"}, false)
 
@@ -11,8 +28,8 @@ gscreen = require('lib.sysl.pixel') --The mouse cursor thing -- and can also be 
 gscreen.load(1) -- Draw at x Size.
 -- do not change else where
 -- maybe use a table so it cant be changed somewhere?
-Pixel_Window_X = 128 *3
-Pixel_Window_Y = 128 *2
+Pixel_Window_X = 320
+Pixel_Window_Y = 240
 
 
 Camera = require("lib/Camera")
@@ -28,9 +45,17 @@ local Event = require("lib.Events")
 -- World = world(200, 200, 10, 10, 20, 20)
 
 
+<<<<<<< Updated upstream
 IsGizmoOn = true --for debugging colliders and other related stuff
 GizmoVisibility = 0.2 -- alpha/ the opacity of the gizmo
 FullScreenToggle = not true
+=======
+-- Gizmo lowers FPS significantly, so if you have low frame rates that is part of it
+-- now Gizmo is automatically attached to each entity if IsGizmoOn is true
+IsGizmoOn = false --for debugging colliders and other related stuff
+GizmoVisibility = 0.4 -- alpha/ the opacity of the gizmo
+FullScreenToggle = true
+>>>>>>> Stashed changes
 --TODO before PUMP
 
 -- move stuff out of the player
@@ -41,7 +66,32 @@ math.randomseed(os.time()) -- can be seeded
 
 local sm = {}
 
+<<<<<<< Updated upstream
 function love.load()
+=======
+-- comment the line above and uncomment these two to activate console
+-- sm = {}
+-- require('extlib.lovedebug')
+
+
+function love.load(arg)
+
+    if PROFILING then
+        love.profiler = require('extlib/profile') 
+        love.profiler.start()
+    end
+
+  -- this line enables debugging in ZeroBrane
+    if arg and arg[#arg] == "-debug" then 
+      require("mobdebug").start()
+      require("mobdebug").off() --<-- turn the debugger off
+      
+    end
+
+    love.mouse.setRelativeMode( false ) -- seems good right?
+    cursor = love.mouse.newCursor("assets/gfx/cursor.png", 0, 0)
+    love.mouse.setCursor(cursor)
+>>>>>>> Stashed changes
     
     --maid settings
     --love.window.setMode(Pixel_Window_X*2,Pixel_Window_Y*2, {resizable=false, vsync=true, minwidth=200, minheight=200})
@@ -93,6 +143,7 @@ function love.update(dt)
     sm:update(dt)
     Key:update(dt)
     GPM:update(dt)
+<<<<<<< Updated upstream
     Tween.update(dt)
     -- Update Pixel
     gscreen.update(dt)
@@ -100,6 +151,10 @@ function love.update(dt)
 
 
 
+=======
+    Tween:update(dt)
+    
+>>>>>>> Stashed changes
 end
 
 function love.draw()

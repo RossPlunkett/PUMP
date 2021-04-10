@@ -24,7 +24,16 @@ function BB:new()
     self.speed = 300
     self.size = Vector2(10, 20)
     self.drag = (self.speed/2); -- some effect on the bullet
+<<<<<<< Updated upstream:entities/BasicBullet.lua
     self.damage = 10
+=======
+    
+    self.ent_name = "MediumBullet"
+    local theta = (Sprite.angle * math.pi / 180)
+    local dx = 1 * math.cos(theta)
+    local dy = 1 * math.sin(theta)
+    Camera.startShake(self,dx,dy,10,2,0)
+>>>>>>> Stashed changes:entities/projectiles/MediumBullet.lua
     
 end
 

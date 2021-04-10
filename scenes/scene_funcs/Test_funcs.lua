@@ -31,9 +31,26 @@ local do_collisions =  function(scene)
             bullets[#bullets + 1] = i
         end
 
+<<<<<<< Updated upstream
         if entities[i].Player ~= nil
         or entities[i].PlantZombie ~= nil
         or entities[i].MaskFox ~= nil
+=======
+        local ent_name = the_entity.form.ent_name or "no-ent-name"
+        
+
+        if the_entity:is('CREATURE') then
+            creatures[#creatures + 1] = i
+            creatures[#creatures + 1] = i
+        end
+
+
+        if the_entity.PlantZombie
+        or the_entity.MaskFox
+        or the_entity.Missile
+        or the_entity.Mom1
+        or the_entity.Mom2
+>>>>>>> Stashed changes
         then
             creatures[#creatures + 1] = i
         end

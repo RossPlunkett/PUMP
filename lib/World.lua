@@ -1,6 +1,18 @@
 -- I think this may be bad
 
 local Class = require("lib.Class")
+<<<<<<< Updated upstream
+=======
+local World = Class:derive("World")
+
+local mouth_atlas = love.graphics.newImage("assets/gfx/Tiles/Teeth/TEETH_FOREST.png")
+local stomach_atlas = love.graphics.newImage("assets/gfx/Tiles/stomach/StomachTiles.png")
+local stomach_walls = love.graphics.newImage("assets/gfx/Tiles/stomach/WallTiles.png")
+
+
+
+
+>>>>>>> Stashed changes
 
 local Vector2 = require("lib.Vector2")
 
