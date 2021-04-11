@@ -1,4 +1,5 @@
 -- PLAYER derives from CREATURE
+-- this file is basically all controls stuff
 local CREATURE = require("classes.entities.CREATURE")
 
 local PLAYER = CREATURE:derive('PLAYER')

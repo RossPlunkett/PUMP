@@ -18,6 +18,8 @@ camera.w = 0 -- i think its better to get these values from the start?
 camera.h = 0
 camera.offset = Vector3(0,0)
 
+camera.max_shake = 12
+
 function camera:init()
   self.shaking = false
   self.shake_time = 0.1 -- just a default, gets set w/every shake
@@ -96,8 +98,10 @@ function camera:updateCameraPosition(dt)
 
   -- this is to snap the camera through pixels per unit PPU
   tempPos = Vector3.SmoothDamp(Vector3(self.x,self.y), Vector3(self.targetPosX, self.targetPosY)+ offset, self.curVel,self.damp, dt)
-  self.x =  U.round(tempPos.x * self.Ppu) / self.Ppu
-  self.y =  U.round(tempPos.y * self.Ppu) / self.Ppu
+
+
+  self.x =  U.round((tempPos.x + self.xShakeOffset) * self.Ppu) / self.Ppu
+  self.y =  U.round((tempPos.y + self.yShakeOffset) * self.Ppu) / self.Ppu
 
             
 end
@@ -107,7 +111,7 @@ function camera:setTargetPos(xPos, yPos)
   self.targetPosY = yPos
 end
 
-function camera:startShake(x_dir, y_dir, amount, out_time, in_time) -- rotation?
+function camera:startShake(x_dir, y_dir, amount, out_time, in_time, in_tween, out_tween) -- rotation?
 
   -- x_dir and y_dir are stick coordinates
   --amount is pixels to shake
@@ -117,49 +121,78 @@ function camera:startShake(x_dir, y_dir, amount, out_time, in_time) -- rotation?
     amount=amount,
     out_time=out_time,
     in_time=in_time,
-    timer=out_time+in_time
+    timer=out_time+in_time,
+    in_tween=in_tween,
+    out_tween=out_tween
   }
+
+
+
+  -- default shake tween here
+  if not in_tween then shake.in_tween = "quad_in" end
+  if not out_tween then shake.out_tween = "quad_out" end
 
   table.insert(self.shakes, shake)
 
 end
 
 function camera:shake(dt)
+
   self.xShakeOffset, self.yShakeOffset = 0, 0 -- reset offsets
+
   for i = #self.shakes, 1, -1 do
-    self.shakes[i].timer = self.shakes[i].timer - dt
+
+    
     local shake = self.shakes[i]
+    shake.timer = shake.timer - dt
+
+    
     if not (shake.timer <= 0) then
-      --shaking here
-      local time, ratio, tween_result, scaled_tween, xOffset, yOffset
-      if shake.timer > shake.in_time then
-        --out-shaking
-        time = shake.out_time - (shake.timer - shake.in_time)
-        ratio = time / shake.out_time 
-        tween_result = math.pow(ratio, 5)
-        scaled_tween = tween_result * shake.out_time
-      else
-        --in-shaking
-        time = shake.timer
-        ratio = time / shake.in_time 
-        tween_result = ratio * (2 - ratio * ratio)
-        scaled_tween = tween_result * shake.in_time
-      end
 
-      xOffset = shake.x_dir * (scaled_tween * shake.amount)
-      yOffset = shake.y_dir * (scaled_tween * shake.amount)
+        --shaking here
+        local time, ratio, tween_result, scaled_tween, xOffset, yOffset
+        if shake.timer > shake.in_time then
 
-      self.xShakeOffset = self.xShakeOffset + xOffset
-      self.yShakeOffset = self.yShakeOffset + yOffset
+          --out-shaking
+          time = shake.out_time - (shake.timer - shake.in_time)
+          ratio = time / shake.out_time 
+          tween_result = Tween[shake.in_tween](ratio)
+          scaled_tween = tween_result * shake.out_time
+        else
+          --in-shaking
+          time = shake.timer
+          ratio = time / shake.in_time 
+          tween_result = Tween[shake.out_tween](ratio)
+          scaled_tween = tween_result * shake.in_time
+        end
+
+        xOffset = shake.x_dir * (scaled_tween * shake.amount)
+        yOffset = shake.y_dir * (scaled_tween * shake.amount)
+
+        self.xShakeOffset = self.xShakeOffset + xOffset
+        self.yShakeOffset = self.yShakeOffset + yOffset
 
     else
       -- if it's timed out, just remove it
       table.remove(self.shakes, i)
       if #self.shakes == 0 then
-        self.xShakeOffset, self.yShakeOffset = 0, 0 -- reset offsets
+        self.xShakeOffset, self.yShakeOffset = 0, 0 -- reset offsets when all shakes are over
       end
     end
   end
+  
+
+  -- these limit the shake to the max_shake defined at the top of the file
+  if math.abs(self.xShakeOffset) > self.max_shake then
+    if self.xShakeOffset > 0 then self.xShakeOffset = self.max_shake
+    else self.xShakeOffset = -self.max_shake end
+  end
+  
+  if math.abs(self.yShakeOffset) > self.max_shake then
+    if self.yShakeOffset > 0 then self.yShakeOffset = self.max_shake
+    else self.yShakeOffset = -self.max_shake end
+  end
+
 end
 
 

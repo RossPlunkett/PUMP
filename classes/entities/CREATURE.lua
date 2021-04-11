@@ -77,7 +77,7 @@ function CREATURE:CREATURE_update(dt)
     if self.equipped_gun then
         
         -- some juice
-        local gun_Holster_offset = 10
+        local gun_Holster_offset = 5
         local tempPos = Vector3.SmoothDamp(
             -- declaring two new Vector3's every frame could be slow
             Vector3(self.equipped_gun.Transform.x,self.equipped_gun.Transform.y,0),

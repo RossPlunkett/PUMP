@@ -23,7 +23,6 @@ function M16:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "M16",
-        proj_type= "bb",
         num_shots= 15,
         cooldown= 0.02,
         base_proj_speed= 4,
@@ -31,6 +30,7 @@ function M16:on_start()
         automatic= true,
         kickback= 0.06,
         recoil = 2.5,
+        cam_shake = {amount=10, in_time=0.07, out_time=0.07},
         magnitude= 4,
         damage= 2000
     }
@@ -87,8 +87,6 @@ function M16:spawn(arg)
 
     local gun_entity = {
         {"Transform", arg.x, arg.y, 1, 1, 0},
-        -- name, proj_type, num_shots, cooldown, 
-        -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
         "M16",
         {"CC", 16, 40},
         {"PC", 6, 4, Vector2(1, 1)},

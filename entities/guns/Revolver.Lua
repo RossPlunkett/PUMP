@@ -26,7 +26,6 @@ function Revolver:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "Revolver",
-        proj_type= "bb",
         num_shots= 1,
         cooldown= 0.15,
         base_proj_speed= 2,
@@ -34,6 +33,7 @@ function Revolver:on_start()
         automatic= false,
         kickback= 0,
         recoil = 5,
+        cam_shake = {amount=40, in_time=0.07, out_time=0.07},
         magnitude= 5,
         damage= 20
         -- knockback in the gun?
