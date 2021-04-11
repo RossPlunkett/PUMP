@@ -23,15 +23,15 @@ function Uzi:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "Uzi",
-        proj_type= "bb",
         num_shots= 1,
         cooldown= 0.05,
-        base_proj_speed= 2,
-        inaccuracy= 0.2,
+        base_proj_speed= 3,
+        inaccuracy= 0.12,
         automatic= true,
         kickback= 1.5,
         recoil = 6,
-        magnitude= 9,
+        cam_shake = {amount=50, in_time=0.07, out_time=0.07},
+        magnitude= 5,
         damage= 20
     }
     

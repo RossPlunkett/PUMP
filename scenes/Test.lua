@@ -19,8 +19,8 @@ function T:new(scene_mgr)
 
 
     --spawn players
-    -- _G.events:invoke("EF_spawn", "Cookie", {player_num = 1, x = 350, y = 380, control_scheme = "Gamepad"})
-    _G.events:invoke("EF_spawn", "Candy", {player_num = 2, x = 350, y = 340, control_scheme = "Keyboard"})
+    -- _G.events:invoke("EF_spawn", "Cookie", {player_num = 2, x = 350, y = 380, control_scheme = "Gamepad"})
+    _G.events:invoke("EF_spawn", "Candy", {player_num = 1, x = 350, y = 340, control_scheme = "Keyboard"})
     -- _G.events:invoke("EF_spawn", "Cursor",  {x =0, y = 0,})
     -- _G.events:invoke("EF_spawn", "cc2f7b", {player_num = 3, x = 320, y = 360})
     -- _G.events:invoke("EF_spawn", "Flour", {player_num = 2, x = 390, y = 360})
@@ -39,6 +39,16 @@ function T:new(scene_mgr)
     _G.events:invoke("EF_spawn", "MagnumRevolver", {x = 440, y = 450})
     _G.events:invoke("EF_spawn", "PopGun", {x = 360, y = 450})
     _G.events:invoke("EF_spawn", "RustyPeacekeeper", {x = 460, y = 350})
+
+    -- need to spawn a gun into a mob's hand:
+        -- 1: make the mob
+        -- 2: make the gun (perhaps the default gun is included in the mob somehow, like self.default_weapon)
+        -- 3: mob remotely picks up weapon
+
+    
+    print('my_obj')
+    print(my_obj)
+
 
 
     self.alternate_frames = {

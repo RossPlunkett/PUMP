@@ -23,15 +23,15 @@ function MR:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "Magnum Revolver",
-        proj_type= "bb",
         num_shots= 1,
         cooldown= 0.15,
         base_proj_speed= 2,
-        inaccuracy= 0.4,
+        inaccuracy= 0.15,
         automatic= false,
         kickback= 0.75,
         recoil = 8,
-        magnitude= 8,
+        cam_shake = {amount=150, in_time=0.2, out_time=0.25},
+        magnitude= 10,
         damage= 2000
     }
     
@@ -52,7 +52,7 @@ function MR:makeProjectile()
 
     -- create component list to send to EntityFactory          
     local bullet = {
-        {"Transform", x, y, 1, 1, newangle, RSXA or 0, RSYA or 0},
+        {"Transform", x, y, 2, 2, newangle, RSXA or 0, RSYA or 0},
         {"MediumBullet", {damage = self.entity.damage}},
         {"CC", 20, 40},
         {"PC", 30, 9, Vector2(-6, 0)},
@@ -90,8 +90,6 @@ function MR:spawn(arg)
 
     local gun_entity = {
         {"Transform", arg.x, arg.y, 1, 1, 0},
-        -- name, proj_type, num_shots, cooldown, 
-        -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
         "MagnumRevolver",
         {"CC", 16, 40},
         {"PC", 6, 4, Vector2(1, 1)},

@@ -145,7 +145,7 @@ function EF:run(arg)
     -- add Gizmo to every entity if enabled
     if IsGizmoOn then ent:add(components["Gizmo"]()) end
 
-    ent:on_start()
+    ent:on_start() -- start it for initialization stuff
 
     _G.events:invoke("add to em", ent)
 

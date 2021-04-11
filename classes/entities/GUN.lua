@@ -9,7 +9,6 @@ function GUN:GUN_init(arg)
 
     self.gun_name = arg.gun_name or "no gun name!" 
     self.damage = arg.damage
-    self.proj_type = arg.proj_type
     self.num_shots = arg.num_shots
     self.cooldown = arg.cooldown
     self.cooldown_timer = 0 -- zero for first shot
@@ -20,6 +19,7 @@ function GUN:GUN_init(arg)
     self.kickback = arg.kickback or 0
     self.knockback = arg.knockback or 0
     self.recoil = arg.recoil or 0
+
     self.magnitude = arg.magnitude or 20
     -- this one... will it be on the arg like this?
     if sprite_atlas then default_atlas = sprite_atlas end
@@ -27,6 +27,9 @@ function GUN:GUN_init(arg)
     self.equipped = false
     -- holstered is for inactive weapon
     self.holstered = false
+
+
+    self.cam_shake = arg.cam_shake
 
     self.cron_table = {}
 
@@ -51,9 +54,11 @@ function GUN:shoot(x, y, r_trig) -- these are directionally summed
             local RSYA = y
 
             -- quick fix for nonstick
-            if RSXA == 0 and RSYA == 0 then
-                RSXA = self.RSXA
-                RSYA = self.RSYA
+            if self.holder.form.control_scheme == "Gamepad" then
+                if RSXA == 0 and RSYA == 0 then
+                    RSXA = self.RSXA
+                    RSYA = self.RSYA
+                end
             end
 
             if (not RSXA) and (not RSYA) then
@@ -78,6 +83,7 @@ function GUN:shoot(x, y, r_trig) -- these are directionally summed
             RSYA = RSYA / sum
 
             -- apply kickback to the holding entity
+            -- later this will add a force to the force component to be applied over time
             self.holder.Transform.x = self.holder.Transform.x - (RSXA * self.kickback)
             self.holder.Transform.y = self.holder.Transform.y - (RSYA * self.kickback)
 
@@ -98,7 +104,12 @@ function GUN:shoot(x, y, r_trig) -- these are directionally summed
             -- end
             
             -- shake the camera
-            Camera:startShake(RSXA, RSYA, 1, 0.2, 0.05)
+            -- local theta = (self.Transform.angle * math.pi / 180)
+            -- local dx = 1 * math.cos(theta)
+            -- local dy = 1 * math.sin(theta)
+            -- Camera:startShake(dx,dy,2,0.5,0.6)
+
+            Camera:startShake(self.RSXA,self.RSYA,self.cam_shake.amount,self.cam_shake.in_time,self.cam_shake.out_time)
 
             -- end stuff
             self.cooling = true

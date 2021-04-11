@@ -23,7 +23,6 @@ function PumpAction:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "Pump Action",
-        proj_type= "bb",
         num_shots= 8,
         cooldown= 0.5,
         base_proj_speed= 2,
@@ -31,7 +30,8 @@ function PumpAction:on_start()
         automatic= false,
         kickback= 0.85,
         recoil = 4,
-        magnitude= 5,
+        cam_shake = {amount=20, in_time=0.05, out_time=0.05},
+        magnitude= 8,
         damage= 20
     }
     
@@ -86,8 +86,6 @@ function PumpAction:spawn(arg)
 
     local gun_entity = {
         {"Transform", arg.x, arg.y, 1,1, 0},
-        -- name, proj_type, num_shots, cooldown, 
-        -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
         "PumpAction",
         {"CC", 16, 40},
         {"PC", 6, 4, Vector2(1, 1)},

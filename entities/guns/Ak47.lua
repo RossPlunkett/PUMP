@@ -23,15 +23,16 @@ function Ak47:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "Ak47",
-        proj_type= "bb",
         num_shots= 1,
         cooldown= 0.14,
         base_proj_speed= 4,
         inaccuracy= 0.12,
+        -- inaccuracy= 0,
         automatic= true,
         kickback= 0.75,
         recoil = 6,
-        magnitude= 10,
+        cam_shake = {amount=50, in_time=0.05, out_time=0.05, in_tween="linear", out_tween="sine_out"},
+        magnitude= 7,
         damage= 2000
     }
     
@@ -95,8 +96,6 @@ function Ak47:spawn(arg)
 
     local gun_entity = {
         {"Transform", arg.x, arg.y, 1, 1, 0},
-        -- name, proj_type, num_shots, cooldown, 
-        -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
         "Ak47",
         {"CC", 16, 40},
         {"PC", 6, 4, Vector2(1, 1)},

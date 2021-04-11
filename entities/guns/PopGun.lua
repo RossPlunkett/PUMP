@@ -23,15 +23,15 @@ function PopGun:on_start()
     -- gun's qualities here
     local arg_tbl = {
         gun_name= "Pop Gun",
-        proj_type= "bb",
         num_shots= 1,
         cooldown= 0.15,
         base_proj_speed= 2,
         inaccuracy= 0.4,
         automatic= true,
-        kickback= 0.75,
-        recoil = 6,
-        magnitude= 8,
+        kickback= 0.75, -- pushing player back
+        recoil = 6, -- pushing gun back
+        cam_shake = {amount=30, in_time=0.07, out_time=0.07},
+        magnitude= 5,
         damage= 2000
     }
     
@@ -86,8 +86,6 @@ function PopGun:spawn(arg)
 
     local gun_entity = {
         {"Transform", arg.x, arg.y, 1, 1, 0},
-        -- name, proj_type, num_shots, cooldown, 
-        -- base_proj_speed, inaccuracy, automatic, kickback, magnitude
         "PopGun",
         {"CC", 16, 40},
         {"PC", 6, 4, Vector2(1, 1)},

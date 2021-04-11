@@ -24,14 +24,15 @@ function RP:on_start()
     local arg_tbl = {
         gun_name= "Rusty PeaceKeeper",
         proj_type= "bb",
-        num_shots= 1,
+        num_shots= 9,
         cooldown= 0.15,
         base_proj_speed= 2,
-        inaccuracy= 0.4,
+        inaccuracy= 0.2,
         automatic= true,
         kickback= 0.75,
         recoil = 6,
-        magnitude= 8,
+        cam_shake = {amount=80, in_time=0.07, out_time=0.07},
+        magnitude= 12,
         damage= 2000
     }
     

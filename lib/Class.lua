@@ -68,7 +68,14 @@ function Class:can(state) -- string
                 return type(self.form[state]) == "function" -- if it's indeed a function, return true
             end
         elseif type(state) == "table" then
-            -- table implentation here
+            -- table implentation here. recursive!
+            -- expects a table of strings that represent states
+            for i = 1, #state do
+                if self:can(state[i]) then
+                    return state[i] -- if it finds a state it can do, return that string
+                end
+            end
+            return false -- return false if none of them matched
         end
     else
         --how could this return available states when given 0 parameters? perhaps by scanning for enter or exit functions!

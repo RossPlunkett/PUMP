@@ -16,8 +16,7 @@ local Transform = require("lib.components.Transform")
 
 local MediumBullet = Class:derive("MediumBullet")
 
--- i think we should pass the speed for the bullet from the gun
--- and the damage and life
+-- this is called by the gun, which supplies the arg
 function MediumBullet:new(arg)
     
     self.damage = arg.damage
@@ -26,14 +25,10 @@ function MediumBullet:new(arg)
     self.drag = (self.speed/2); -- some effect on the bullet
     
     self.ent_name = "MediumBullet"
-    local theta = (Sprite.angle * math.pi / 180)
-    local dx = 1 * math.cos(theta)
-    local dy = 1 * math.sin(theta)
-    Camera.startShake(self,dx,dy,10,2,0)
-    --as
     
 end
 
+-- this gets run automatically
 function MediumBullet.create_sprite(atlas)
     --(xoffset, yoffset, w, h, frames, column_size, fps, loop)
     local spin_anim = Anim(0,0,32, 32, 2, 2, 24, false)
@@ -51,6 +46,7 @@ function MediumBullet.create_sprite(atlas)
 end
  
 
+-- called automatically
 function MediumBullet:on_start()
     self.transform = self.entity.Transform
     self.sprite = self.entity.Sprite
@@ -62,6 +58,7 @@ function MediumBullet:on_start()
 
 end
 
+-- called by entity factory
 function MediumBullet:spawn(arg)
 
 
@@ -74,8 +71,8 @@ function MediumBullet:spawn(arg)
     local newangle = math.atan2(RSYA, RSXA)
 
     -- got damage in the [arg]
-    -- conditional for projectile type here?
-            
+           
+    -- order form table gets sent to EntityFactory.Lua
     local bullet = {
         {"Transform", arg.x, arg.y, 1, 1, newangle, RSXA or 0, RSYA or 0},
         {"MediumBullet", arg},
@@ -84,6 +81,7 @@ function MediumBullet:spawn(arg)
         {"Shadow", 2}
     }
 
+    -- this tells the EntityFactory
     bullet.ent_class = "PROJECTILE"
 
     _G.events:invoke("EF", bullet) -- sends entity table to EntityFactory
