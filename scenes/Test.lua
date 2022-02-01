@@ -19,8 +19,8 @@ function T:new(scene_mgr)
 
 
     --spawn players
-    -- _G.events:invoke("EF_spawn", "Cookie", {player_num = 2, x = 350, y = 380, control_scheme = "Gamepad"})
-    _G.events:invoke("EF_spawn", "Candy", {player_num = 1, x = 350, y = 340, control_scheme = "Keyboard"})
+    _G.events:invoke("EF_spawn", "Cookie", {player_num = 2, x = 350, y = 380, control_scheme = "Gamepad"})
+    --_G.events:invoke("EF_spawn", "Candy", {player_num = 1, x = 350, y = 340, control_scheme = "Keyboard"})
     -- _G.events:invoke("EF_spawn", "Cursor",  {x =0, y = 0,})
     -- _G.events:invoke("EF_spawn", "cc2f7b", {player_num = 3, x = 320, y = 360})
     -- _G.events:invoke("EF_spawn", "Flour", {player_num = 2, x = 390, y = 360})
