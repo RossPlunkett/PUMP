@@ -5,6 +5,8 @@ To run, download and install Love2D, download and unzip the repository, then dra
 
 Currently confiugured to use an Xbox/PS controller.
 
+
 Art: Miles Salumbre
+
 Code: Ross Plunkett
 
