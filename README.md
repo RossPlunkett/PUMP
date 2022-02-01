@@ -1,6 +1,10 @@
 # PUMP 0.0.0.0.0.1
-The current codebase for PUMP
+The new codebase for PUMP
 
 To run, download and install Love2D, download and unzip the repository, then drag it (the unzipped folder) onto the love executable or a shortcut.
 
-Currently confiugured to use an Xbox/PS controller
+Currently confiugured to use an Xbox/PS controller.
+
+Art: Miles Salumbre
+Code: Ross Plunkett
+
